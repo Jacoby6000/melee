@@ -589,12 +589,12 @@ bool gm_AnyControllerPressedStart(void)
     return false;
 }
 
-bool fn_8016BBB4(void)
+bool gm_AnyControllerPressedZ(void)
 {
     int i;
     for (i = 0; i < PAD_MAX_CONTROLLERS; i++) {
         HSD_PadStatus* pad = &HSD_PadMasterStatus[(u8) i];
-        if (pad->err == 0 && (pad->trigger & 0x10)) {
+        if (pad->err == 0 && (pad->trigger & HSD_PAD_Z)) {
             return true;
         }
     }
@@ -1921,7 +1921,7 @@ void fn_8016E730(StartMeleeData* arg0)
     lbl_8046B6A0_t* r30;
 
     db_Setup();
-    gm_801A4B08(gm_AnyControllerPressedStart, fn_8016BBB4);
+    gm_801A4B08(gm_AnyControllerPressedStart, gm_AnyControllerPressedZ);
     gm_801A4B40(db_RunEveryFrame);
     gm_801A4B50(1);
     lb_80019880((0.016666667F / arg0->rules.x34) * OS_TIMER_CLOCK);

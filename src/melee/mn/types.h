@@ -178,11 +178,11 @@ struct StartMeleeRules {
     u64 x20; // item mask
     int x28;
     float x2C;
-    float x30;         // damage ratio
-    float x34;         // game speed
-    void (*x38)(int);  // on unpause callback
-    void (*x3C)(int);  // on pause callback (conditional?)
-    int (*x40)(void);  // on pause callback
+    float x30;        // damage ratio
+    float x34;        // game speed
+    void (*x38)(int); // on unpause callback
+    void (*x3C)(int); // on pause callback (conditional?)
+    int (*x40_get_pauser)(void);
     void (*x44)(void); // on VS match start callback
     void (*x48)(void); // ingame pre-frame callback
     void (*x4C)(void); // ingame post-frame callback

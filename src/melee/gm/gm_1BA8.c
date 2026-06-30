@@ -142,7 +142,7 @@ void gm_801BAAD0(GameScene* arg0)
     temp_r31 = &gmMainLib_804D3EE0->unk_530;
     temp_r3 = gm_801A4284(arg0);
     if (temp_r3->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
     gm_801B0730(temp_r3, &temp_r31->x2, NULL, &temp_r31->x3, &temp_r31->x4,
@@ -694,7 +694,7 @@ void gm_801BB758(GameScene* arg0)
         return;
     }
     if (exit->match_end.result == 7) {
-        gm_801A42F8(1);
+        gm_RequestPendingGameMode(1);
         return;
     }
     ev->x3C += gm_80168940(&gm_804979D8[0].match_end);
@@ -754,11 +754,11 @@ void gm_801BB758(GameScene* arg0)
     gm_80172898(0x10);
     if (kind != 0x21) {
         gm_801736E8(ev->x0, ev->x1, ev->x6, ev->x4, kind, 1);
-        gm_801A42F8(0x14);
+        gm_RequestPendingGameMode(0x14);
         return;
     }
     if (gm_80173754(1, ev->x6) == 0) {
-        gm_801A42F8(1);
+        gm_RequestPendingGameMode(1);
     }
 }
 
@@ -3642,5 +3642,5 @@ void gm_801BF8F8(GameScene* arg0)
 void gm_801BF920(GameScene* arg0)
 {
     gm_801A4284(arg0);
-    gm_801A42F8(GM_BOOT);
+    gm_RequestPendingGameMode(GM_BOOT);
 }

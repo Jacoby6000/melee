@@ -1311,7 +1311,7 @@ void gm_801B4350(GameScene* scene)
     UnkAdventureData* temp_r31 = gm_8017E424();
 
     if (css->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
     gm_801B0730(css, &temp_r29->c_kind, &temp_r29->stocks, &temp_r29->color,

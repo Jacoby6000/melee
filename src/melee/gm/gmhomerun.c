@@ -101,7 +101,7 @@ void gm_801B999C(GameScene* scene)
 
     temp_r3 = gm_801A4284(scene);
     if (temp_r3->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
     gm_80167A14(vs->data.players);

@@ -254,7 +254,7 @@ void gm_801B63C4(GameScene* arg0)
     CSSData* temp_r3 = gm_801A4284(arg0);
 
     if (temp_r3->pending_scene_change == 2) {
-        gm_801A42F8(1);
+        gm_RequestPendingGameMode(1);
         return;
     }
 
@@ -460,7 +460,7 @@ bool gm_801B688C(bool arg0)
                         temp_r29->data.players[0].color, gm_804D68F0,
                         temp_r29->data.players[0].xA, temp_r3,
                         gm_GetCurrentGameMode());
-            gm_801A42F8(GM_CHALLENGER_APPROACH);
+            gm_RequestPendingGameMode(GM_CHALLENGER_APPROACH);
             return true;
         }
     }
@@ -535,7 +535,7 @@ void gm_801B6B70(GameScene* scene)
     temp_r31 = &gmMainLib_804D3EE0->unk_1490;
     temp_r3 = gm_801A4284(scene);
     if (temp_r3->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
     gm_80167A14(temp_r31->data.players);
@@ -637,7 +637,7 @@ void gm_801B70DC(GameScene* scene)
     temp_r31 = &gmMainLib_804D3EE0->unk_1490;
     temp_r3 = gm_801A4284(scene);
     if (temp_r3->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
     gm_80167A14(temp_r31->data.players);
@@ -738,7 +738,7 @@ void gm_801B7688(GameScene* scene)
     temp_r31 = &gmMainLib_804D3EE0->unk_1490;
     temp_r3 = gm_801A4284(scene);
     if (temp_r3->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
     gm_80167A14(temp_r31->data.players);
@@ -843,7 +843,7 @@ void gm_801B7C0C(GameScene* scene)
     temp_r31 = &gmMainLib_804D3EE0->unk_1490;
     temp_r3 = gm_801A4284(scene);
     if (temp_r3->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
     gm_80167A14(temp_r31->data.players);
@@ -945,7 +945,7 @@ void gm_801B81A8(GameScene* scene)
     temp_r31 = &gmMainLib_804D3EE0->unk_1490;
     temp_r3 = gm_801A4284(scene);
     if (temp_r3->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
     gm_80167A14(temp_r31->data.players);
@@ -1034,7 +1034,7 @@ void gm_801B86D4(GameScene* scene)
     temp_r31 = &gmMainLib_804D3EE0->unk_1490;
     temp_r3 = gm_801A4284(scene);
     if (temp_r3->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
     gm_80167A14(temp_r31->data.players);

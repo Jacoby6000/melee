@@ -558,7 +558,7 @@ void gm_801B1C24(GameScene* arg0)
     PAD_STACK(0x10);
 
     if (css->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
     gm_80167A14(vs->data.players);
@@ -753,7 +753,7 @@ void gm_801B2510(GameScene* arg0)
     int* data = gm_801A4284(arg0);
     int temp_r0 = *data;
     if (temp_r0 == 1 || temp_r0 == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
     }
 }
 
@@ -789,7 +789,7 @@ void gm_801B25D4(GameScene* arg0)
     temp_r31 = &gmMainLib_804D3EE0->unk_950;
     temp_r3 = gm_801A4284(arg0);
     if (temp_r3->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
 

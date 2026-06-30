@@ -16,7 +16,7 @@
 /* 1A42C4 */ GameSceneKind gm_GetCurrentScene(void);  ///< get current scene
 /* 1A42D4 */ UNK_RET gm_801A42D4(UNK_PARAMS);
 /* 1A42E8 */ void gm_SetPendingGameMode(GameModeKind pending_mode);
-/* 1A42F8 */ void gm_801A42F8(int pending_mode);
+/* 1A42F8 */ void gm_RequestPendingGameMode(GameModeKind pending_mode);
 /* 1A4310 */ GameModeKind gm_GetCurrentGameMode(void);
 /* 1A4320 */ GameModeKind gm_GetPreviousGameMode(void); ///< get previous mode
 /* 1A4330 */ void gm_801A4330(u8 (*)(void));

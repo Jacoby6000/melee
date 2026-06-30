@@ -1004,7 +1004,7 @@ void gmClassic_801B3E44(GameScene* scene)
     if (temp_r30->pending_scene_change == 2) {
         // This only happens when, instead of pressing start to begin the game,
         // we press back to exit.
-        gm_801A42F8(1);
+        gm_RequestPendingGameMode(1);
         return;
     }
     gm_801B0730(temp_r30, &temp_r29->c_kind, &temp_r29->stocks,

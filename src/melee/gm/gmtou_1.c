@@ -2147,7 +2147,7 @@ void fn_8019A86C(s32* arg0, u32 arg1, u32 arg2)
                 mn_8022F138(0x12, 0x15);
                 mn_8022F268();
                 gm_801A4B60();
-                gm_801A42F8(1);
+                gm_RequestPendingGameMode(1);
                 return;
             }
         }
@@ -2440,7 +2440,7 @@ void fn_8019AF50(s32* arg0, u32 arg1, u32 arg2)
         if (*counter >= 0xFAU) {
             if (tm->x33 == 6) {
                 if (*counter >= 0x1C20U || (buttons & 0x1100)) {
-                    gm_801A42F8(1);
+                    gm_RequestPendingGameMode(1);
                     gm_801A4B60();
                 }
             } else {

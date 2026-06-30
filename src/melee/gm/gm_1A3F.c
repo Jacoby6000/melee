@@ -153,7 +153,7 @@ void gm_801A4014(GameMode* mode)
         memzero(&gm_80479D30, 0x14);
         gm_801A3EF4();
         gmMainLib_8046B0F0.x0 = true;
-        gm_801A42F8(GM_BOOT);
+        gm_RequestPendingGameMode(GM_BOOT);
         HSD_VISetBlack(0);
     }
 }
@@ -199,7 +199,7 @@ void gm_SetPendingGameMode(GameModeKind pending_mode)
     gm_80479D30.routing.pending_mode = pending_mode;
 }
 
-void gm_801A42F8(int pending_mode)
+void gm_RequestPendingGameMode(GameModeKind pending_mode)
 {
     gm_80479D30.routing.pending_mode = pending_mode;
     gm_80479D30.pending = 1;

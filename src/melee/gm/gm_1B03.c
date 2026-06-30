@@ -531,7 +531,7 @@ int fn_801B09F8(int arg0)
 {
     if (arg0 == 0) {
         lbAudioAx_80024030(0);
-        gm_801A42F8(GM_TITLE);
+        gm_RequestPendingGameMode(GM_TITLE);
         gm_801A4B60();
     }
     return 0;

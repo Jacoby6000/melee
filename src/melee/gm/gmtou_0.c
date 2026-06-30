@@ -1516,7 +1516,7 @@ void fn_801937C4(s32* arg0, u32 arg1, u32 arg2)
         }
     } else if (arg2 & 0x200) {
         lbAudioAx_80024030(0);
-        gm_801A42F8(1);
+        gm_RequestPendingGameMode(1);
         gm_801A4B60();
     }
 
@@ -2872,7 +2872,7 @@ void gm_8019628C_OnFrame(void)
         mn_8022F138(0x12, 0x15);
         mn_8022F268();
         gm_801A4B60();
-        gm_801A42F8(1);
+        gm_RequestPendingGameMode(1);
         return;
     }
 

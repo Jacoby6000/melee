@@ -125,7 +125,7 @@ void gm_801A5680(GameScene* scene_data, VsModeData* vs_data)
 
     css_data = gm_801A4284(scene_data);
     if (css_data->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
     *vs_data = css_data->data;

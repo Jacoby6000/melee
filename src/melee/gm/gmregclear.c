@@ -553,12 +553,12 @@ void gm_8017CA38(DebugGameOverData* arg0, Unk1PData* arg1, gmm_x0_528_t* arg2,
         gm_80172898(0x40);
         if (temp_r31 == CHKIND_NONE) {
             if (gm_80173754(1, arg1->slot) == 0) {
-                gm_801A42F8(1);
+                gm_RequestPendingGameMode(1);
             }
         } else {
             gm_801736E8(arg1->ckind, arg1->color, arg1->slot, arg1->x4,
                         temp_r31, 1U);
-            gm_801A42F8(0x14);
+            gm_RequestPendingGameMode(0x14);
         }
     } else {
         arg1->xC.x18 = lbTime_8000AEC8((u32) arg0->x4, 1U);
@@ -1056,7 +1056,7 @@ bool gm_8017D7AC(MatchExitInfo* arg0, Unk1PData* arg1, u8 arg2)
             fn_80162FF4(arg1->ckind, arg1->xC.x18);
             break;
         }
-        gm_801A42F8(1);
+        gm_RequestPendingGameMode(1);
         return 0;
     }
     fn_8017E3C8();

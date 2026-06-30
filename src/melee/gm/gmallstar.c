@@ -720,7 +720,7 @@ void gm_801B5FB4(GameScene* arg0)
     UnkAllstarData* r29 = &gm_80473A18;
 
     if (temp_r31->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
     gm_801B0730(temp_r31, &temp_r30->c_kind, &temp_r30->stocks,

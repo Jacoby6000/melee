@@ -311,7 +311,7 @@ bool gm_IsStoryMode(void)
     }
 }
 
-bool gm_8016B41C(void)
+bool gm_IsSinglePlayerMode(void)
 {
     switch (gm_GetCurrentGameMode()) {
     case GM_CLASSIC:
@@ -335,7 +335,7 @@ bool gm_8016B41C(void)
 
 static float get_unk_float(void)
 {
-    if (gm_8016B41C() != 0) {
+    if (gm_IsSinglePlayerMode() != 0) {
         return 1.0F;
     } else {
         switch (gm_8016B558()) {
@@ -402,7 +402,7 @@ float fn_8016B5B0(void)
     int i;
     PAD_STACK(4);
 
-    if (gm_8016B41C()) {
+    if (gm_IsSinglePlayerMode()) {
         float var_f1 = 3.0F;
         if (lbl_8046B6A0.unk_0 != 0) {
             if (tmp->match_result == 1 || tmp->match_result == 4) {
@@ -612,7 +612,8 @@ int gm_GetPauser(void)
     int temp_r3;
     PAD_STACK(0x18);
 
-    if (gm_8016B41C() || gm_GetCurrentGameMode() == GM_CHALLENGER_APPROACH ||
+    if (gm_IsSinglePlayerMode() ||
+        gm_GetCurrentGameMode() == GM_CHALLENGER_APPROACH ||
         (gm_GetCurrentGameMode() == GM_VS && gm_801A42C4() == 0x81))
     {
         temp_r3 = Player_GetPlayerId(0);

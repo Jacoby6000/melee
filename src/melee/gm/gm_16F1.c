@@ -1219,7 +1219,7 @@ int fn_801701C0(void* arg0, int arg1, int arg2)
 int fn_80171A88(void)
 {
     int result = 0;
-    if (gm_8016B41C()) {
+    if (gm_IsSinglePlayerMode()) {
         result = fn_8017E0E4();
         if (result == -1) {
             result = 1;

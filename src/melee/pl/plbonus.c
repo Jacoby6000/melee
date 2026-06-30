@@ -641,7 +641,7 @@ void fn_80039618(int player)
         } else if ((f32) dmg >= 350.0f) {
             setFlag(player, 0x1F);
         } else if ((f32) dmg >= 300.0f) {
-            if (gm_8016B3A0() == 0) {
+            if (gm_IsSuperSuddenDeathMode() == 0) {
                 setFlag(player, 0x1E);
             }
         } else if ((f32) dmg >= 250.0f) {
@@ -805,7 +805,7 @@ void fn_8003B044(int player)
     if (gm_801720B4() == 0 && temp_r31->xD2C == 0) {
         setFlag(player, 0x6B);
     }
-    if (!gm_8016B3A0() && gm_8016B558() >= 3) {
+    if (!gm_IsSuperSuddenDeathMode() && gm_8016B558() >= 3) {
         int i;
         var_f30 = 0.0f;
         var_r27 = 0;

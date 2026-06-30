@@ -291,7 +291,7 @@ void fn_8016B388(int arg0, s16 arg1)
     lbl_8046B6A0.FighterMatchInfo[arg0].x6 = arg1;
 }
 
-bool gm_8016B3A0(void)
+bool gm_IsSuperSuddenDeathMode(void)
 {
     if (gm_GetCurrentGameMode() == GM_SUPER_SUDDEN_DEATH_VS) {
         return true;

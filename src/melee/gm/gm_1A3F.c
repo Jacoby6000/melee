@@ -252,7 +252,7 @@ inline GameMode* findMode(u8 idx)
     return NULL;
 }
 
-u8 gm_801A43A0(u8 mode_kind)
+GameModeKind gm_GetPendingGameMode(GameModeKind mode_kind)
 {
     u8 temp_r3;
     GameMode* mode;
@@ -322,7 +322,8 @@ void gm_801A4510(void)
     gm_80479D30.routing.prev_mode = GM_COUNT;
 
     while (true) {
-        u8 major = gm_801A43A0(gm_80479D30.routing.curr_mode);
+        GameModeKind major =
+            gm_GetPendingGameMode(gm_80479D30.routing.curr_mode);
         if (gmMainLib_8046B0F0.resetting) {
             gmMainLib_8046B0F0.resetting = false;
         }

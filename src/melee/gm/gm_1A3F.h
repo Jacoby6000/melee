@@ -21,7 +21,7 @@
 /* 1A4320 */ GameModeKind gm_GetPreviousGameMode(void); ///< get previous mode
 /* 1A4330 */ void gm_801A4330(u8 (*)(void));
 /* 1A4340 */ bool gm_801A4340(u8 mode);
-/* 1A43A0 */ u8 gm_801A43A0(u8 arg0);
+/* 1A43A0 */ GameModeKind gm_GetPendingGameMode(GameModeKind mode);
 /* 1A4510 */ void gm_801A4510(void);
 
 #endif

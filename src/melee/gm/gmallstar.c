@@ -737,7 +737,7 @@ void gm_801B5FB4(GameScene* arg0)
 
 void gm_801B607C(GameScene* unused)
 {
-    gm_801A42E8(GM_MENU);
+    gm_SetPendingGameMode(GM_MENU);
     gm_801A42D4();
 }
 

@@ -478,30 +478,30 @@ void gm_801B089C(GameScene* scene)
     int* temp_r3 = gm_801A4284(scene);
     if (DbLevel >= 3) {
         if (*temp_r3 & 0x100) {
-            gm_801A42E8(GM_DEBUG_VS);
+            gm_SetPendingGameMode(GM_DEBUG_VS);
         } else if (*temp_r3 & 0x1000) {
             gm_80173EEC();
             gm_80172898(0x100);
             if (!gm_80173754(1, 0)) {
-                gm_801A42E8(GM_MENU);
+                gm_SetPendingGameMode(GM_MENU);
             }
         } else if (*temp_r3 & 0x400) {
-            gm_801A42E8(GM_DEBUG_SOUND_TEST);
+            gm_SetPendingGameMode(GM_DEBUG_SOUND_TEST);
         } else if (*temp_r3 & 0x800) {
-            gm_801A42E8(GM_DEBUG);
+            gm_SetPendingGameMode(GM_DEBUG);
         } else {
             gm_801BF708(1);
-            gm_801A42E8(GM_OPENING_MV);
+            gm_SetPendingGameMode(GM_OPENING_MV);
         }
     } else if (*temp_r3 & 0x1000) {
         gm_80173EEC();
         gm_80172898(0x100);
         if (!gm_80173754(1, 0)) {
-            gm_801A42E8(GM_MENU);
+            gm_SetPendingGameMode(GM_MENU);
         }
     } else {
         gm_801BF708(1);
-        gm_801A42E8(GM_OPENING_MV);
+        gm_SetPendingGameMode(GM_OPENING_MV);
     }
     gm_801A42D4();
 }

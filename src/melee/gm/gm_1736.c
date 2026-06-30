@@ -40,7 +40,7 @@ bool gm_80173754(s8 arg0, u8 arg1)
         lbl_8046DBD8.x0 = CHKIND_NONE;
         lbl_8046DBD8.x2 = arg1;
         lbl_8046DBD8.x5 = arg0;
-        gm_801A42E8(GM_CHALLENGER_APPROACH);
+        gm_SetPendingGameMode(GM_CHALLENGER_APPROACH);
         gm_801A42D4();
         return true;
     }

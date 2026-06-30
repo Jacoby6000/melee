@@ -194,7 +194,7 @@ void gm_801A42D4(void)
     gm_80479D30.pending = 1;
 }
 
-void gm_801A42E8(s8 pending_mode)
+void gm_SetPendingGameMode(GameModeKind pending_mode)
 {
     gm_80479D30.routing.pending_mode = pending_mode;
 }

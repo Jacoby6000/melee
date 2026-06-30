@@ -3128,7 +3128,7 @@ UNK_T gm_801BEC54(void)
 
 void gm_801BEC80(GameScene* arg)
 {
-    gm_801A42E8(GM_MENU);
+    gm_SetPendingGameMode(GM_MENU);
     gm_801A42D4();
 }
 
@@ -3142,14 +3142,14 @@ void gm_801BECD0(GameScene* arg)
 {
     gm_80172898(4);
     if (!gm_80173754(1, 0)) {
-        gm_801A42E8(GM_MENU);
+        gm_SetPendingGameMode(GM_MENU);
         gm_801A42D4();
     }
 }
 
 void gm_801BED14(GameScene* arg)
 {
-    gm_801A42E8(GM_MENU);
+    gm_SetPendingGameMode(GM_MENU);
     gm_801A42D4();
 }
 
@@ -3203,12 +3203,12 @@ void gm_801BEE9C(GameScene* arg0)
     gm_80172898(0x40);
     if (temp_r27 == 0x21) {
         if (!gm_80173754(1, gm_801BEFD0())) {
-            gm_801A42E8(*temp_r28);
+            gm_SetPendingGameMode(*temp_r28);
         }
     } else {
         gm_801736E8(gm_801BEFB0(), gm_801BEFD0(), gm_801BF010(), gm_801BEFF0(),
                     temp_r27, *temp_r28);
-        gm_801A42E8(GM_CHALLENGER_APPROACH);
+        gm_SetPendingGameMode(GM_CHALLENGER_APPROACH);
     }
     gm_801A42D4();
 }
@@ -3323,23 +3323,23 @@ void gm_801BF060(GameScene* arg0)
     int* temp_r3 = gm_801A4284(arg0);
     if (DbLevel >= 3) {
         if (*temp_r3 & 0x100) {
-            gm_801A42E8(GM_DEBUG_VS);
+            gm_SetPendingGameMode(GM_DEBUG_VS);
             gm_801A42D4();
         } else if (*temp_r3 & 0x1000) {
-            gm_801A42E8(GM_MENU);
+            gm_SetPendingGameMode(GM_MENU);
             gm_801A42D4();
         } else if (*temp_r3 & 0x400) {
-            gm_801A42E8(GM_DEBUG_SOUND_TEST);
+            gm_SetPendingGameMode(GM_DEBUG_SOUND_TEST);
             gm_801A42D4();
         } else if (*temp_r3 & 0x800) {
-            gm_801A42E8(GM_DEBUG);
+            gm_SetPendingGameMode(GM_DEBUG);
             gm_801A42D4();
         }
     } else if (*temp_r3 & 0x1000) {
         gm_80173EEC();
         gm_80172898(0x100);
         if (!gm_80173754(1, 0)) {
-            gm_801A42E8(GM_MENU);
+            gm_SetPendingGameMode(GM_MENU);
         }
         gm_801A42D4();
     }
@@ -3605,7 +3605,7 @@ void gm_801BF728(GameScene* arg)
 
 void gm_801BF834(GameScene* arg)
 {
-    gm_801A42E8(GM_TITLE);
+    gm_SetPendingGameMode(GM_TITLE);
     gm_801A42D4();
 }
 

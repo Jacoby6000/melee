@@ -1021,6 +1021,6 @@ void gmClassic_801B3E44(GameScene* scene)
 
 void gmClassic_801B3F18(GameScene* scene)
 {
-    gm_801A42E8(GM_MENU);
+    gm_SetPendingGameMode(GM_MENU);
     gm_801A42D4();
 }

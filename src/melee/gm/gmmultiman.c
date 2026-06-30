@@ -390,7 +390,7 @@ void gm_801B65D4(GameScene* arg0)
         if (temp_r25_2 != CHKIND_NONE) {
             gm_801736E8(temp_r28->unk_584, temp_r28->unk_585, gm_804D68E8,
                         temp_r28->unk_586, temp_r25_2, 0xF);
-            gm_801A42E8(0x14);
+            gm_SetPendingGameMode(0x14);
             gm_801A42D4();
             return;
         }

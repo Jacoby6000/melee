@@ -215,7 +215,7 @@ void gm_801B138C(GameScene* arg0)
 {
     MenuExitData* data = arg0->info.leave_data;
 
-    gm_801A42E8(data->pending_mode);
+    gm_SetPendingGameMode(data->pending_mode);
     gm_801A42D4();
 }
 

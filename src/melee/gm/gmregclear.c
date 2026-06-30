@@ -626,7 +626,7 @@ void gm_8017CBAC(UnkAdventureData* arg0, gmm_x0_528_t* arg1, u8 arg2)
     lb_8001C550();
     lb_8001D164(0);
     lb_8001CE00();
-    gm_801A42E8(arg2);
+    gm_SetPendingGameMode(arg2);
     gm_801A42D4();
 }
 
@@ -3909,7 +3909,7 @@ void fn_80182F40(HSD_GObj* unused)
         lbAudioAx_80023694();
         lbAudioAx_80024030(1);
         gm_801A4B60();
-        gm_801A42E8(GM_TITLE);
+        gm_SetPendingGameMode(GM_TITLE);
         gm_801A42D4();
         return;
     }

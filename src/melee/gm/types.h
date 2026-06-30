@@ -73,12 +73,12 @@ struct GameSceneHandler {
 }; // 803DA920
 
 typedef struct {
-    GameModeKind curr_mode;
-    GameModeKind pending_mode;
-    GameModeKind prev_mode;
-    GameSceneKind curr_scene;
-    GameSceneKind prev_scene;
-    GameSceneKind pending_scene;
+    u8 curr_mode;      ///< GameModeKind
+    u8 pending_mode;   ///< GameModeKind
+    u8 prev_mode;      ///< GameModeKind
+    u8 curr_scene;     ///< GameSceneKind
+    u8 prev_scene;     ///< GameSceneKind
+    u8 pending_scene;  ///< GameSceneKind
 } GameRouting;
 
 typedef struct {
@@ -979,7 +979,7 @@ struct lbl_8046DBD8_t {
     u8 x2; // stocks
     u8 x3;
     u8 x4; // c_kind
-    GameModeKind x5;
+    u8 x5; ///< GameModeKind
     u8 x6;
     u16 x8;
 };

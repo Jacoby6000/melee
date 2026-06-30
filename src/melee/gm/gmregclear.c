@@ -4,6 +4,7 @@
 #include "platform.h"
 
 #include "baselib/forward.h"
+#include "gm/forward.h"
 
 #include <math_ppc.h>
 #include <dolphin/gx.h>
@@ -537,13 +538,13 @@ void gm_8017CA38(DebugGameOverData* arg0, Unk1PData* arg1, gmm_x0_528_t* arg2,
     if (arg0->xC == 0) {
         temp_r31 = gm_80173224(arg3, 0);
         switch (gm_GetCurrentGameMode()) {
-        case 3:
+        case GM_CLASSIC:
             fn_80162BFC(arg1->ckind, arg0->x4);
             break;
-        case 4:
+        case GM_ADVENTURE:
             fn_80162DF8(arg1->ckind, arg0->x4);
             break;
-        case 5:
+        case GM_ALLSTAR:
             fn_80162FF4(arg1->ckind, arg0->x4);
             break;
         }
@@ -1046,13 +1047,13 @@ bool gm_8017D7AC(MatchExitInfo* arg0, Unk1PData* arg1, u8 arg2)
     temp_r0 = arg0->match_end.result;
     if ((temp_r0 == 7 || temp_r0 == 8) && DbLevel <= 2) {
         switch (gm_GetCurrentGameMode()) {
-        case 3:
+        case GM_CLASSIC:
             fn_80162BFC(arg1->ckind, arg1->xC.x18);
             break;
-        case 4:
+        case GM_ADVENTURE:
             fn_80162DF8(arg1->ckind, arg1->xC.x18);
             break;
-        case 5:
+        case GM_ALLSTAR:
             fn_80162FF4(arg1->ckind, arg1->xC.x18);
             break;
         }
@@ -1548,7 +1549,7 @@ void gm_8017E7FC(u8 arg0)
     UnkAdventureData* r31 = &lbl_80472C30;
     bool cond;
 
-    if (gm_GetCurrentGameMode() == 4 && r31->x0.cpu_level >= 2 &&
+    if (gm_GetCurrentGameMode() == GM_ADVENTURE && r31->x0.cpu_level >= 2 &&
         r31->x0.xC.x20 + gm_8016AEDC() < 0xFD20U)
     {
         cond = true;
@@ -3226,9 +3227,9 @@ void fn_80181E18(void)
         lbl_80472ED8.x8 += 1;
     }
 
-    if (mode < 0x25) {
-        if (mode < 0x23) {
-            if (mode < 0x21) {
+    if (mode < GM_ENDLESS_VS) {
+        if (mode < GM_3MIN_VS) {
+            if (mode < GM_10MAN_VS) {
             } else {
                 Player_GetFalls(0);
             }
@@ -3237,7 +3238,7 @@ void fn_80181E18(void)
             gm_8016B33C(7);
             gm_TerminateMatch();
         }
-    } else if (mode < 0x27) {
+    } else if (mode < GM_PROGRESSIVE_SCAN) {
         if (Player_GetFalls(0) != 0) {
             gm_8016B33C(5);
             gm_TerminateMatch();
@@ -3263,14 +3264,14 @@ void fn_80181E18(void)
         lbl_80472ED8.x6BE = (s16) (temp + lbl_80472ED8.x4);
 
         switch (mode) {
-        case 0x21:
+        case GM_10MAN_VS:
             temp = var_r29 - fn_80181BFC(NULL);
             if (temp < 0) {
                 temp = 0;
             }
             ifStock_802FA2D0(0xA - (temp + lbl_80472ED8.x4));
             break;
-        case 0x22:
+        case GM_100MAN_VS:
             temp = var_r29 - fn_80181BFC(NULL);
             if (temp < 0) {
                 temp = 0;
@@ -3483,15 +3484,15 @@ void gm_80182174(void)
     PAD_STACK(8);
 }
 
-bool gm_80182510(void)
+bool gm_IsMultiManSmashMode(void)
 {
     switch (gm_GetCurrentGameMode()) {
-    case 0x21:
-    case 0x22:
-    case 0x23:
-    case 0x24:
-    case 0x25:
-    case 0x26:
+    case GM_10MAN_VS:
+    case GM_100MAN_VS:
+    case GM_3MIN_VS:
+    case GM_15MIN_VS:
+    case GM_ENDLESS_VS:
+    case GM_CRUEL_VS:
         return true;
     }
     return false;

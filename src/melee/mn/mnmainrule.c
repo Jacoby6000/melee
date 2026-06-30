@@ -233,13 +233,13 @@ void fn_8022F538(HSD_GObj* arg0)
             rules->damage_ratio = data->x5;
             rules->unk_x7 = data->x6;
             rules->stock_count = data->x9;
-            if (gm_GetCurrentGameMode() == 0x1B) {
+            if (gm_GetCurrentGameMode() == GM_TOURNAMENT) {
                 HSD_SisLib_803A5E70();
                 mn_8022EBDC();
                 gm_80190EA4();
                 return;
             }
-            if (gm_GetCurrentGameMode() == 1) {
+            if (gm_GetCurrentGameMode() == GM_MENU) {
                 mn_80229894(2, 3, 3);
                 return;
             }
@@ -260,13 +260,13 @@ void fn_8022F538(HSD_GObj* arg0)
         rules->damage_ratio = data->x5;
         rules->unk_x7 = data->x6;
         rules->stock_count = data->x9;
-        if (gm_GetCurrentGameMode() == 0x1B) {
+        if (gm_GetCurrentGameMode() == GM_TOURNAMENT) {
             HSD_SisLib_803A5E70();
             mn_8022EBDC();
             gm_80190EA4();
             return;
         }
-        if (gm_GetCurrentGameMode() == 1) {
+        if (gm_GetCurrentGameMode() == GM_MENU) {
             mn_80229894(2, 3, 3);
             return;
         }
@@ -284,7 +284,7 @@ void fn_8022F538(HSD_GObj* arg0)
                 mn_804A04F0.hovered_selection--;
             }
             hovered = mn_8022F538_GetHoveredSelection();
-            if (gm_GetCurrentGameMode() == 0x1B && hovered == 4) {
+            if (gm_GetCurrentGameMode() == GM_TOURNAMENT && hovered == 4) {
                 valid = 0;
             } else {
                 valid = 1;
@@ -307,7 +307,7 @@ void fn_8022F538(HSD_GObj* arg0)
                 mn_804A04F0.hovered_selection++;
             }
             hovered = mn_8022F538_GetHoveredSelection();
-            if (gm_GetCurrentGameMode() == 0x1B && hovered == 4) {
+            if (gm_GetCurrentGameMode() == GM_TOURNAMENT && hovered == 4) {
                 valid = 0;
             } else {
                 valid = 1;
@@ -349,7 +349,7 @@ void fn_8022F538(HSD_GObj* arg0)
         {
             mn_804A04F0.confirmed_selection = 0;
         }
-        if (gm_GetCurrentGameMode() == 0x1B &&
+        if (gm_GetCurrentGameMode() == GM_TOURNAMENT &&
             mn_804A04F0.hovered_selection == 1 && data->x2 != 1 &&
             mn_804A04F0.confirmed_selection == limits[0])
         {
@@ -378,7 +378,7 @@ void fn_8022F538(HSD_GObj* arg0)
         {
             mn_804A04F0.confirmed_selection = 2;
         }
-        if (gm_GetCurrentGameMode() == 0x1B &&
+        if (gm_GetCurrentGameMode() == GM_TOURNAMENT &&
             mn_804A04F0.hovered_selection == 1 && data->x2 != 1 &&
             mn_804A04F0.confirmed_selection == limits[0])
         {
@@ -694,7 +694,7 @@ void mn_80230274(HSD_GObj* arg0, int arg1, int arg2)
     }
 
     for (i = 0; i < count; i++) {
-        if (gm_GetCurrentGameMode() == 0x1B && (u8) i == 4) {
+        if (gm_GetCurrentGameMode() == GM_TOURNAMENT && (u8) i == 4) {
             valid = 0;
         } else {
             valid = 1;
@@ -702,7 +702,7 @@ void mn_80230274(HSD_GObj* arg0, int arg1, int arg2)
         if (valid != 0) {
             visible = 0;
             for (j = 0; j < i; j++) {
-                if (gm_GetCurrentGameMode() == 0x1B && (u8) j == 4) {
+                if (gm_GetCurrentGameMode() == GM_TOURNAMENT && (u8) j == 4) {
                     valid = 0;
                 } else {
                     valid = 1;
@@ -781,7 +781,7 @@ void mn_80230274(HSD_GObj* arg0, int arg1, int arg2)
     for (i = 0; i < count; i++) {
         u16 focus;
 
-        if (gm_GetCurrentGameMode() == 0x1B && (u8) i == 4) {
+        if (gm_GetCurrentGameMode() == GM_TOURNAMENT && (u8) i == 4) {
             valid = 0;
         } else {
             valid = 1;
@@ -1036,7 +1036,7 @@ s32 mn_80230D18(struct mn_802307F8_t* arg0, HSD_JObj* arg1, s8 arg2)
     arg0->x9 = gmMainLib_8015CC34()->stock_count;
     arg0->x3 = gmMainLib_8015CC34()->time_limit;
 
-    if (gm_GetCurrentGameMode() == 0x1B && arg0->x3 == 0) {
+    if (gm_GetCurrentGameMode() == GM_TOURNAMENT && arg0->x3 == 0) {
         arg0->x3 = 0x63;
     }
 
@@ -1152,7 +1152,7 @@ HSD_GObj* mn_80230E38(int arg0)
     {
         visible = 0;
         for (j = 0; j < i; j++) {
-            if (gm_GetCurrentGameMode() == 0x1B && (u8) j == 4) {
+            if (gm_GetCurrentGameMode() == GM_TOURNAMENT && (u8) j == 4) {
                 valid = 0;
             } else {
                 valid = 1;
@@ -1164,7 +1164,7 @@ HSD_GObj* mn_80230E38(int arg0)
         parent = user_data->xC[((u16*) mn_803EC600)[(u8) visible]];
         total_visible = 0;
         for (j = 0; j < 7; j++) {
-            if (gm_GetCurrentGameMode() == 0x1B && (u8) j == 4) {
+            if (gm_GetCurrentGameMode() == GM_TOURNAMENT && (u8) j == 4) {
                 valid = 0;
             } else {
                 valid = 1;
@@ -1177,7 +1177,7 @@ HSD_GObj* mn_80230E38(int arg0)
         HSD_JObjReqAnim(parent, (f32) total_visible);
         HSD_JObjAnim(parent);
 
-        if (gm_GetCurrentGameMode() == 0x1B && (u8) i == 4) {
+        if (gm_GetCurrentGameMode() == GM_TOURNAMENT && (u8) i == 4) {
             valid = 0;
         } else {
             valid = 1;
@@ -1542,7 +1542,7 @@ void mn_80231804(HSD_Archive* archive, int arg1)
 
 bool mn_80231F80(u8 arg0)
 {
-    if (gm_GetCurrentGameMode() == 0x1B && arg0 == 1) {
+    if (gm_GetCurrentGameMode() == GM_TOURNAMENT && arg0 == 1) {
         return false;
     }
     if (arg0 == 3) {

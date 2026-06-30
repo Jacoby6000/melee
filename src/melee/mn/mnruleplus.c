@@ -13,6 +13,9 @@
 #include "baselib/jobj.h"
 #include "baselib/memory.h"
 #include "baselib/sislib.h"
+
+#include "gm/forward.h"
+
 #include "gm/gm_1A3F.h"
 #include "gm/gmmain_lib.h"
 #include "gm/types.h"
@@ -128,7 +131,7 @@ static inline void mnRulePlus_SaveRules(void)
 /// @brief Check if a given option is visible (not hidden by game mode).
 static inline s32 mnRulePlus_IsOptionVisible(u8 sel)
 {
-    if (gm_GetCurrentGameMode() == 0x1B && sel == 1) {
+    if (gm_GetCurrentGameMode() == GM_TOURNAMENT && sel == 1) {
         return 0;
     } else if (sel == 3) {
         if (gmMainLib_8015EE0C() != 0) {
@@ -390,7 +393,7 @@ void mn_802327A4(HSD_GObj* gobj, u32 arg1, u32 arg2)
     root_ptr = option_roots;
     i = 0;
     while (i < (s32) num_options) {
-        if (gm_GetCurrentGameMode() == 0x1B && (u8) i == 1) {
+        if (gm_GetCurrentGameMode() == GM_TOURNAMENT && (u8) i == 1) {
             visible = 0;
         } else if ((u8) i == 3) {
             if (gmMainLib_8015EE0C() != 0) {
@@ -525,7 +528,7 @@ void mn_802327A4(HSD_GObj* gobj, u32 arg1, u32 arg2)
     root_ptr = option_roots;
     i = 0;
     while (i < (s32) num_options) {
-        if (gm_GetCurrentGameMode() == 0x1B && (u8) i == 1) {
+        if (gm_GetCurrentGameMode() == GM_TOURNAMENT && (u8) i == 1) {
             visible = 0;
         } else if ((u8) i == 3) {
             if (gmMainLib_8015EE0C() != 0) {
@@ -840,7 +843,7 @@ HSD_GObj* mn_80233218(MenuState state)
         HSD_JObjReqAnim(option_jobj, (f32) vis_total);
         HSD_JObjAnim(option_jobj);
 
-        if ((gm_GetCurrentGameMode() == 0x1B) && ((u8) i == 1)) {
+        if ((gm_GetCurrentGameMode() == GM_TOURNAMENT) && ((u8) i == 1)) {
             visible = 0;
         } else if ((u8) i == 3) {
             if (gmMainLib_8015EE0C() != 0) {

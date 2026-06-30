@@ -6,6 +6,8 @@
 #include "gm_1A45.h"
 #include "gm_unsplit.h"
 
+#include "gm/forward.h"
+
 #include "it/inlines.h"
 
 #include <sysdolphin/baselib/archive.h>
@@ -367,15 +369,15 @@ static void fn_8019F810(void)
     fn_8019F1D0();
 }
 
-static inline s32 fn_8019F9C4_GetCharIdx(CharacterKind arg0)
+static inline s32 fn_8019F9C4_GetCharIdx(CharacterKind character)
 {
     switch (gm_GetCurrentGameMode()) {
-    case 3:
-        return gm_80160474(arg0, GM_CLASSIC);
-    case 4:
-        return gm_80160474(arg0, GM_ADVENTURE);
+    case GM_CLASSIC:
+        return gm_80160474(character, GM_CLASSIC);
+    case GM_ADVENTURE:
+        return gm_80160474(character, GM_ADVENTURE);
     default:
-        return gm_80160474(arg0, GM_ALLSTAR);
+        return gm_80160474(character, GM_ALLSTAR);
     }
 }
 
@@ -405,7 +407,7 @@ void fn_8019F9C4(u32 arg0)
     Toy_803124BC();
     Toy_803102D0();
     {
-        u8 game_mode = gm_GetCurrentGameMode();
+        GameModeKind game_mode = gm_GetCurrentGameMode();
         char* model_name = gm_80160564(arg0, game_mode);
         char* scene_name = gm_801604DC(arg0, game_mode);
         lbArchive_LoadSymbols(scene_name, &lbl_804D66AC, model_name, 0);

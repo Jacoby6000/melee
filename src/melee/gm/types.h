@@ -979,7 +979,7 @@ struct lbl_8046DBD8_t {
     u8 x2; // stocks
     u8 x3;
     u8 x4; // c_kind
-    u8 x5;
+    GameModeKind x5;
     u8 x6;
     u16 x8;
 };

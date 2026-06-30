@@ -614,7 +614,7 @@ int gm_GetPauser(void)
 
     if (gm_IsSinglePlayerMode() ||
         gm_GetCurrentGameMode() == GM_CHALLENGER_APPROACH ||
-        (gm_GetCurrentGameMode() == GM_VS && gm_801A42C4() == 0x81))
+        (gm_GetCurrentGameMode() == GM_VS && gm_GetCurrentScene() == 0x81))
     {
         temp_r3 = Player_GetPlayerId(0);
         temp_r4 = &HSD_PadCopyStatus[(u8) temp_r3];
@@ -1399,7 +1399,7 @@ bool fn_8016D538(void)
     PAD_STACK(4);
 
     if (gm_IsStoryMode()) {
-        if (fn_8017DF90() == 0 && gm_801A42C4() == 0x49) {
+        if (fn_8017DF90() == 0 && gm_GetCurrentScene() == 0x49) {
             result = true;
         } else {
             if (gm_8016B184() && fn_801693A8() != 0) {

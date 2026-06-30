@@ -168,7 +168,7 @@ void* gm_801A4284(GameScene* scene)
     return scene->info.leave_data;
 }
 
-void gm_SetScene(u8 arg0)
+void gm_SetScene(GameSceneKind arg0)
 {
     gm_80479D30.routing.curr_scene = arg0;
     gm_80479D30.routing.prev_scene = arg0;
@@ -184,7 +184,7 @@ u8 gm_801A42B4(void)
     return gm_80479D30.routing.prev_scene;
 }
 
-u8 gm_801A42C4(void)
+GameSceneKind gm_GetCurrentScene(void)
 {
     return gm_80479D30.routing.curr_scene;
 }

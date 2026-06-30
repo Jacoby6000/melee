@@ -68,7 +68,8 @@ static void gmTitle_801A146C(HSD_GObj* gobj)
 static inline bool isActiveTitle(void)
 {
     if (gm_GetCurrentGameMode() == GM_TITLE ||
-        (gm_GetCurrentGameMode() == GM_OPENING_MV && gm_801A42C4() == GS_VS))
+        (gm_GetCurrentGameMode() == GM_OPENING_MV &&
+         gm_GetCurrentScene() == GS_VS))
     {
         return false;
     }
@@ -136,7 +137,8 @@ HSD_GObj* gmTitle_801A165C(void)
                        gmTitle_80479B28.shapeanim_joint);
 
     if (gm_GetCurrentGameMode() == GM_TITLE ||
-        (gm_GetCurrentGameMode() == GM_OPENING_MV && gm_801A42C4() == GS_VS))
+        (gm_GetCurrentGameMode() == GM_OPENING_MV &&
+         gm_GetCurrentScene() == GS_VS))
     {
         var_r0 = false;
     } else {

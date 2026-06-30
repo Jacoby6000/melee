@@ -1071,7 +1071,7 @@ bool gm_8017D7AC(MatchExitInfo* arg0, Unk1PData* arg1, u8 arg2)
                 }
                 if (!(arg1->x8 & 0x40)) {
                     arg1->xC.x10++;
-                    gm_SetPendingScene(gm_801A42C4());
+                    gm_SetPendingScene(gm_GetCurrentScene());
                     return 0;
                 }
             }
@@ -1576,7 +1576,7 @@ void fn_8017E8A4(int arg0_int)
 {
     MatchEnd* arg0 = (MatchEnd*) arg0_int;
     lbl_8046B6A0_t* gm = gm_8016AE38();
-    struct gm_803DE650_t* stage = gm_8017E4C4(gm_801A42C4());
+    struct gm_803DE650_t* stage = gm_8017E4C4(gm_GetCurrentScene());
     UnkAdventureData* adv = &lbl_80472C30;
     u8* flags = arg0->_x448;
     gmm_x0_528_t* main_data;
@@ -3916,7 +3916,7 @@ void fn_80182F40(HSD_GObj* unused)
     if (gm_801A4BA8() >= 0x4B0) {
         lbAudioAx_80024C84();
         lbAudioAx_80023694();
-        if (gm_801A42C4() == 3 && gmMainLib_8015DB00() % 2 == 0) {
+        if (gm_GetCurrentScene() == 3 && gmMainLib_8015DB00() % 2 == 0) {
             gmMainLib_8015DB18();
             gm_SetPendingScene(0);
         }

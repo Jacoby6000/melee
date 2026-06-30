@@ -730,7 +730,7 @@ void gm_801B5FB4(GameScene* arg0)
     r29->x0.cpu_level = temp_r30->cpu_level;
     r29->x0.stocks = temp_r30->stocks;
     r29->x0.x4 = temp_r30->x4;
-    gm_SetPendingScene((temp_r30->x5 * 8) & 0xF8);
+    gm_SetPendingSceneToSuccessorOf((temp_r30->x5 * 8) & 0xF8);
     gm_80168F88();
     gm_801B5324(r29, temp_r30->x5);
 }

@@ -2817,7 +2817,7 @@ void fn_8019610C(s32* state, u32 buttons, u32 trigger)
         if (*state == 0x11) {
             lbAudioAx_80024030(i);
             if (gm_804771C4.match_type == 0) {
-                gm_SetPendingScene(1);
+                gm_SetPendingSceneToSuccessorOf(1);
             } else {
                 td = gm_8018F634();
                 i = 0;
@@ -2839,7 +2839,7 @@ void fn_8019610C(s32* state, u32 buttons, u32 trigger)
                     dst_ptr += 0xA;
                     i++;
                 }
-                gm_SetPendingScene(2);
+                gm_SetPendingSceneToSuccessorOf(2);
             }
             gm_801A4B60();
         } else {

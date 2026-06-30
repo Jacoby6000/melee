@@ -1015,7 +1015,7 @@ void gmClassic_801B3E44(GameScene* scene)
     temp_r31->x0.stocks = temp_r29->stocks;
     temp_r31->x0.x4 = temp_r29->x4;
     gmClassic_801B2D54(r4);
-    gm_SetPendingScene(temp_r29->x5 << 3);
+    gm_SetPendingSceneToSuccessorOf(temp_r29->x5 << 3);
     gm_80168F88();
 }
 

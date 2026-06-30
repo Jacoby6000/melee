@@ -426,18 +426,18 @@ void gm_801B1788(GameScene* arg0)
 
     sss = gm_801A4284(arg0);
     if (sss->start_game != 0) {
-        gm_SetPendingScene(4);
+        gm_SetPendingSceneToSuccessorOf(4);
         stage = sss->data.data.rules.xE;
         gm_8018F634()->x28 = stage;
         return;
     }
     if (gm_804771C4.match_type == 0) {
         gm_8019A828();
-        gm_SetPendingScene(1);
+        gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
     gm_8018F634()->x32 = 0;
-    gm_SetPendingScene(2);
+    gm_SetPendingSceneToSuccessorOf(2);
 }
 
 void gm_801B1810(GameScene* arg0)
@@ -459,10 +459,10 @@ void gm_801B1834(GameScene* arg0)
     if ((gm_80167140(&mei->match_end) != 0) &&
         (gm_8018F1B0(&mei->match_end) != 0))
     {
-        gm_SetPendingScene(5);
+        gm_SetPendingSceneToSuccessorOf(5);
         return;
     }
-    gm_SetPendingScene(6);
+    gm_SetPendingSceneToSuccessorOf(6);
 }
 
 #pragma dont_inline on
@@ -508,12 +508,12 @@ void gm_801B1AD4(GameScene* arg0)
 
     gm_8016247C(gm_801688AC(&rmi->match_end));
     if (gm_804771C4.match_type == 0) {
-        gm_SetPendingScene(1);
+        gm_SetPendingSceneToSuccessorOf(1);
         gm_8018F634()->cur_option = 0x1F;
         return;
     }
     gm_8019E634();
-    gm_SetPendingScene(2);
+    gm_SetPendingSceneToSuccessorOf(2);
 }
 
 #pragma dont_inline on
@@ -627,7 +627,7 @@ void gm_801B1EEC(GameScene* arg0)
     vs_data = &gmMainLib_804D3EE0->unk_D10;
     sss = gm_801A4284(arg0);
     if (sss->start_game == 0) {
-        gm_SetPendingScene(0);
+        gm_SetPendingSceneToSuccessorOf(0);
         return;
     }
     stage_id = sss->data.data.rules.xE;
@@ -698,7 +698,7 @@ void gm_801B2204(GameScene* arg0)
     gm_80173BC4(temp_r3->match_end.player_standings[0].character_kind);
     gm_80173EEC();
     if (!gm_80173754(0x1C, gm_804D68C0)) {
-        gm_SetPendingScene(0);
+        gm_SetPendingSceneToSuccessorOf(0);
     }
     lbAudioAx_80024030(1);
 }
@@ -829,7 +829,7 @@ void gm_801B2704(GameScene* arg0)
         lbAudioAx_80027168();
         return;
     }
-    gm_SetPendingScene(1);
+    gm_SetPendingSceneToSuccessorOf(1);
 }
 
 void gm_801B2790(GameScene* arg0)
@@ -889,7 +889,7 @@ void gm_801B2AF8(GameScene* arg0)
     gm_80168710(&gm_80479D98.match_end, temp_r30);
     gm_8016247C(gm_801688AC(&gm_80479D98.match_end));
     gm_801A5258(temp_r29, &gm_80479D98.match_end);
-    gm_SetPendingScene(1);
+    gm_SetPendingSceneToSuccessorOf(1);
 }
 
 void gm_801B2B7C_OnInit(void)

@@ -339,7 +339,7 @@ void gm_801B65D4(GameScene* arg0)
     gm_80162968(temp_r3->match_end.frame_count / 60);
     gm_8016247C(temp_r3->match_end.player_standings[0].xE);
     if (temp_r3->match_end.result == 8) {
-        gm_SetPendingScene(1U);
+        gm_SetPendingSceneToSuccessorOf(1U);
         return;
     }
     temp_r3_2 = gm_80164024(temp_r28->unk_584);
@@ -398,7 +398,7 @@ void gm_801B65D4(GameScene* arg0)
     }
 block_22:
     if (gm_80173754(0xF, gm_804D68E8) == 0) {
-        gm_SetPendingScene(0U);
+        gm_SetPendingSceneToSuccessorOf(0U);
     }
 }
 
@@ -601,7 +601,7 @@ void gm_801B6F44(GameScene* scene)
     temp_r29 = &gmMainLib_804D3EE0->unk_1490;
     temp_r3 = gm_801A4284(scene);
     if (temp_r3->match_end.result == 8) {
-        gm_SetPendingScene(1);
+        gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
     gm_80162968(temp_r3->match_end.frame_count / 60);
@@ -618,7 +618,7 @@ void gm_801B6F44(GameScene* scene)
         *temp_r30 = temp_r3_2->x2;
     }
     if (!gm_801B688C(temp_r3_2->x0_0)) {
-        gm_SetPendingScene(0);
+        gm_SetPendingSceneToSuccessorOf(0);
     }
 }
 
@@ -703,7 +703,7 @@ void gm_801B74F0(GameScene* scene)
     temp_r29 = &gmMainLib_804D3EE0->unk_1490;
     temp_r3 = gm_801A4284(scene);
     if (temp_r3->match_end.result == 8) {
-        gm_SetPendingScene(1);
+        gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
     gm_80162968(temp_r3->match_end.frame_count / 60);
@@ -720,7 +720,7 @@ void gm_801B74F0(GameScene* scene)
         *temp_r30 = temp_r3_2->x2;
     }
     if (gm_801B688C(temp_r3_2->x0_0) == 0) {
-        gm_SetPendingScene(0);
+        gm_SetPendingSceneToSuccessorOf(0);
     }
 }
 
@@ -810,7 +810,7 @@ void gm_801B7AA0(GameScene* scene)
     temp_r30 = &gmMainLib_804D3EE0->unk_1490;
     temp_r3 = gm_801A4284(scene);
     if (temp_r3->match_end.result == 8) {
-        gm_SetPendingScene(1);
+        gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
     gm_80162968(temp_r3->match_end.frame_count / 60);
@@ -825,7 +825,7 @@ void gm_801B7AA0(GameScene* scene)
         *temp_r31 = 0;
     }
     if (gm_801B688C(temp_r3_2->x0_0) == 0) {
-        gm_SetPendingScene(0);
+        gm_SetPendingSceneToSuccessorOf(0);
     }
 }
 
@@ -911,7 +911,7 @@ void gm_801B8024(GameScene* scene)
     temp_r29 = &gmMainLib_804D3EE0->unk_1490;
     temp_r3 = gm_801A4284(scene);
     if (temp_r3->match_end.result == 8) {
-        gm_SetPendingScene(1);
+        gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
     gm_80162968(temp_r3->match_end.frame_count / 60);
@@ -927,7 +927,7 @@ void gm_801B8024(GameScene* scene)
         *temp_r30 = 0;
     }
     if (gm_801B688C(temp_r3_2->x0_0) == 0) {
-        gm_SetPendingScene(0);
+        gm_SetPendingSceneToSuccessorOf(0);
     }
 }
 
@@ -1005,7 +1005,7 @@ void gm_801B8580(GameScene* scene)
     temp_r30 = &gmMainLib_804D3EE0->unk_1490;
     temp_r3 = gm_801A4284(scene);
     if (temp_r3->match_end.result == 8) {
-        gm_SetPendingScene(1U);
+        gm_SetPendingSceneToSuccessorOf(1U);
         return;
     }
     gm_80162968(temp_r3->match_end.frame_count / 60);
@@ -1016,7 +1016,7 @@ void gm_801B8580(GameScene* scene)
     temp_r3_2 = gm_80182DF0(temp_r30->data.players[0].c_kind, 0x25);
     *temp_r31 = temp_r3_2->x2;
     if (!gm_801B688C(temp_r3_2->x0_0)) {
-        gm_SetPendingScene(0U);
+        gm_SetPendingSceneToSuccessorOf(0U);
     }
 }
 
@@ -1096,7 +1096,7 @@ void gm_801B8AF8(GameScene* arg0)
     temp_r30 = &gmMainLib_804D3EE0->unk_1490;
     temp_r3 = gm_801A4284(arg0);
     if (temp_r3->match_end.result == 8) {
-        gm_SetPendingScene(1);
+        gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
     gm_80162968(temp_r3->match_end.frame_count / 60);
@@ -1108,6 +1108,6 @@ void gm_801B8AF8(GameScene* arg0)
         gm_80182DF0((s32) (s8) (u8) temp_r30->data.players[0].c_kind, 0x26);
     *temp_r31 = (s32) temp_r3_2->x2;
     if (!gm_801B688C(temp_r3_2->x0_0)) {
-        gm_SetPendingScene(0);
+        gm_SetPendingSceneToSuccessorOf(0);
     }
 }

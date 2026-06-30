@@ -174,7 +174,7 @@ void gm_SetScene(GameSceneKind arg0)
     gameState_80479D30.routing.prev_scene = arg0;
 }
 
-void gm_SetPendingScene(GameSceneKind pending_scene)
+void gm_SetPendingSceneToSuccessorOf(GameSceneKind pending_scene)
 {
     gameState_80479D30.routing.pending_scene = pending_scene + 1;
 }

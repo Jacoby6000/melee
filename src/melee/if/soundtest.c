@@ -412,7 +412,7 @@ int fn_802FFE0C(int arg0)
         break;
     case 6:
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(4);
+        gm_SetPendingSceneToSuccessorOf(4);
         gm_801A4B60();
         break;
     }
@@ -435,7 +435,7 @@ bool un_802FFEA4(bool update_scene)
 {
     if (update_scene == true) {
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0x4);
+        gm_SetPendingSceneToSuccessorOf(0x4);
         gm_801A4B60();
     }
 
@@ -542,7 +542,7 @@ bool un_803001DC(bool update_scene)
 {
     if (update_scene == true) {
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0x1);
+        gm_SetPendingSceneToSuccessorOf(0x1);
         gm_801A4B60();
     }
 
@@ -579,7 +579,7 @@ bool un_803002FC(bool update_scene)
 {
     if (update_scene == true) {
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0x2);
+        gm_SetPendingSceneToSuccessorOf(0x2);
         gm_801A4B60();
     }
 
@@ -865,7 +865,7 @@ bool un_80300AB8(bool update_scene)
 {
     if (update_scene == true) {
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0x4);
+        gm_SetPendingSceneToSuccessorOf(0x4);
         gm_801A4B60();
     }
 
@@ -883,7 +883,7 @@ bool un_80300AF4(int arg0)
         data->x24[1] = 3;
         data->x24[2] = 3;
         data->x24[3] = 3;
-        gm_SetPendingScene(4);
+        gm_SetPendingSceneToSuccessorOf(4);
         gm_801A4B60();
     }
     return false;
@@ -904,7 +904,7 @@ bool un_80300B58(int arg0)
             data->x24[2] = 3;
             data->x24[3] = 3;
         }
-        gm_SetPendingScene(4);
+        gm_SetPendingSceneToSuccessorOf(4);
         gm_801A4B60();
     }
     return false;
@@ -1080,7 +1080,7 @@ bool un_80300FEC(bool update_scene)
 {
     if (update_scene == true) {
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0x4);
+        gm_SetPendingSceneToSuccessorOf(0x4);
         gm_801A4B60();
     }
 
@@ -1268,7 +1268,7 @@ bool un_80301490(bool update_scene)
 {
     if (update_scene == true) {
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0xD);
+        gm_SetPendingSceneToSuccessorOf(0xD);
         gm_801A4B60();
     }
 
@@ -1279,7 +1279,7 @@ bool un_803014CC(bool update_scene)
 {
     if (update_scene == true) {
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0x7);
+        gm_SetPendingSceneToSuccessorOf(0x7);
         gm_801A4B60();
     }
 
@@ -1290,7 +1290,7 @@ bool un_80301508(bool update_scene)
 {
     if (update_scene == true) {
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0x3);
+        gm_SetPendingSceneToSuccessorOf(0x3);
         gm_801A4B60();
     }
 
@@ -1301,7 +1301,7 @@ bool un_80301544(bool update_scene)
 {
     if (update_scene == true) {
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0x9);
+        gm_SetPendingSceneToSuccessorOf(0x9);
         gm_801A4B60();
     }
 
@@ -1312,7 +1312,7 @@ bool un_80301580(bool update_scene)
 {
     if (update_scene == true) {
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0xC);
+        gm_SetPendingSceneToSuccessorOf(0xC);
         gm_801A4B60();
     }
 
@@ -1334,7 +1334,7 @@ bool un_803015F8(bool update_scene)
 {
     if (update_scene == true) {
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0xA);
+        gm_SetPendingSceneToSuccessorOf(0xA);
         gm_801A4B60();
     }
 
@@ -1544,7 +1544,7 @@ int un_80301B48(int arg0)
         break;
     case 6:
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(6);
+        gm_SetPendingSceneToSuccessorOf(6);
         gm_801A4B60();
         break;
     }
@@ -1596,7 +1596,7 @@ int un_80301C80(int arg0)
         break;
     case 6:
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0xB);
+        gm_SetPendingSceneToSuccessorOf(0xB);
         gm_801A4B60();
         break;
     }
@@ -1608,7 +1608,7 @@ void un_80301CE0(int arg0)
     switch (arg0) {
     case 6:
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0xB);
+        gm_SetPendingSceneToSuccessorOf(0xB);
         gm_801A4B60();
         break;
     case 1:
@@ -1643,7 +1643,7 @@ bool un_80301DCC(bool update_scene)
 {
     if (update_scene == true) {
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0x4);
+        gm_SetPendingSceneToSuccessorOf(0x4);
         gm_801A4B60();
     }
 
@@ -1654,7 +1654,7 @@ bool un_80301E08(bool update_scene)
 {
     if (update_scene == true) {
         lbAudioAx_80024030(1);
-        gm_SetPendingScene(0xE);
+        gm_SetPendingSceneToSuccessorOf(0xE);
         gm_801A4B60();
     }
 

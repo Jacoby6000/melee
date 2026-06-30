@@ -565,7 +565,7 @@ void gm_8017CA38(DebugGameOverData* arg0, Unk1PData* arg1, gmm_x0_528_t* arg2,
         arg1->xC.x18 = lbTime_8000AEC8((u32) arg0->x4, 1U);
         arg1->stocks = arg2->stocks;
         arg1->xC.xD = lbTime_8000AF74((u32) arg1->xC.xD, 1);
-        gm_SetPendingScene(arg1->x7);
+        gm_SetPendingSceneToSuccessorOf(arg1->x7);
     }
 }
 
@@ -1067,18 +1067,18 @@ bool gm_8017D7AC(MatchExitInfo* arg0, Unk1PData* arg1, u8 arg2)
             if (arg0->match_end.result == 1) {
                 arg1->stocks--;
                 if (arg1->stocks == 0) {
-                    gm_SetPendingScene(arg2);
+                    gm_SetPendingSceneToSuccessorOf(arg2);
                     return 0;
                 }
                 if (!(arg1->x8 & 0x40)) {
                     arg1->xC.x10++;
-                    gm_SetPendingScene(gm_GetCurrentScene());
+                    gm_SetPendingSceneToSuccessorOf(gm_GetCurrentScene());
                     return 0;
                 }
             }
         } else {
             arg1->xC.x10 = 0;
-            gm_SetPendingScene(arg2);
+            gm_SetPendingSceneToSuccessorOf(arg2);
             return 0;
         }
     }
@@ -1561,10 +1561,10 @@ void gm_8017E7FC(u8 arg0)
         struct StartMeleeRules* rules = gm_8016AE50();
         rules->x4_5 = 1;
         r31->x77 = 0;
-        gm_SetPendingScene(0x5A);
+        gm_SetPendingSceneToSuccessorOf(0x5A);
     } else {
         r31->x77 = 1;
-        gm_SetPendingScene(0x5A);
+        gm_SetPendingSceneToSuccessorOf(0x5A);
     }
 }
 
@@ -3919,7 +3919,7 @@ void fn_80182F40(HSD_GObj* unused)
         lbAudioAx_80023694();
         if (gm_GetCurrentScene() == 3 && gmMainLib_8015DB00() % 2 == 0) {
             gmMainLib_8015DB18();
-            gm_SetPendingScene(0);
+            gm_SetPendingSceneToSuccessorOf(0);
         }
         gm_801A4B60();
         return;

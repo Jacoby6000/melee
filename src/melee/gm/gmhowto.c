@@ -70,7 +70,7 @@ void gm_801ACD8C_OnFrame(void)
             gm_801A42D4();
         } else if (gmMainLib_8015DB00() != 5) {
             gmMainLib_8015DB18();
-            gm_SetPendingScene(0);
+            gm_SetPendingSceneToSuccessorOf(0);
         }
     }
 }

@@ -690,7 +690,7 @@ void gm_801BB758(GameScene* arg0)
             lbDvd_80018254();
             lbDvd_80017700(4);
         }
-        gm_SetPendingScene(1);
+        gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
     if (exit->match_end.result == 7) {
@@ -708,7 +708,7 @@ void gm_801BB758(GameScene* arg0)
         t = ev->x20;
         ev->x20 = t + 1;
         gm_801BBB64();
-        gm_SetPendingScene(1);
+        gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
     if (ev->xB_1) {

@@ -11,7 +11,7 @@
 /* 1A427C */ void* gm_801A427C(GameScene*);
 /* 1A4284 */ void* gm_801A4284(GameScene*);
 /* 1A428C */ void gm_SetScene(GameSceneKind arg0);
-/* 1A42A0 */ void gm_SetPendingScene(GameSceneKind pending_scene);
+/* 1A42A0 */ void gm_SetPendingSceneToSuccessorOf(GameSceneKind pending_scene);
 /* 1A42B4 */ GameSceneKind gm_GetPreviousScene(void); ///< get previous scene
 /* 1A42C4 */ GameSceneKind gm_GetCurrentScene(void);  ///< get current scene
 /* 1A42D4 */ UNK_RET gm_801A42D4(UNK_PARAMS);

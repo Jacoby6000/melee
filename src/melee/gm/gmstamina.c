@@ -230,7 +230,7 @@ static void fn_801B96E8(HSD_GObj* unused)
         if (gm_804975F8.done_counter > 100) {
             gm_SetGameSpeed(1.0F);
             gm_8016B33C(5);
-            gm_8016B328();
+            gm_TerminateMatch();
         }
     }
 }

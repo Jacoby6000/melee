@@ -44,7 +44,7 @@
 /* 16B258 */ bool gm_8016B258(int);
 /* 16B274 */ void gm_SetGameSpeed(float speed);
 /* 16B2C8 */ void gm_ResetGameSpeed(void);
-/* 16B328 */ void gm_8016B328(void);
+/* 16B328 */ void gm_TerminateMatch(void);
 /* 16B33C */ void gm_8016B33C(int arg0);
 /* 16B350 */ void gm_8016B350(int arg0);
 /* 16B364 */ void gm_8016B364(int arg0);

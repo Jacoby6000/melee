@@ -2567,7 +2567,7 @@ void fn_801891F4(void)
             break;
         case 8:
             if (buttons & 0x100ULL) {
-                gm_8016B328();
+                gm_TerminateMatch();
                 return;
             }
             break;

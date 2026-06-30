@@ -1742,7 +1742,7 @@ void gm_801BC4F4(HSD_GObj* gobj)
         gm_8016B33C(2);
         gm_8016B364(0x145);
     }
-    gm_8016B328();
+    gm_TerminateMatch();
     HSD_GObjPLink_80390228(gobj);
 }
 
@@ -1770,7 +1770,7 @@ void gm_801BC670(HSD_GObj* arg0)
     lbAudioAx_80028B90();
     gm_SetGameSpeed(1.0F);
     gm_8016B33C(8);
-    gm_8016B328();
+    gm_TerminateMatch();
 }
 
 void gm_801BC754(HSD_GObj* gobj)
@@ -1814,7 +1814,7 @@ void gm_801BC754(HSD_GObj* gobj)
             gm_8016B33C(6);
             gm_8016B364(0x148);
             gm_8016B378(0x28);
-            gm_8016B328();
+            gm_TerminateMatch();
             HSD_GObjPLink_80390228(gobj);
             return;
         }
@@ -1836,7 +1836,7 @@ void gm_801BC754(HSD_GObj* gobj)
             gm_8016B33C(6);
             gm_8016B364(0x148);
             gm_8016B378(0x28);
-            gm_8016B328();
+            gm_TerminateMatch();
             HSD_GObjPLink_80390228(gobj);
         }
         break;
@@ -1864,7 +1864,7 @@ void gm_801BC754(HSD_GObj* gobj)
             gm_8016B33C(6);
             gm_8016B364(0x148);
             gm_8016B378(0x28);
-            gm_8016B328();
+            gm_TerminateMatch();
             HSD_GObjPLink_80390228(gobj);
         }
         break;
@@ -1903,7 +1903,7 @@ void gm_801BC9E8(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
     }
 }
@@ -1952,7 +1952,7 @@ void gm_801BCAF0(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
         return;
     }
@@ -1974,7 +1974,7 @@ void gm_801BCAF0(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
     }
 }
@@ -2027,7 +2027,7 @@ void gm_801BCC9C(HSD_GObj* arg0)
             gm_8016B33C(6);
             gm_8016B364(0x148);
             gm_8016B378(0x28);
-            gm_8016B328();
+            gm_TerminateMatch();
             HSD_GObjPLink_80390228(arg0);
             return;
         }
@@ -2041,7 +2041,7 @@ void gm_801BCC9C(HSD_GObj* arg0)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(arg0);
         return;
     }
@@ -2065,7 +2065,7 @@ void gm_801BCC9C(HSD_GObj* arg0)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(arg0);
     }
 }
@@ -2089,7 +2089,7 @@ void gm_801BCF40(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
         return;
     }
@@ -2134,7 +2134,7 @@ void gm_801BD028(HSD_GObj* arg0)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(arg0);
         return;
     }
@@ -2173,7 +2173,7 @@ void gm_801BD164(HSD_GObj* gobj)
             gm_8016B33C(6);
             gm_8016B364(0x148);
             gm_8016B378(0x28);
-            gm_8016B328();
+            gm_TerminateMatch();
             HSD_GObjPLink_80390228(gobj);
         }
     }
@@ -2184,7 +2184,7 @@ void gm_801BD164(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
         return;
     }
@@ -2206,7 +2206,7 @@ void gm_801BD164(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
     }
 }
@@ -2225,7 +2225,7 @@ void gm_801BD30C(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
         return;
     }
@@ -2236,7 +2236,7 @@ void gm_801BD30C(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
         return;
     }
@@ -2294,7 +2294,7 @@ void gm_801BD46C(HSD_GObj* gobj)
             gm_8016B33C(6);
             gm_8016B364(0x148);
             gm_8016B378(0x28);
-            gm_8016B328();
+            gm_TerminateMatch();
             HSD_GObjPLink_80390228(gobj);
             return;
         }
@@ -2306,7 +2306,7 @@ void gm_801BD46C(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
         return;
     }
@@ -2328,7 +2328,7 @@ void gm_801BD46C(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
     }
 }
@@ -2367,7 +2367,7 @@ void gm_801BD658(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
         return;
     }
@@ -2389,7 +2389,7 @@ void gm_801BD658(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
     }
 }
@@ -2412,7 +2412,7 @@ void gm_801BD7FC(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
         return;
     }
@@ -2434,7 +2434,7 @@ void gm_801BD7FC(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
     }
 }
@@ -2457,7 +2457,7 @@ void gm_801BD93C(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
         return;
     }
@@ -2468,7 +2468,7 @@ void gm_801BD93C(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
         return;
     }
@@ -2490,7 +2490,7 @@ void gm_801BD93C(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
     }
 }
@@ -2533,7 +2533,7 @@ void gm_801BDAF4(HSD_GObj* arg0)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(arg0);
     }
 }
@@ -2556,7 +2556,7 @@ void gm_801BDC08(HSD_GObj* arg0)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(arg0);
         return;
     }
@@ -2578,7 +2578,7 @@ void gm_801BDC08(HSD_GObj* arg0)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(arg0);
     }
 }
@@ -2601,7 +2601,7 @@ void gm_801BDD44(HSD_GObj* arg0)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(arg0);
         return;
     }
@@ -2623,7 +2623,7 @@ void gm_801BDD44(HSD_GObj* arg0)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(arg0);
     }
 }
@@ -2714,7 +2714,7 @@ void gm_801BDE94(HSD_GObj* arg0)
                     gm_8016B33C(6);
                     gm_8016B364(0x148);
                     gm_8016B378(0x28);
-                    gm_8016B328();
+                    gm_TerminateMatch();
                     HSD_GObjPLink_80390228(arg0);
                     return;
                 }
@@ -2761,7 +2761,7 @@ void gm_801BDE94(HSD_GObj* arg0)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(arg0);
         return;
     }
@@ -2785,7 +2785,7 @@ void gm_801BDE94(HSD_GObj* arg0)
             gm_8016B33C(6);
             gm_8016B364(0x148);
             gm_8016B378(0x28);
-            gm_8016B328();
+            gm_TerminateMatch();
             HSD_GObjPLink_80390228(arg0);
         }
     }
@@ -2835,7 +2835,7 @@ void gm_801BE39C(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
         return;
     }
@@ -2846,7 +2846,7 @@ void gm_801BE39C(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
         return;
     }
@@ -2874,7 +2874,7 @@ void gm_801BE39C(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
     }
 }
@@ -2997,7 +2997,7 @@ void gm_801BE638(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
         return;
     }
@@ -3019,7 +3019,7 @@ void gm_801BE638(HSD_GObj* gobj)
         gm_8016B33C(6);
         gm_8016B364(0x148);
         gm_8016B378(0x28);
-        gm_8016B328();
+        gm_TerminateMatch();
         HSD_GObjPLink_80390228(gobj);
     }
 }

@@ -396,7 +396,7 @@ void fn_8017C1A4(HSD_GObj* unused)
             lbAudioAx_80028B90();
             gm_SetGameSpeed(1.0f);
             gm_8016B33C(8);
-            gm_8016B328();
+            gm_TerminateMatch();
             break;
         }
         if (tmp->x8 >= temp_r31) {
@@ -2944,7 +2944,7 @@ void fn_80181598(void)
             (lbl_804D65D8 > 0x3C &&
              (HSD_PadCopyStatus[lbl_80472E48.x10].trigger & 0x100)))
         {
-            gm_8016B328();
+            gm_TerminateMatch();
             return;
         }
     }
@@ -2963,7 +2963,7 @@ void fn_80181598(void)
                 lbl_80472E48.x14[gm_80164024((u8) lbl_80472E48.unk_4)] =
                     lbl_80472EC8[0];
             }
-            gm_8016B328();
+            gm_TerminateMatch();
         }
     }
 }
@@ -3236,12 +3236,12 @@ void fn_80181E18(void)
         } else if (gm_8016AEEC() == 0 && gm_8016AEFC() == 0x3B) {
             lbl_80472ED8.x6BC = 1;
             gm_8016B33C(7);
-            gm_8016B328();
+            gm_TerminateMatch();
         }
     } else if (mode < 0x27) {
         if (Player_GetFalls(0) != 0) {
             gm_8016B33C(5);
-            gm_8016B328();
+            gm_TerminateMatch();
         }
     }
 
@@ -3306,7 +3306,7 @@ void fn_80181E18(void)
             if (count == 0) {
                 lbl_80472ED8.x6BC = 1;
                 gm_8016B33C(7);
-                gm_8016B328();
+                gm_TerminateMatch();
             }
         } else {
             if (next < var_r29) {

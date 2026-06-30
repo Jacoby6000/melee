@@ -261,7 +261,7 @@ void gm_ResetGameSpeed(void)
     lb_80019880(1 / 60.0F / lbl_8046B6A0.x24C8.x34 * OS_TIMER_CLOCK);
 }
 
-void gm_8016B328(void)
+void gm_TerminateMatch(void)
 {
     lbl_8046B6A0.terminate_match = 1;
 }

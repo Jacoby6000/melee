@@ -78,7 +78,7 @@ typedef struct {
     u8 prev_mode;
     GameSceneKind curr_scene;
     GameSceneKind prev_scene;
-    u8 pending_scene;
+    GameSceneKind pending_scene;
 } GameRouting;
 
 typedef struct {

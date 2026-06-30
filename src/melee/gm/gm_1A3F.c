@@ -174,7 +174,7 @@ void gm_SetScene(GameSceneKind arg0)
     gm_80479D30.routing.prev_scene = arg0;
 }
 
-void gm_SetPendingScene(u8 pending_scene)
+void gm_SetPendingScene(GameSceneKind pending_scene)
 {
     gm_80479D30.routing.pending_scene = pending_scene + 1;
 }

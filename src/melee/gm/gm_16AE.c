@@ -601,7 +601,7 @@ bool gm_AnyControllerPressedZ(void)
     return false;
 }
 
-int gm_GetPauser(void)
+int gm_DefaultGetPauser(void)
 {
     HSD_PadStatus* temp_r3_3;
     HSD_PadStatus* temp_r4;
@@ -1089,10 +1089,10 @@ void fn_8016CA68(lbl_8046B6A0_t* arg0, int arg1)
     u8 var_r4;
 
     if (arg0->unk_4 == 0 && arg0->hud_enabled != 0 && !arg0->x24C8.x2_4) {
-        if (arg0->x24C8.x40_get_pauser != NULL) {
-            pauser = arg0->x24C8.x40_get_pauser();
+        if (arg0->x24C8.x40_check_for_pauser_callback != NULL) {
+            pauser = arg0->x24C8.x40_check_for_pauser_callback();
         } else {
-            pauser = gm_GetPauser();
+            pauser = gm_DefaultGetPauser();
         }
         if (pauser != -1) {
             lbAudioAx_80024E84(1);

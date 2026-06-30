@@ -987,7 +987,7 @@ void gm_801BBFE4_OnUnload(void) {}
 
 void fn_801BBFE8(void)
 {
-    gm_801A4310();
+    gm_GetCurrentGameMode();
     gm_801BC00C();
 }
 

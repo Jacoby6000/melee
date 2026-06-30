@@ -73,7 +73,7 @@ struct GameSceneHandler {
 }; // 803DA920
 
 typedef struct {
-    u8 curr_mode;
+    GameModeKind curr_mode;
     u8 pending_mode;
     u8 prev_mode;
     u8 curr_scene;

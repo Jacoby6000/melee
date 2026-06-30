@@ -442,7 +442,7 @@ bool gm_801B688C(bool arg0)
     lb_8001C550();
     lb_8001D164(0);
     lb_8001CE00();
-    if ((gm_80181A14() != 0) && (gm_801A4310() == GM_15MIN_VS) &&
+    if ((gm_80181A14() != 0) && (gm_GetCurrentGameMode() == GM_15MIN_VS) &&
         ((tmp = gm_80173498()) != 0x148))
     {
         gm_80164504(tmp);
@@ -453,17 +453,18 @@ bool gm_801B688C(bool arg0)
                 temp_r30);
     gm_80173EEC();
     gm_80172898(0x20);
-    if ((gm_80181A14() != 0) && (gm_801A4310() == GM_100MAN_VS)) {
+    if ((gm_80181A14() != 0) && (gm_GetCurrentGameMode() == GM_100MAN_VS)) {
         temp_r3 = gm_80173460(temp_r29->data.players[0].c_kind);
         if (temp_r3 != 0x21) {
             gm_801736E8(temp_r29->data.players[0].c_kind,
                         temp_r29->data.players[0].color, gm_804D68F0,
-                        temp_r29->data.players[0].xA, temp_r3, gm_801A4310());
+                        temp_r29->data.players[0].xA, temp_r3,
+                        gm_GetCurrentGameMode());
             gm_801A42F8(GM_CHALLENGER_APPROACH);
             return true;
         }
     }
-    if (gm_80173754(gm_801A4310(), gm_804D68F0)) {
+    if (gm_80173754(gm_GetCurrentGameMode(), gm_804D68F0)) {
         return true;
     }
     return false;

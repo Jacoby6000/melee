@@ -536,7 +536,7 @@ void gm_8017CA38(DebugGameOverData* arg0, Unk1PData* arg1, gmm_x0_528_t* arg2,
     gm_801623FC(arg1->xC.x14);
     if (arg0->xC == 0) {
         temp_r31 = gm_80173224(arg3, 0);
-        switch (gm_801A4310()) {
+        switch (gm_GetCurrentGameMode()) {
         case 3:
             fn_80162BFC(arg1->ckind, arg0->x4);
             break;
@@ -1045,7 +1045,7 @@ bool gm_8017D7AC(MatchExitInfo* arg0, Unk1PData* arg1, u8 arg2)
     }
     temp_r0 = arg0->match_end.result;
     if ((temp_r0 == 7 || temp_r0 == 8) && DbLevel <= 2) {
-        switch (gm_801A4310()) {
+        switch (gm_GetCurrentGameMode()) {
         case 3:
             fn_80162BFC(arg1->ckind, arg1->xC.x18);
             break;
@@ -1306,7 +1306,7 @@ Unk1PData* fn_8017DEC8(int arg0)
 
 Unk1PData* fn_8017DF28(void)
 {
-    switch (gm_801A4310()) {
+    switch (gm_GetCurrentGameMode()) {
     case GM_CLASSIC:
         return &gm_8017EB30()->x0;
     case GM_ADVENTURE:
@@ -1320,7 +1320,7 @@ Unk1PData* fn_8017DF28(void)
 
 u8 fn_8017DF90(void)
 {
-    switch (gm_801A4310()) {
+    switch (gm_GetCurrentGameMode()) {
     case GM_CLASSIC:
         return 1;
     case GM_ADVENTURE:
@@ -1548,7 +1548,7 @@ void gm_8017E7FC(u8 arg0)
     UnkAdventureData* r31 = &lbl_80472C30;
     bool cond;
 
-    if (gm_801A4310() == 4 && r31->x0.cpu_level >= 2 &&
+    if (gm_GetCurrentGameMode() == 4 && r31->x0.cpu_level >= 2 &&
         r31->x0.xC.x20 + gm_8016AEDC() < 0xFD20U)
     {
         cond = true;
@@ -1731,7 +1731,7 @@ bool fn_8017EDDC(void)
 {
     UnkAllstarData* p;
 
-    if (gm_801A4310() == GM_CLASSIC) {
+    if (gm_GetCurrentGameMode() == GM_CLASSIC) {
         p = &lbl_80472CB0;
         if (p->x0.xC.xD == 0 && p->x0.cpu_level >= 2 && p->x0.xC.x20 < 0x5208)
         {
@@ -3179,7 +3179,7 @@ s32 fn_80181C80(s32 arg0)
     volatile s32 sp3C;
     PlayerInitData sp10;
 
-    gm_801A4310();
+    gm_GetCurrentGameMode();
     for (var_r29 = 1, var_r30 = 0, sp10 = data->xC; var_r29 < 6; var_r29++) {
         if (Player_GetFalls(var_r29) == 0 &&
             Player_GetPlayerSlotType(var_r29) != Gm_PKind_NA)
@@ -3220,7 +3220,7 @@ void fn_80181E18(void)
     s32 count;
     s32 i;
 
-    mode = gm_801A4310();
+    mode = gm_GetCurrentGameMode();
 
     if (lbl_80472ED8.x8 <= 0x5A) {
         lbl_80472ED8.x8 += 1;
@@ -3339,7 +3339,7 @@ void gm_80182174(void)
     RegClearSpawnEntry** spawn_table_26;
     s32 mode;
 
-    mode = gm_801A4310();
+    mode = gm_GetCurrentGameMode();
     spawn_table_25 = &lbl_80472ED8.x6B4;
     spawn_table_22 = &lbl_80472ED8.x6A8;
     spawn_table_23 = &lbl_80472ED8.x6AC;
@@ -3485,7 +3485,7 @@ void gm_80182174(void)
 
 bool gm_80182510(void)
 {
-    switch (gm_801A4310()) {
+    switch (gm_GetCurrentGameMode()) {
     case 0x21:
     case 0x22:
     case 0x23:

@@ -17,7 +17,7 @@
 /* 1A42D4 */ UNK_RET gm_801A42D4(UNK_PARAMS);
 /* 1A42E8 */ void gm_801A42E8(s8 pending_mode);
 /* 1A42F8 */ void gm_801A42F8(int pending_mode);
-/* 1A4310 */ u8 gm_801A4310(void); ///< get current mode
+/* 1A4310 */ GameModeKind gm_GetCurrentGameMode(void);
 /* 1A4320 */ u8 gm_801A4320(void); ///< get previous mode
 /* 1A4330 */ void gm_801A4330(u8 (*)(void));
 /* 1A4340 */ bool gm_801A4340(u8 mode);

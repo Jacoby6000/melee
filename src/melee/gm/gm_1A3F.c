@@ -205,7 +205,7 @@ void gm_801A42F8(int pending_mode)
     gm_80479D30.pending = 1;
 }
 
-u8 gm_801A4310(void)
+GameModeKind gm_GetCurrentGameMode(void)
 {
     return gm_80479D30.routing.curr_mode;
 }

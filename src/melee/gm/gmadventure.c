@@ -1386,7 +1386,7 @@ void gm_801B461C(GameScene* scene)
     gm_801B4064(scene);
 
     /// If we got here from the Luigi cutscene, change Mario to Luigi.
-    if (gm_801A42B4() == ADVENTURE_LUIGI_CUTSCENE) {
+    if (gm_GetPreviousScene() == ADVENTURE_LUIGI_CUTSCENE) {
         StartMeleeData* data = gm_801A427C(scene);
         UnkAdventureData* adventure = gm_8017E424();
         data->players[1].c_kind = CKIND_LUIGI;

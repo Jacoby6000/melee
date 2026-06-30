@@ -24,7 +24,7 @@
 #include <melee/lb/lbcardnew.h>
 #include <melee/ty/tydisplay.h>
 
-static GameState gm_80479D30;
+static GameState gameState_80479D30;
 
 void gm_801A3F48(GameScene* scene)
 {
@@ -65,7 +65,7 @@ inline u8 nextScene(GameScene* scenes)
     GameScene* cur = scenes;
 
     for (i = 0; scenes[i].idx != 0xFF; i++) {
-        if (cur->idx > gm_80479D30.routing.curr_scene) {
+        if (cur->idx > gameState_80479D30.routing.curr_scene) {
             return scenes[i].idx;
         }
         cur++;
@@ -81,7 +81,7 @@ inline u8 nextScene(GameScene* scenes)
 inline GameScene* findScene(GameScene* scene)
 {
     int i, j;
-    for (i = gm_80479D30.routing.curr_scene; i < 0xFF; i++) {
+    for (i = gameState_80479D30.routing.curr_scene; i < 0xFF; i++) {
         for (j = 0; scene[j].idx != 0xFF; j++) {
             if (i == scene[j].idx) {
                 return &scene[j];
@@ -99,7 +99,7 @@ void gm_801A4014(GameMode* mode)
     struct GameSceneInfo* info;
     u32 unused[2];
 
-    gm = &gm_80479D30;
+    gm = &gameState_80479D30;
 
     scene = findScene(mode->scenes);
 
@@ -125,7 +125,7 @@ void gm_801A4014(GameMode* mode)
             scene->Decide(scene);
         }
 
-        gm_80479D30.routing.prev_scene = gm->routing.curr_scene;
+        gameState_80479D30.routing.prev_scene = gm->routing.curr_scene;
 
         if (gm->routing.pending_scene) {
             gm->routing.curr_scene = gm->routing.pending_scene - 1;
@@ -150,7 +150,7 @@ void gm_801A4014(GameMode* mode)
             ;
         gmMainLib_8015FBA4();
         gm_801A50AC();
-        memzero(&gm_80479D30, 0x14);
+        memzero(&gameState_80479D30, 0x14);
         gm_801A3EF4();
         gmMainLib_8046B0F0.x0 = true;
         gm_RequestPendingGameMode(GM_BOOT);
@@ -170,54 +170,54 @@ void* gm_801A4284(GameScene* scene)
 
 void gm_SetScene(GameSceneKind arg0)
 {
-    gm_80479D30.routing.curr_scene = arg0;
-    gm_80479D30.routing.prev_scene = arg0;
+    gameState_80479D30.routing.curr_scene = arg0;
+    gameState_80479D30.routing.prev_scene = arg0;
 }
 
 void gm_SetPendingScene(GameSceneKind pending_scene)
 {
-    gm_80479D30.routing.pending_scene = pending_scene + 1;
+    gameState_80479D30.routing.pending_scene = pending_scene + 1;
 }
 
 GameSceneKind gm_GetPreviousScene(void)
 {
-    return gm_80479D30.routing.prev_scene;
+    return gameState_80479D30.routing.prev_scene;
 }
 
 GameSceneKind gm_GetCurrentScene(void)
 {
-    return gm_80479D30.routing.curr_scene;
+    return gameState_80479D30.routing.curr_scene;
 }
 
 void gm_801A42D4(void)
 {
-    gm_80479D30.pending = 1;
+    gameState_80479D30.pending = 1;
 }
 
 void gm_SetPendingGameMode(GameModeKind pending_mode)
 {
-    gm_80479D30.routing.pending_mode = pending_mode;
+    gameState_80479D30.routing.pending_mode = pending_mode;
 }
 
 void gm_RequestPendingGameMode(GameModeKind pending_mode)
 {
-    gm_80479D30.routing.pending_mode = pending_mode;
-    gm_80479D30.pending = 1;
+    gameState_80479D30.routing.pending_mode = pending_mode;
+    gameState_80479D30.pending = 1;
 }
 
 GameModeKind gm_GetCurrentGameMode(void)
 {
-    return gm_80479D30.routing.curr_mode;
+    return gameState_80479D30.routing.curr_mode;
 }
 
 GameModeKind gm_GetPreviousGameMode(void)
 {
-    return gm_80479D30.routing.prev_mode;
+    return gameState_80479D30.routing.prev_mode;
 }
 
 void gm_801A4330(u8 (*arg0)(void))
 {
-    gm_80479D30.data = arg0;
+    gameState_80479D30.data = arg0;
 }
 
 bool gm_801A4340(u8 mode)
@@ -257,24 +257,24 @@ GameModeKind gm_GetPendingGameMode(GameModeKind mode_kind)
     u8 temp_r3;
     GameMode* mode;
     GameMode* var_r3_2;
-    GameState* gamestate = &gm_80479D30;
+    GameState* gamestate = &gameState_80479D30;
     u64 unused;
 
     mode = findMode(mode_kind);
 
-    gm_80479D30.pending = 0;
-    gm_80479D30.routing.curr_scene = 0;
-    gm_80479D30.routing.prev_scene = 0;
-    gm_80479D30.routing.pending_scene = 0;
+    gameState_80479D30.pending = 0;
+    gameState_80479D30.routing.curr_scene = 0;
+    gameState_80479D30.routing.prev_scene = 0;
+    gameState_80479D30.routing.pending_scene = 0;
     lbDvd_80018F58(mode->preload);
     if (mode->Load != NULL) {
         mode->Load();
     }
     while (!gamestate->pending) {
-        if (gm_80479D30.data != NULL &&
-            (temp_r3 = gm_80479D30.data(), temp_r3 != GM_COUNT))
+        if (gameState_80479D30.data != NULL &&
+            (temp_r3 = gameState_80479D30.data(), temp_r3 != GM_COUNT))
         {
-            gm_80479D30.backup = gm_80479D30.routing;
+            gameState_80479D30.backup = gameState_80479D30.routing;
             gamestate->pending = 0;
             gamestate->routing.curr_scene = 0;
             gamestate->routing.prev_scene = 0;
@@ -284,7 +284,7 @@ GameModeKind gm_GetPendingGameMode(GameModeKind mode_kind)
 
             gm_801A4014(var_r3_2);
             if (!gmMainLib_8046B0F0.resetting) {
-                gm_80479D30.routing = gm_80479D30.backup;
+                gameState_80479D30.routing = gameState_80479D30.backup;
             }
         } else {
             gm_801A4014(mode);
@@ -293,7 +293,7 @@ GameModeKind gm_GetPendingGameMode(GameModeKind mode_kind)
     if (!gmMainLib_8046B0F0.resetting && mode->Unload != NULL) {
         mode->Unload();
     }
-    return gm_80479D30.routing.pending_mode;
+    return gameState_80479D30.routing.pending_mode;
 }
 
 /// UnclePunch: Scene_Main
@@ -301,11 +301,11 @@ void gm_801A4510(void)
 {
     u32 unused;
     GameMode* modes;
-    GameState* gamestate = &gm_80479D30;
+    GameState* gamestate = &gameState_80479D30;
     int i;
 
     gm_801A50AC();
-    memzero(&gm_80479D30, sizeof(GameState));
+    memzero(&gameState_80479D30, sizeof(GameState));
     modes = gm_801A50AC();
     for (i = 0; modes[i].idx != GM_COUNT; i++) {
         if (modes[i].Init != NULL) {
@@ -315,15 +315,15 @@ void gm_801A4510(void)
     if (VIGetDTVStatus() != 0 &&
         (db_gameLaunchButtonState & 0x200 || OSGetProgressiveMode() == 1))
     {
-        gm_80479D30.routing.curr_mode = GM_PROGRESSIVE_SCAN;
+        gameState_80479D30.routing.curr_mode = GM_PROGRESSIVE_SCAN;
     } else {
-        gm_80479D30.routing.curr_mode = GM_BOOT;
+        gameState_80479D30.routing.curr_mode = GM_BOOT;
     }
-    gm_80479D30.routing.prev_mode = GM_COUNT;
+    gameState_80479D30.routing.prev_mode = GM_COUNT;
 
     while (true) {
         GameModeKind major =
-            gm_GetPendingGameMode(gm_80479D30.routing.curr_mode);
+            gm_GetPendingGameMode(gameState_80479D30.routing.curr_mode);
         if (gmMainLib_8046B0F0.resetting) {
             gmMainLib_8046B0F0.resetting = false;
         }

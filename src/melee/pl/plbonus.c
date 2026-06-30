@@ -1170,12 +1170,12 @@ void fn_8003CC84(int player)
             case 0:
             case 1:
             case 2:
-                if ((gm_8016B3D8() != 0) || (gm_801720F8() == 0)) {
+                if ((gm_IsStoryMode() != 0) || (gm_801720F8() == 0)) {
                     setFlag(player, 0x8C);
                 }
                 break;
             case 4:
-                if ((gm_8016B3D8() != 0) || (gm_801720F8() == 0)) {
+                if ((gm_IsStoryMode() != 0) || (gm_801720F8() == 0)) {
                     setFlag(player, 0x8D);
                 }
                 break;

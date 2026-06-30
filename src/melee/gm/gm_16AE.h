@@ -51,7 +51,7 @@
 /* 16B378 */ void gm_8016B378(s8 arg0);
 /* 16B388 */ void fn_8016B388(int arg0, s16 arg1);
 /* 16B3A0 */ bool gm_IsSuperSuddenDeathMode(void);
-/* 16B3D8 */ bool gm_8016B3D8(void);
+/* 16B3D8 */ bool gm_IsStoryMode(void);
 /* 16B41C */ bool gm_8016B41C(void);
 /* 16B498 */ bool gm_8016B498(void);
 /* 16B4BC */ bool fn_8016B4BC(void);

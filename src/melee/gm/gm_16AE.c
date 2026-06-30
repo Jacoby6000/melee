@@ -299,7 +299,7 @@ bool gm_IsSuperSuddenDeathMode(void)
     return false;
 }
 
-bool gm_8016B3D8(void)
+bool gm_IsStoryMode(void)
 {
     switch (gm_GetCurrentGameMode()) {
     case GM_CLASSIC:
@@ -1397,7 +1397,7 @@ bool fn_8016D538(void)
     bool result = true;
     PAD_STACK(4);
 
-    if (gm_8016B3D8()) {
+    if (gm_IsStoryMode()) {
         if (fn_8017DF90() == 0 && gm_801A42C4() == 0x49) {
             result = true;
         } else {
@@ -1443,7 +1443,7 @@ void fn_8016D634(void)
     if (lbl_8046B6A0.unk_30++ <= lbl_8046B6A0.x24C8.xD) {
         return;
     }
-    if (gm_8016B3D8()) {
+    if (gm_IsStoryMode()) {
         pl_80040688(0, lbl_8046B6A0.unk_D, fn_8016D538());
     }
     gm_801A4B1C();
@@ -2038,7 +2038,7 @@ void gm_8016E9C8(void* arg0_raw)
     arg0->x4 = lbl_8046B6A0.timer_seconds;
     arg0->x8 = Ground_801C5ABC();
 
-    if (gm_8016B3D8() || gm_8016E9C8_inline() ||
+    if (gm_IsStoryMode() || gm_8016E9C8_inline() ||
         gm_GetCurrentGameMode() == GM_VS)
     {
         if (lbl_8046B6A0.match_result != 7 && lbl_8046B6A0.match_result != 8) {

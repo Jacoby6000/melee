@@ -1376,7 +1376,7 @@ void fn_80171DC4(void)
 
 bool gm_801720B4(void)
 {
-    if (gm_8016B3D8()) {
+    if (gm_IsStoryMode()) {
         return fn_8017E160();
     }
     return gm_8016AE50()->is_teams == true;
@@ -1384,7 +1384,7 @@ bool gm_801720B4(void)
 
 bool gm_801720F8(void)
 {
-    if (gm_8016B3D8()) {
+    if (gm_IsStoryMode()) {
         return true;
     }
     return gm_8016AE50()->x0_0 == 1;

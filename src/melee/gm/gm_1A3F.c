@@ -210,7 +210,7 @@ GameModeKind gm_GetCurrentGameMode(void)
     return gm_80479D30.routing.curr_mode;
 }
 
-u8 gm_801A4320(void)
+GameModeKind gm_GetPreviousGameMode(void)
 {
     return gm_80479D30.routing.prev_mode;
 }

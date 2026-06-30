@@ -75,7 +75,7 @@ struct GameSceneHandler {
 typedef struct {
     GameModeKind curr_mode;
     u8 pending_mode;
-    u8 prev_mode;
+    GameModeKind prev_mode;
     GameSceneKind curr_scene;
     GameSceneKind prev_scene;
     GameSceneKind pending_scene;

@@ -55,7 +55,7 @@ u8 gm_801737D8(void)
 
 void gm_801737E8_OnLoad(void)
 {
-    lbl_8046DBD8.x6 = gm_801A4320();
+    lbl_8046DBD8.x6 = gm_GetPreviousGameMode();
     if (lbl_8046DBD8.x0 == CHKIND_NONE) {
         gm_SetScene(2);
     } else {

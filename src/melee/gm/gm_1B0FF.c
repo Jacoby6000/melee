@@ -71,7 +71,7 @@ void gm_801B0FF8(GameScene* scene)
         return;
     }
     data->load_assets = 1;
-    var_r0 = gm_801A4320();
+    var_r0 = gm_GetPreviousGameMode();
     if (var_r0 == GM_CHALLENGER_APPROACH) {
         var_r0 = gm_801737D8();
     }

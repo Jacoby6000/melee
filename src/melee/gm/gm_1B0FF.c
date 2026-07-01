@@ -71,7 +71,7 @@ void gm_801B0FF8(GameScene* scene)
         return;
     }
     data->load_assets = 1;
-    var_r0 = gm_801A4320();
+    var_r0 = gm_GetPreviousGameMode();
     if (var_r0 == GM_CHALLENGER_APPROACH) {
         var_r0 = gm_801737D8();
     }
@@ -215,7 +215,7 @@ void gm_801B138C(GameScene* arg0)
 {
     MenuExitData* data = arg0->info.leave_data;
 
-    gm_801A42E8(data->pending_mode);
+    gm_SetPendingGameMode(data->pending_mode);
     gm_801A42D4();
 }
 

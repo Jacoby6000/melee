@@ -4,6 +4,7 @@
 #include "platform.h"
 
 #include "baselib/forward.h"
+#include "gm/forward.h"
 
 #include <math_ppc.h>
 #include <dolphin/gx.h>
@@ -536,14 +537,14 @@ void gm_8017CA38(DebugGameOverData* arg0, Unk1PData* arg1, gmm_x0_528_t* arg2,
     gm_801623FC(arg1->xC.x14);
     if (arg0->xC == 0) {
         temp_r31 = gm_80173224(arg3, 0);
-        switch (gm_801A4310()) {
-        case 3:
+        switch (gm_GetCurrentGameMode()) {
+        case GM_CLASSIC:
             fn_80162BFC(arg1->ckind, arg0->x4);
             break;
-        case 4:
+        case GM_ADVENTURE:
             fn_80162DF8(arg1->ckind, arg0->x4);
             break;
-        case 5:
+        case GM_ALLSTAR:
             fn_80162FF4(arg1->ckind, arg0->x4);
             break;
         }
@@ -553,18 +554,18 @@ void gm_8017CA38(DebugGameOverData* arg0, Unk1PData* arg1, gmm_x0_528_t* arg2,
         gm_80172898(0x40);
         if (temp_r31 == CHKIND_NONE) {
             if (gm_80173754(1, arg1->slot) == 0) {
-                gm_801A42F8(1);
+                gm_RequestPendingGameMode(1);
             }
         } else {
             gm_801736E8(arg1->ckind, arg1->color, arg1->slot, arg1->x4,
                         temp_r31, 1U);
-            gm_801A42F8(0x14);
+            gm_RequestPendingGameMode(0x14);
         }
     } else {
         arg1->xC.x18 = lbTime_8000AEC8((u32) arg0->x4, 1U);
         arg1->stocks = arg2->stocks;
         arg1->xC.xD = lbTime_8000AF74((u32) arg1->xC.xD, 1);
-        gm_SetPendingScene(arg1->x7);
+        gm_SetPendingSceneToSuccessorOf(arg1->x7);
     }
 }
 
@@ -626,7 +627,7 @@ void gm_8017CBAC(UnkAdventureData* arg0, gmm_x0_528_t* arg1, u8 arg2)
     lb_8001C550();
     lb_8001D164(0);
     lb_8001CE00();
-    gm_801A42E8(arg2);
+    gm_SetPendingGameMode(arg2);
     gm_801A42D4();
 }
 
@@ -1045,18 +1046,18 @@ bool gm_8017D7AC(MatchExitInfo* arg0, Unk1PData* arg1, u8 arg2)
     }
     temp_r0 = arg0->match_end.result;
     if ((temp_r0 == 7 || temp_r0 == 8) && DbLevel <= 2) {
-        switch (gm_801A4310()) {
-        case 3:
+        switch (gm_GetCurrentGameMode()) {
+        case GM_CLASSIC:
             fn_80162BFC(arg1->ckind, arg1->xC.x18);
             break;
-        case 4:
+        case GM_ADVENTURE:
             fn_80162DF8(arg1->ckind, arg1->xC.x18);
             break;
-        case 5:
+        case GM_ALLSTAR:
             fn_80162FF4(arg1->ckind, arg1->xC.x18);
             break;
         }
-        gm_801A42F8(1);
+        gm_RequestPendingGameMode(1);
         return 0;
     }
     fn_8017E3C8();
@@ -1066,18 +1067,18 @@ bool gm_8017D7AC(MatchExitInfo* arg0, Unk1PData* arg1, u8 arg2)
             if (arg0->match_end.result == 1) {
                 arg1->stocks--;
                 if (arg1->stocks == 0) {
-                    gm_SetPendingScene(arg2);
+                    gm_SetPendingSceneToSuccessorOf(arg2);
                     return 0;
                 }
                 if (!(arg1->x8 & 0x40)) {
                     arg1->xC.x10++;
-                    gm_SetPendingScene(gm_801A42C4());
+                    gm_SetPendingSceneToSuccessorOf(gm_GetCurrentScene());
                     return 0;
                 }
             }
         } else {
             arg1->xC.x10 = 0;
-            gm_SetPendingScene(arg2);
+            gm_SetPendingSceneToSuccessorOf(arg2);
             return 0;
         }
     }
@@ -1306,7 +1307,7 @@ Unk1PData* fn_8017DEC8(int arg0)
 
 Unk1PData* fn_8017DF28(void)
 {
-    switch (gm_801A4310()) {
+    switch (gm_GetCurrentGameMode()) {
     case GM_CLASSIC:
         return &gm_8017EB30()->x0;
     case GM_ADVENTURE:
@@ -1320,7 +1321,7 @@ Unk1PData* fn_8017DF28(void)
 
 u8 fn_8017DF90(void)
 {
-    switch (gm_801A4310()) {
+    switch (gm_GetCurrentGameMode()) {
     case GM_CLASSIC:
         return 1;
     case GM_ADVENTURE:
@@ -1548,7 +1549,7 @@ void gm_8017E7FC(u8 arg0)
     UnkAdventureData* r31 = &lbl_80472C30;
     bool cond;
 
-    if (gm_801A4310() == 4 && r31->x0.cpu_level >= 2 &&
+    if (gm_GetCurrentGameMode() == GM_ADVENTURE && r31->x0.cpu_level >= 2 &&
         r31->x0.xC.x20 + gm_8016AEDC() < 0xFD20U)
     {
         cond = true;
@@ -1560,10 +1561,10 @@ void gm_8017E7FC(u8 arg0)
         struct StartMeleeRules* rules = gm_8016AE50();
         rules->x4_5 = 1;
         r31->x77 = 0;
-        gm_SetPendingScene(0x5A);
+        gm_SetPendingSceneToSuccessorOf(0x5A);
     } else {
         r31->x77 = 1;
-        gm_SetPendingScene(0x5A);
+        gm_SetPendingSceneToSuccessorOf(0x5A);
     }
 }
 
@@ -1576,7 +1577,7 @@ void fn_8017E8A4(int arg0_int)
 {
     MatchEnd* arg0 = (MatchEnd*) arg0_int;
     lbl_8046B6A0_t* gm = gm_8016AE38();
-    struct gm_803DE650_t* stage = gm_8017E4C4(gm_801A42C4());
+    struct gm_803DE650_t* stage = gm_8017E4C4(gm_GetCurrentScene());
     UnkAdventureData* adv = &lbl_80472C30;
     u8* flags = arg0->_x448;
     gmm_x0_528_t* main_data;
@@ -1731,7 +1732,7 @@ bool fn_8017EDDC(void)
 {
     UnkAllstarData* p;
 
-    if (gm_801A4310() == GM_CLASSIC) {
+    if (gm_GetCurrentGameMode() == GM_CLASSIC) {
         p = &lbl_80472CB0;
         if (p->x0.xC.xD == 0 && p->x0.cpu_level >= 2 && p->x0.xC.x20 < 0x5208)
         {
@@ -3180,7 +3181,7 @@ s32 fn_80181C80(s32 arg0)
     volatile s32 sp3C;
     PlayerInitData sp10;
 
-    gm_801A4310();
+    gm_GetCurrentGameMode();
     for (var_r29 = 1, var_r30 = 0, sp10 = data->xC; var_r29 < 6; var_r29++) {
         if (Player_GetFalls(var_r29) == 0 &&
             Player_GetPlayerSlotType(var_r29) != Gm_PKind_NA)
@@ -3221,15 +3222,15 @@ void fn_80181E18(void)
     s32 count;
     s32 i;
 
-    mode = gm_801A4310();
+    mode = gm_GetCurrentGameMode();
 
     if (lbl_80472ED8.x8 <= 0x5A) {
         lbl_80472ED8.x8 += 1;
     }
 
-    if (mode < 0x25) {
-        if (mode < 0x23) {
-            if (mode < 0x21) {
+    if (mode < GM_ENDLESS_VS) {
+        if (mode < GM_3MIN_VS) {
+            if (mode < GM_10MAN_VS) {
             } else {
                 Player_GetFalls(0);
             }
@@ -3238,7 +3239,7 @@ void fn_80181E18(void)
             gm_8016B33C(7);
             gm_8016B328();
         }
-    } else if (mode < 0x27) {
+    } else if (mode < GM_PROGRESSIVE_SCAN) {
         if (Player_GetFalls(0) != 0) {
             gm_8016B33C(5);
             gm_8016B328();
@@ -3264,14 +3265,14 @@ void fn_80181E18(void)
         lbl_80472ED8.x6BE = (s16) (temp + lbl_80472ED8.x4);
 
         switch (mode) {
-        case 0x21:
+        case GM_10MAN_VS:
             temp = var_r29 - fn_80181BFC(NULL);
             if (temp < 0) {
                 temp = 0;
             }
             ifStock_802FA2D0(0xA - (temp + lbl_80472ED8.x4));
             break;
-        case 0x22:
+        case GM_100MAN_VS:
             temp = var_r29 - fn_80181BFC(NULL);
             if (temp < 0) {
                 temp = 0;
@@ -3340,7 +3341,7 @@ void gm_80182174(void)
     RegClearSpawnEntry** spawn_table_26;
     s32 mode;
 
-    mode = gm_801A4310();
+    mode = gm_GetCurrentGameMode();
     spawn_table_25 = &lbl_80472ED8.x6B4;
     spawn_table_22 = &lbl_80472ED8.x6A8;
     spawn_table_23 = &lbl_80472ED8.x6AC;
@@ -3484,15 +3485,15 @@ void gm_80182174(void)
     PAD_STACK(8);
 }
 
-bool gm_80182510(void)
+bool gm_IsMultiManSmashMode(void)
 {
-    switch (gm_801A4310()) {
-    case 0x21:
-    case 0x22:
-    case 0x23:
-    case 0x24:
-    case 0x25:
-    case 0x26:
+    switch (gm_GetCurrentGameMode()) {
+    case GM_10MAN_VS:
+    case GM_100MAN_VS:
+    case GM_3MIN_VS:
+    case GM_15MIN_VS:
+    case GM_ENDLESS_VS:
+    case GM_CRUEL_VS:
         return true;
     }
     return false;
@@ -3910,16 +3911,16 @@ void fn_80182F40(HSD_GObj* unused)
         lbAudioAx_80023694();
         lbAudioAx_80024030(1);
         gm_801A4B60();
-        gm_801A42E8(GM_TITLE);
+        gm_SetPendingGameMode(GM_TITLE);
         gm_801A42D4();
         return;
     }
     if (gm_801A4BA8() >= 0x4B0) {
         lbAudioAx_80024C84();
         lbAudioAx_80023694();
-        if (gm_801A42C4() == 3 && gmMainLib_8015DB00() % 2 == 0) {
+        if (gm_GetCurrentScene() == 3 && gmMainLib_8015DB00() % 2 == 0) {
             gmMainLib_8015DB18();
-            gm_SetPendingScene(0);
+            gm_SetPendingSceneToSuccessorOf(0);
         }
         gm_801A4B60();
         return;

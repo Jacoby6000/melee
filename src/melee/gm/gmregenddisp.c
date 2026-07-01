@@ -35,7 +35,7 @@ void fn_801A7FB4(HSD_GObj* gobj)
     HSD_Fog* fog = GET_FOG(gobj);
     int count;
 
-    gm_801A4310();
+    gm_GetCurrentGameMode();
     count = fn_801A7FB4_inline();
 
     if (count <= 5) {
@@ -45,7 +45,7 @@ void fn_801A7FB4(HSD_GObj* gobj)
         return;
     }
 
-    gm_801A4310();
+    gm_GetCurrentGameMode();
     count = fn_801A7FB4_inline2();
 
     if (count <= 0xD) {
@@ -221,7 +221,7 @@ void gm_801A8D54(s32* arg0)
     count = 0;
     for (i = 0; i < 0x1A; i++) {
         if ((u32) (i - 0x12) <= 1U) {
-            gm_801A4310();
+            gm_GetCurrentGameMode();
             if ((Toy_803048C0(gm_801A659C(i)) ? true : false) &&
                 gm_801BEFB0() != CKIND_ZELDA && gm_801BEFB0() != CKIND_SEAK)
             {
@@ -229,7 +229,7 @@ void gm_801A8D54(s32* arg0)
                 count++;
             }
         } else {
-            gm_801A4310();
+            gm_GetCurrentGameMode();
             if ((Toy_803048C0(gm_801A659C(i)) ? true : false) &&
                 i != gm_801BEFB0())
             {
@@ -321,7 +321,7 @@ void fn_801A94BC(HSD_GObj* gobj)
     HSD_CObj* cobj;
 
     cobj = GET_COBJ(gobj);
-    gm_801A4310();
+    gm_GetCurrentGameMode();
     var_r31 = fn_801A7FB4_inline();
     if (var_r31 <= 5) {
         if (cobj->aobj->curr_frame < 160.0f) {
@@ -332,7 +332,7 @@ void fn_801A94BC(HSD_GObj* gobj)
         return;
     }
 
-    gm_801A4310();
+    gm_GetCurrentGameMode();
     var_r31 = fn_801A7FB4_inline2();
     if (var_r31 <= 0xD) {
         if (cobj->aobj->curr_frame < 190.0f) {
@@ -379,7 +379,7 @@ void gm_801A9630(void)
     gm_804D67C4 = 0xB4;
 
     for (i = 0; i < 0x1A; i++) {
-        gm_801A4310();
+        gm_GetCurrentGameMode();
         if (Toy_803048C0(gm_801A659C(i)) ? true : false) {
             gm_80480AD0[i] = HSD_Randi(0x2710);
         } else {
@@ -552,7 +552,7 @@ void gm_801A9B30_OnEnter(UNK_T unused)
     HSD_GObjObject_80390A70(gobj, HSD_SObjLib_804D7960, NULL);
     GObj_SetupGXLink(gobj, lbMthp8001F928, 0xB, 0);
     temp_r31 = gm_801BEFB0();
-    var_r3 = gm_801A4310();
+    var_r3 = gm_GetCurrentGameMode();
     if (var_r3 == GM_DEBUG_GOVER) {
         var_r3 = gm_801BF050();
     }
@@ -572,7 +572,7 @@ void gm_801A9B30_OnEnter(UNK_T unused)
     temp_r3_3->x10 = 320.0F;
     temp_r3_3->x14 = 240.0F;
     temp_r3_3->x40 |= 2;
-    switch (gm_801A4310()) {
+    switch (gm_GetCurrentGameMode()) {
     case GM_CLASSIC_GOVER:
         var_r3_3 = gm_8017DFF4(1);
         break;
@@ -597,7 +597,7 @@ void gm_801A9D0C_OnFrame(void)
     } else if (gm_804D67C9 != 0) {
         gm_804D67C9--;
         if (gm_804D67C9 == 0) {
-            if (gm_801A4310() == GM_DEBUG_GOVER) {
+            if (gm_GetCurrentGameMode() == GM_DEBUG_GOVER) {
                 gm_801A6630(6);
             } else {
                 gm_801A6630(1);

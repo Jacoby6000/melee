@@ -76,7 +76,7 @@ void gm_801BF9A8(GameScene* data)
 
     // Enter mode
     // Gekko "boot to CSS" code changes scene_id to a hardcoded 2
-    gm_801A42F8(scene_data->scene_id);
+    gm_RequestPendingGameMode(scene_data->scene_id);
 }
 
 GameScene gm_803DFE18_Scenes[] = {

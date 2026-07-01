@@ -306,7 +306,7 @@ s32 Stage_80225074(s32 arg0)
         } else {
             r31 = 0x11;
         }
-    } else if (gm_8016B3A0() != 0) {
+    } else if (gm_IsSuperSuddenDeathMode() != 0) {
         if (arg0 == 2) {
             r31 = 0x22;
         } else if (arg0 == 1) {

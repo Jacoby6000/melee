@@ -21,6 +21,7 @@
 #include "ftMewtwo/forward.h"
 #include "ftPopo/forward.h"
 #include "ftSamus/forward.h"
+#include "gm/forward.h"
 
 #include "gm/gm_unsplit.h"
 #include "gr/grbigblue.h"
@@ -5784,7 +5785,7 @@ void ftCo_800ACD5C(Fighter* fp)
             return;
         }
     }
-    if (data->x88 > 0 && gm_801A4310() != 0x1C) {
+    if (data->x88 > 0 && gm_GetCurrentGameMode() != GM_TRAINING) {
         ftCo_800B46B8(fp, CpuCmd_SetLstickX, 0);
         ftCo_800B46B8(fp, CpuCmd_SetLstickY, 0);
         ftCo_800B46B8(fp, CpuCmd_WaitFor, 1);

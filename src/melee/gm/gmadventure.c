@@ -1311,7 +1311,7 @@ void gm_801B4350(GameScene* scene)
     UnkAdventureData* temp_r31 = gm_8017E424();
 
     if (css->pending_scene_change == 2) {
-        gm_801A42F8(GM_MENU);
+        gm_RequestPendingGameMode(GM_MENU);
         return;
     }
     gm_801B0730(css, &temp_r29->c_kind, &temp_r29->stocks, &temp_r29->color,
@@ -1321,13 +1321,13 @@ void gm_801B4350(GameScene* scene)
     temp_r31->x0.cpu_level = temp_r29->cpu_level;
     temp_r31->x0.stocks = temp_r29->stocks;
     temp_r31->x0.x4 = temp_r29->x4;
-    gm_SetPendingScene(temp_r29->x5 << 3);
+    gm_SetPendingSceneToSuccessorOf(temp_r29->x5 << 3);
     gm_80168F88();
 }
 
 void gm_801B4408(GameScene* scene)
 {
-    gm_801A42E8(GM_MENU);
+    gm_SetPendingGameMode(GM_MENU);
     gm_801A42D4();
 }
 
@@ -1361,9 +1361,9 @@ void gm_801B44A0(GameScene* scene)
          */
         u32 seconds = temp_r30->x4 % 60;
         if (seconds % 10 == 2) {
-            gm_SetPendingScene(ADVENTURE_LUIGI_CUTSCENE);
+            gm_SetPendingSceneToSuccessorOf(ADVENTURE_LUIGI_CUTSCENE);
         } else {
-            gm_SetPendingScene(ADVENTURE_MARIO_PEACH_FIGHT);
+            gm_SetPendingSceneToSuccessorOf(ADVENTURE_MARIO_PEACH_FIGHT);
         }
     }
 }
@@ -1386,7 +1386,7 @@ void gm_801B461C(GameScene* scene)
     gm_801B4064(scene);
 
     /// If we got here from the Luigi cutscene, change Mario to Luigi.
-    if (gm_801A42B4() == ADVENTURE_LUIGI_CUTSCENE) {
+    if (gm_GetPreviousScene() == ADVENTURE_LUIGI_CUTSCENE) {
         StartMeleeData* data = gm_801A427C(scene);
         UnkAdventureData* adventure = gm_8017E424();
         data->players[1].c_kind = CKIND_LUIGI;
@@ -1545,7 +1545,7 @@ void gm_801B4C5C(GameScene* scene)
     if (gm_8017D7AC(temp_r30, &temp_r29->x0, 0x69) &&
         temp_r30->match_end.frame_count / 60 > 30)
     {
-        gm_SetPendingScene(NEXT_SCENEBLOCK_AFTER(ADVENTURE_GIANTKIRBY_FIGHT));
+        gm_SetPendingSceneToSuccessorOf(NEXT_SCENEBLOCK_AFTER(ADVENTURE_GIANTKIRBY_FIGHT));
     }
 }
 

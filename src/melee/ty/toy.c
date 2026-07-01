@@ -1477,6 +1477,15 @@ void Toy_80306BB8(HSD_GObj* gobj)
     }
 }
 
+static inline void _Toy_80306C5C_GetOffset(unsigned char idx, s32* offset)
+{
+    unsigned char tmp;
+    *offset = (tmp = idx) * 0xC;
+}
+static inline void _Toy_80306C5C_InitIdx(s32* idx)
+{
+    *idx = 0;
+}
 void _Toy_80306C5C(HSD_GObj* arg0)
 {
     s32 idx;
@@ -1484,13 +1493,13 @@ void _Toy_80306C5C(HSD_GObj* arg0)
     TyLightData* base;
     HSD_GObj* data;
     u8* table;
-    unsigned char new_var;
+    unsigned char pad;
     HSD_LObj* lobj;
     HSD_LObj* next;
     void* unused1;
     void* unused2;
-    idx = 0;
-    offset = (new_var = idx) * 0xC;
+    _Toy_80306C5C_InitIdx(&idx);
+    _Toy_80306C5C_GetOffset(idx, &offset);
     base = (TyLightData*) Toy_sbss_804D6ED4;
     data = base->gobj;
     table = (u8*) base + offset;
@@ -1509,7 +1518,7 @@ void _Toy_80306C5C(HSD_GObj* arg0)
         data = base->gobj;
     }
 
-    HSD_LObjAnimAll(((HSD_GObj*) arg0)->hsd_obj);
+    HSD_LObjAnimAll(arg0->hsd_obj);
 }
 
 void Toy_RemoveUserData(void* ptr)

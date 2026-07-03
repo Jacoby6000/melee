@@ -59,7 +59,7 @@ static inline const char* fn_8017BB94_inline(int arg0, int target)
         var_r3 = -1;
     }
     if (var_r3 != -1) {
-        u32 temp_r3 = fn_80174274()->player_standings[target].x4;
+        u32 temp_r3 = fn_80174274()->player_standings[target].nametag_slot_id;
         if (temp_r3 == 0x78) {
             if (lbLang_IsSavedLanguageUS()) {
                 return lbl_803D79E0[target];

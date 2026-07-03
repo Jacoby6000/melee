@@ -1034,7 +1034,7 @@ void gm_8019E634(void)
 
     /* Get match results per player */
     for (i = 0; i < (s32) tmd->x30; i++) {
-        results[i] = fn_80166CBC(&gm_80477738, i);
+        results[i] = gm_IsSlotSmallLoser(&gm_80477738, i);
     }
 
     /* Bubble sort results, keeping indices in parallel */

@@ -206,7 +206,7 @@ static inline s32 mnVibration_GetNameSlot(MnVibrationData* data, s32 j)
 
 inline u8 mnVibration_GetNameRumble(s32 name_idx)
 {
-    return GetPersistentNameData(name_idx)->x1A1;
+    return GetPersistentNameData(name_idx)->enable_rumble;
 }
 
 #pragma push
@@ -399,10 +399,10 @@ void fn_80247510(HSD_GObj* gobj)
                 name_idx = (u8) name_idx_tmp;
             }
         }
-        if (GetPersistentNameData(name_idx)->x1A1 == 1) {
-            GetPersistentNameData(name_idx)->x1A1 = 0;
+        if (GetPersistentNameData(name_idx)->enable_rumble == 1) {
+            GetPersistentNameData(name_idx)->enable_rumble = 0;
         } else {
-            GetPersistentNameData(name_idx)->x1A1 = 1;
+            GetPersistentNameData(name_idx)->enable_rumble = 1;
         }
         rumble_setting = mnVibration_GetNameRumble((s32) name_idx);
         jobj = mnVibration_802474C4(data->x0[1]);

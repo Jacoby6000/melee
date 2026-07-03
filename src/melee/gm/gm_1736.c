@@ -242,7 +242,9 @@ static inline int inline0(int arg0)
     int i;
     for (i = 0; i < ARRAY_SIZE(lbl_803D6450); i++) {
         if (r30[i].x1 == 2 || r30[i].x1 == lbLang_GetLanguageSetting()) {
-            if (gm_801BEBC0(r30[i].x0) == gm_801BEBC0(arg0)) {
+            if (gm_EventIdToEventNumber(r30[i].x0) ==
+                gm_EventIdToEventNumber(arg0))
+            {
                 return r30[i].x2;
             }
         }

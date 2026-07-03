@@ -5,6 +5,12 @@ struct UnkSmallLoadData {
     u8 pad[8];
 };
 
+typedef struct gm_evspawn_table {
+    u8 count;
+    u8 pad[0xF];
+    gm_801BAB40_src* entries[5];
+} gm_evspawn_table;
+
 struct gm_804D6900_t {
     int x0;
     struct gm_804D6900_x4_t {
@@ -16,12 +22,12 @@ struct gm_804D6900_t {
         u8 unk0[0x16];
         u8 x16;
     }* xC;
-    void* x10;
+    gm_evspawn_table* x10;
     s8* x14;
     s8* x18;
 };
 
-/* 4D6900 */ static struct gm_804D6900_t** gm_804D6900[2];
+/* 4D6900 */ static struct gm_804D6900_t** gm_804D6900[2]; ///< Event matches?
 /* 4D6908 */ static struct UnkSmallLoadData gm_804D6908;
 /* 4D6910 */ static struct UnkSmallLoadData gm_804D6910;
 /* 4D6910 */ static struct UnkSmallLoadData gm_804D6918;

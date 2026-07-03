@@ -246,10 +246,10 @@ void gm_801B13B8(GameScene* arg0)
     temp_r28->players[2].slot_type = Gm_PKind_NA;
     temp_r28->players[3].slot_type = Gm_PKind_NA;
 
-    temp_r28->players[0].xC_b0 = false;
-    temp_r28->players[1].xC_b0 = false;
-    temp_r28->players[2].xC_b0 = false;
-    temp_r28->players[3].xC_b0 = false;
+    temp_r28->players[0].rumble_enabled = false;
+    temp_r28->players[1].rumble_enabled = false;
+    temp_r28->players[2].rumble_enabled = false;
+    temp_r28->players[3].rumble_enabled = false;
 
     gm_80168FC4();
 }

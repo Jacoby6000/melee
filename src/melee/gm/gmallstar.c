@@ -555,7 +555,7 @@ void gm_801B5624(GameScene* arg0)
     }
 
     data->players[0].x10 = allstar->x74;
-    gm_8016F088(data);
+    gm_PrepareRumbleMode(data);
     allstar->x0.x7 = arg0->idx;
 }
 
@@ -659,7 +659,7 @@ void gm_801B5ACC(GameScene* arg0)
     data->rules.x1_2 = 1;
     data->rules.x1_3 = 1;
     data->rules.x4_4 = 0;
-    gm_8016F088(data);
+    gm_PrepareRumbleMode(data);
     gm_8016A92C(&data->rules);
 
     {

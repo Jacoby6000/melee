@@ -41,10 +41,10 @@
 /* 15CDE0 */ struct gmm_x0_528_t* gmMainLib_8015CDE0(void);
 /* 15CDEC */ void gmMainLib_8015CDEC(void);
 /* 15CE44 */ s8* gmMainLib_8015CE44(s32, s32);
-/* 15CEB4 */ void gmMainLib_8015CEB4(s32);
-/* 15CEFC */ bool gmMainLib_8015CEFC(int);
-/* 15CF5C */ s32 gmMainLib_8015CF5C(s32);
-/* 15CF70 */ void gmMainLib_8015CF70(s32, s32);
+/* 15CEB4 */ void gmMainLib_SetEventMatchCompletedFlag(s32);
+/* 15CEFC */ bool gmMainLib_IsEventMatchComplete(int);
+/* 15CF5C */ s32 gmMainLib_GetEventMatchRecordTime(s32);
+/* 15CF70 */ void gmMainLib_SetEventMatchRecordTime(s32, s32);
 /* 15CF84 */ void gmMainLib_8015CF84(void);
 /* 15CF94 */ bool gmMainLib_8015CF94(void);
 /* 15CFAC */ s32 func_8015CFAC(void);

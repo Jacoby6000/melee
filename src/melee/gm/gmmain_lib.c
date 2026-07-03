@@ -260,28 +260,31 @@ s8* gmMainLib_8015CE44(s32 arg0, s32 arg1)
     }
 }
 
-void gmMainLib_8015CEB4(s32 arg0)
+void gmMainLib_SetEventMatchCompletedFlag(s32 eventMatchId)
 {
-    gmMainLib_804D3EE0->thing.x1A68 |= (1LL << arg0);
+    gmMainLib_804D3EE0->thing.completed_event_matches_bitmask |=
+        (1LL << eventMatchId);
 }
 
-bool gmMainLib_8015CEFC(int arg0)
+bool gmMainLib_IsEventMatchComplete(int eventMatchId)
 {
-    if (gmMainLib_804D3EE0->thing.x1A68 & (1LL << arg0)) {
+    if (gmMainLib_804D3EE0->thing.completed_event_matches_bitmask &
+        (1LL << eventMatchId))
+    {
         return true;
     } else {
         return false;
     }
 }
 
-s32 gmMainLib_8015CF5C(s32 arg0)
+s32 gmMainLib_GetEventMatchRecordTime(s32 eventMatchId)
 {
-    return gmMainLib_804D3EE0->thing.x1A70[arg0];
+    return gmMainLib_804D3EE0->thing.event_match_records[eventMatchId];
 }
 
-void gmMainLib_8015CF70(s32 arg0, s32 arg1)
+void gmMainLib_SetEventMatchRecordTime(s32 eventMatchId, s32 time)
 {
-    gmMainLib_804D3EE0->thing.x1A70[arg0] = arg1;
+    gmMainLib_804D3EE0->thing.event_match_records[eventMatchId] = time;
 }
 
 void gmMainLib_8015CF84(void)
@@ -825,8 +828,8 @@ s32 gmMainLib_8015DBF4(s32 arg0)
     do {                                                                      \
         VsModeData* store_vmd = (store_vmd_expr);                             \
         for (j = 0; j < 6; j++) {                                             \
-            ADJ_NAMETAG_PAIR((load_vmd_expr)->data.players[j].xA,             \
-                             store_vmd->data.players[j].xA);                  \
+            ADJ_NAMETAG_PAIR((load_vmd_expr)->data.players[j].nametag_id,     \
+                             store_vmd->data.players[j].nametag_id);          \
         }                                                                     \
     } while (0)
 
@@ -834,8 +837,8 @@ s32 gmMainLib_8015DBF4(s32 arg0)
     do {                                                                      \
         VsModeData* vmd = (vmd_expr);                                         \
         for (j = 0; j < 6; j++) {                                             \
-            ADJ_NAMETAG_PAIR(vmd->data.players[j].xA,                         \
-                             vmd->data.players[j].xA);                        \
+            ADJ_NAMETAG_PAIR(vmd->data.players[j].nametag_id,                 \
+                             vmd->data.players[j].nametag_id);                \
         }                                                                     \
     } while (0)
 
@@ -1084,7 +1087,7 @@ void gmMainLib_8015EEC8(void)
         struct FighterData* data = GetPersistentFighterData(i);
         memzero(&data->x7C, sizeof(data->x7C));
     }
-    memzero(&gmMainLib_804D3EE0->thing.x1A68, 0xD8);
+    memzero(&gmMainLib_804D3EE0->thing.completed_event_matches_bitmask, 0xD8);
 }
 
 void gmMainLib_8015EF30(struct gmMainLib_8015EF30_s* arg0)
@@ -1342,7 +1345,7 @@ void gmMainLib_8015F600(int arg0, int arg1)
                     data->namedata[0] = gmMainLib_804D3EE4[0];
                 }
             }
-            data->x1A1 = 1;
+            data->enable_rumble = 1;
             j++;
         } while (j < 19);
     }

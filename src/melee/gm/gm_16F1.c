@@ -1,6 +1,5 @@
 #include "gm_16F1.h"
 
-#include "gm/gm_1601.static.h"
 #include "gm_16F1.static.h"
 
 #include "gm_unsplit.h"
@@ -1836,12 +1835,13 @@ bool fn_80172C78(int arg0)
 }
 #pragma pop
 
-static const struct lbl_803B7AD0_t {
-    u8 x0;
+static const struct lbl_803B7AD0_t { ///< Something to do with unlockable
+                                     ///< character battle setup
+    u8 x0;                           ///< References an index in lbl_803B78C8
     u8 x1;
     u8 x2;
     u16 x4;
-} lbl_803B7AD0[0xB] = {
+} lbl_803B7AD0[NUM_UNLOCKABLE_CHARACTERS] = {
     { 0, 5, 2, 0x3E8 }, { 1, 5, 2, 0x320 },  { 2, 5, 2, 0x190 },
     { 3, 5, 2, 0x2BC }, { 4, 5, 2, 0x032 },  { 5, 5, 2, 0x12C },
     { 6, 5, 2, 0x1F4 }, { 7, 5, 2, 0x064 },  { 8, 5, 2, 0x384 },
@@ -1851,10 +1851,10 @@ static const struct lbl_803B7AD0_t {
 static inline const struct lbl_803B7AD0_t* inline2(u8 arg0)
 {
     int i;
-    u8 temp_r3 = gm_80160638(arg0);
+    u8 unlockableCharacterIndex = gm_80160638(arg0);
     const struct lbl_803B7AD0_t* tmp = lbl_803B7AD0;
-    for (i = 0; i < 0xB; i++) {
-        if (temp_r3 == tmp[i].x0) {
+    for (i = 0; i < NUM_UNLOCKABLE_CHARACTERS; i++) {
+        if (unlockableCharacterIndex == tmp[i].x0) {
             return &tmp[i];
         }
     }
@@ -2061,10 +2061,14 @@ u8 gm_80173224(int arg0, int arg1)
 /// check for event character unlocks?
 CharacterKind gm_801732D8(u8 arg0)
 {
-    if (!gm_IsCharacterUnlocked(CKIND_GANON) && gm_801BEBC0(arg0) == 0x1C) {
+    if (!gm_IsCharacterUnlocked(CKIND_GANON) &&
+        gm_EventIdToEventNumber(arg0) == 0x1C)
+    {
         return CKIND_GANON;
     }
-    if (!gm_IsCharacterUnlocked(CKIND_PICHU) && gm_801BEBC0(arg0) == 0xE) {
+    if (!gm_IsCharacterUnlocked(CKIND_PICHU) &&
+        gm_EventIdToEventNumber(arg0) == 0xE)
+    {
         return CKIND_PICHU;
     }
     return CHKIND_NONE;
@@ -2075,7 +2079,7 @@ int gm_8017335C(void)
     int var_r31 = 1;
     int i;
     for (i = 0; i < 0x33; i++) {
-        if (!gmMainLib_8015CEFC(i)) {
+        if (!gmMainLib_IsEventMatchComplete(i)) {
             var_r31 = 0;
             break;
         }
@@ -2102,7 +2106,7 @@ u16 gm_8017341C(void)
     return 0x148;
 }
 
-u8 gm_80173460(s8 characterKind)
+u8 gm_80173460(s8 ckind)
 {
     if (!gm_IsCharacterUnlocked(CKIND_FALCO)) {
         return CKIND_FALCO;

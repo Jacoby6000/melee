@@ -131,7 +131,7 @@ void gm_801BA388(GameScene* scene)
 
 void fn_801BA3B4(PlayerInitData* arg0, PlayerInitData* unused)
 {
-    arg0->xC_b4 = true;
+    arg0->invisible = true;
 }
 
 void gm_801BA3C8(GameScene* scene)

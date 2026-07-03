@@ -13,6 +13,9 @@
 #include "baselib/jobj.h"
 #include "dolphin/gx/GXStruct.h"
 #include "dolphin/types.h"
+
+#include "gm/forward.h"
+
 #include "gm/gm_1601.h"
 #include "gm/types.h"
 #include "if/ifcoget.h"
@@ -80,7 +83,7 @@ void fn_80174380(void)
     lbAudioAx_80024030(2);
 }
 
-bool gm_801743A4(u8 outcome)
+bool gm_IsQuitOrRetry(u8 outcome)
 {
     if (outcome == OUTCOME_NO_CONTEST || outcome == OUTCOME_RETRY) {
         return true;
@@ -898,7 +901,7 @@ void fn_801756E0(s32 slot)
     if (me->player_standings[slot].slot_type == Gm_PKind_NA) {
         goto grey_out;
     }
-    if (me->result == 7 || me->result == 8) {
+    if (me->result == OUTCOME_NO_CONTEST || me->result == OUTCOME_RETRY) {
         skip = 1;
     } else {
         skip = 0;
@@ -970,7 +973,9 @@ void fn_80175880(s32 slot)
             if ((s8) me->player_standings[slot].stocks > 0) {
                 goto show_normal;
             }
-            if (me->player_standings[slot].x28 == me->frame_count) {
+            if (me->player_standings[slot].eliminated_at_frame ==
+                me->frame_count)
+            {
                 if ((s8) me->player_standings[winner].stocks == 0) {
                     goto show_normal;
                 }
@@ -978,7 +983,7 @@ void fn_80175880(s32 slot)
         }
     }
 
-    if (me->result == 7 || me->result == 8) {
+    if (me->result == OUTCOME_NO_CONTEST || me->result == OUTCOME_RETRY) {
         skip = 1;
     } else {
         skip = 0;
@@ -995,7 +1000,7 @@ void fn_80175880(s32 slot)
         }
     }
 
-    seconds = me->player_standings[slot].x28 / 60;
+    seconds = me->player_standings[slot].eliminated_at_frame / 60;
     if (seconds > 5999) {
         seconds = 5999;
     }
@@ -1620,7 +1625,7 @@ void fn_80176D3C(Vec3* positions)
             winner = 3;
         }
 
-        if (me->result == 7) {
+        if (me->result == OUTCOME_NO_CONTEST) {
             winner = 1;
         } else if (winner == 0) {
             goto loop_end;
@@ -1670,7 +1675,7 @@ void fn_80176F60(void)
     HSD_JObjReqAnimAll(jobj, 0.0F);
     data->x20 =
         fn_80176BF0(jobj, temp_r30->player_standings[data->x6].character_kind,
-                    gm_801743A4(temp_r30->result));
+                    gm_IsQuitOrRetry(temp_r30->result));
     aobj = data->x20->u.dobj->mobj->aobj;
     tmp = gm_80160854(data->x6, Player_GetTeam(data->x6),
                       temp_r30->is_teams == 1,
@@ -1783,7 +1788,7 @@ void gm_80177368_OnEnter(void* arg0_)
     lbl_8046DBE8.x0_5 = arg0->x0_1;
 
     temp_r29 = lbl_8046DBE8.x94;
-    if (gm_801743A4(lbl_8046DBE8.x94->result)) {
+    if (gm_IsQuitOrRetry(lbl_8046DBE8.x94->result)) {
         lbl_8046DBE8.num_pages = 2;
     } else {
         lbl_8046DBE8.num_pages = 3;
@@ -1807,7 +1812,7 @@ void gm_80177368_OnEnter(void* arg0_)
     }
     fn_801771C0(&lbl_8046DBE8);
     if (temp_r29->player_standings[data->x6].slot_type == Gm_PKind_Human) {
-        if (!gm_801743A4(temp_r29->result) &&
+        if (!gm_IsQuitOrRetry(temp_r29->result) &&
             temp_r29->player_standings[data->x6].x3_6)
         {
             lb_80014574(data->x6, 3, 0x20, 0);
@@ -1847,7 +1852,7 @@ void gm_80177368_OnEnter(void* arg0_)
     fn_80176F60();
     fn_8017AA78(&arg0->x1);
     fn_8017A004();
-    if (!gm_801743A4(temp_r29->result)) {
+    if (!gm_IsQuitOrRetry(temp_r29->result)) {
         lbAudioAx_80023F28(
             fn_80160400(temp_r29->player_standings[data->x6].character_kind));
     }
@@ -1857,7 +1862,7 @@ void gm_80177368_OnEnter(void* arg0_)
             fn_8017A9B4(i);
             data->player_data[i].fighter_gobj =
                 fn_8017A67C(temp_r29->player_standings[i].character_kind,
-                            temp_r29->player_standings[i].x3, i);
+                            temp_r29->player_standings[i].costume, i);
             data->player_data[i].camera = fn_8017A318(i);
         }
     }

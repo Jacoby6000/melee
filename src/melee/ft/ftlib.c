@@ -52,7 +52,7 @@ bool ftLib_IsMasterHandPresent(void)
 
     HSD_GObj* cur;
     for (cur = HSD_GObj_Entities->fighters; cur != NULL; cur = cur->next) {
-        if (ftLib_800872A4(cur) == FTKIND_MASTERH) {
+        if (ftLib_GetFighterKindFromGObj(cur) == FTKIND_MASTERH) {
             return true;
         }
     }
@@ -66,7 +66,7 @@ bool ftLib_IsCrazyHandPresent(void)
 
     HSD_GObj* cur;
     for (cur = HSD_GObj_Entities->fighters; cur != NULL; cur = cur->next) {
-        if (ftLib_800872A4(cur) == FTKIND_CREZYH) {
+        if (ftLib_GetFighterKindFromGObj(cur) == FTKIND_CREZYH) {
             return true;
         }
     }
@@ -800,7 +800,7 @@ bool ftLib_80087284(HSD_GObj* gobj)
     return false;
 }
 
-FighterKind ftLib_800872A4(HSD_GObj* gobj)
+FighterKind ftLib_GetFighterKindFromGObj(HSD_GObj* gobj)
 {
     Fighter* fp = GET_FIGHTER(gobj);
     return fp->kind;

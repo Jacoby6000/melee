@@ -57,8 +57,8 @@
 /* 1BEB74 */ void gm_801BEB74(u8);
 /* 1BEB80 */ u8 gm_801BEB80(void);
 /* 1BEB8C */ bool gm_801BEB8C(u8);
-/* 1BEBA8 */ u8 gm_801BEBA8(u8);
-/* 1BEBC0 */ u8 gm_801BEBC0(u8);
+/* 1BEBA8 */ u8 gm_EventNumberToEventId(u8);
+/* 1BEBC0 */ u8 gm_EventIdToEventNumber(u8);
 /* 1BEBF8 */ u8 gm_801BEBF8(u8 arg0);
 /* 1BEC54 */ void* gm_801BEC54(void);
 /* 1BEC80 */ void gm_801BEC80(GameScene*);

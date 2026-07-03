@@ -6,6 +6,8 @@
 
 #include "baselib/forward.h"
 
+#include "if/ifnametag.h"
+
 #include <sysdolphin/baselib/aobj.h>
 #include <sysdolphin/baselib/cobj.h>
 #include <sysdolphin/baselib/controller.h>
@@ -903,8 +905,8 @@ void mnCharSel_8025DB34(u8 arg0)
                                     HSD_AObjReqAnim, AOBJ_ARG_AF, var_f1);
                     if (gmMainLib_8015CC34()->handicap == 1) {
                         hval = (u8) gm_801685D4(
-                            arg0,
-                            mnCharSel_804D6CB0->data.data.players[arg0].xA);
+                            arg0, mnCharSel_804D6CB0->data.data.players[arg0]
+                                      .nametag_id);
                     } else {
                         hval = (u8) mnCharSel_804D6CB0->data.data.players[arg0]
                                    .handicap;
@@ -925,8 +927,8 @@ void mnCharSel_8025DB34(u8 arg0)
                     sp90 = sp68;
                     if (gmMainLib_8015CC34()->handicap == 1) {
                         hval2 = (u8) gm_801685D4(
-                            arg0,
-                            mnCharSel_804D6CB0->data.data.players[arg0].xA);
+                            arg0, mnCharSel_804D6CB0->data.data.players[arg0]
+                                      .nametag_id);
                     } else {
                         hval2 =
                             (u8) mnCharSel_804D6CB0->data.data.players[arg0]
@@ -984,8 +986,8 @@ void mnCharSel_8025DB34(u8 arg0)
                     }
                     if (gmMainLib_8015CC34()->handicap == 1) {
                         hval3 = (u8) gm_801685D4(
-                            arg0,
-                            mnCharSel_804D6CB0->data.data.players[arg0].xA);
+                            arg0, mnCharSel_804D6CB0->data.data.players[arg0]
+                                      .nametag_id);
                     } else {
                         hval3 =
                             (u8) mnCharSel_804D6CB0->data.data.players[arg0]
@@ -1007,8 +1009,8 @@ void mnCharSel_8025DB34(u8 arg0)
                     sp90 = sp58;
                     if (gmMainLib_8015CC34()->handicap == 1) {
                         hval4 = (u8) gm_801685D4(
-                            arg0,
-                            mnCharSel_804D6CB0->data.data.players[arg0].xA);
+                            arg0, mnCharSel_804D6CB0->data.data.players[arg0]
+                                      .nametag_id);
                     } else {
                         hval4 =
                             (u8) mnCharSel_804D6CB0->data.data.players[arg0]
@@ -1406,7 +1408,8 @@ void fn_8025F0E0(HSD_GObj* gobj)
                         if ((u8) rules->handicap == 1) {
                             val = (u8) gm_801685D4(
                                 (u8) i,
-                                mnCharSel_804D6CB0->data.data.players[i].xA);
+                                mnCharSel_804D6CB0->data.data.players[i]
+                                    .nametag_id);
                         } else {
                             val = mnCharSel_804D6CB0->data.data.players[i]
                                       .handicap;
@@ -1929,7 +1932,7 @@ void mnCharSel_CursorThink(HSD_GObj* gobj)
                             mnCharSel_804D6CB0->data.data.players[cursor->x4]
                                 .slot_type = 1;
                             mnCharSel_804D6CB0->data.data.players[cursor->x4]
-                                .xA = 0x78;
+                                .nametag_id = NAMETAG_DISABLED;
                             tag_data->use_tag = 0;
                         }
                     }
@@ -2752,7 +2755,8 @@ void mnCharSel_CursorThink(HSD_GObj* gobj)
                                                         mnCharSel_804D6CB0
                                                             ->data.data
                                                             .players[di]
-                                                            .xA = 0x78;
+                                                            .nametag_id =
+                                                            NAMETAG_DISABLED;
                                                         tag_data->use_tag = 0;
                                                         if ((u8) dp->selected_since_load ==
                                                                 0 &&
@@ -3581,19 +3585,19 @@ void fn_80262F44(HSD_GObj* gobj)
                 mnCharSel_804D6CF6 = 1;
                 mnCharSel_804D6CF2 = 0xFF;
                 if (mnCharSel_804D6CF5 == 1) {
-                    if (gm_801677F8(mnCharSel_804D6CF0,
-                                    mnCharSel_804D6CB0->data.data
-                                        .players[mnCharSel_804D6CF0]
-                                        .xA))
+                    if (gm_IsRumbleEnabled(mnCharSel_804D6CF0,
+                                           mnCharSel_804D6CB0->data.data
+                                               .players[mnCharSel_804D6CF0]
+                                               .nametag_id))
                     {
                         lb_80014574(mnCharSel_804D6CF0, 0, 0xB, 0x1E);
                     }
                 } else {
                     for (i = 0; i < (s32) mnCharSel_804D6CF5; i++) {
                         if (mnCharSel_803F0DFC.doors[i].p_kind == 0 &&
-                            gm_801677F8(
-                                i,
-                                mnCharSel_804D6CB0->data.data.players[i].xA))
+                            gm_IsRumbleEnabled(
+                                i, mnCharSel_804D6CB0->data.data.players[i]
+                                       .nametag_id))
                         {
                             lb_80014574(i, 0, 0xB, 0x1E);
                         }
@@ -3819,8 +3823,8 @@ void fn_802633B0(HSD_GObj* gobj)
                         ddata = mnCharSel_804D6CB0;
                         for (p2 = 0; p2 < (s32) mnCharSel_804D6CF5; p2++) {
                             if (p2 != (s32) tag->port &&
-                                (s32) ddata->data.data.players[p2].xA ==
-                                    row_idx)
+                                (s32) ddata->data.data.players[p2]
+                                        .nametag_id == row_idx)
                             {
                                 sp58 = sp74;
                                 HSD_SisLib_803A74F0((HSD_Text*) tag->name_ls,
@@ -3876,7 +3880,9 @@ void fn_802633B0(HSD_GObj* gobj)
                 }
                 {
                     CSSData* ddata = mnCharSel_804D6CB0;
-                    if ((u8) ddata->data.data.players[port].xA != 0x78) {
+                    if ((u8) ddata->data.data.players[port].nametag_id !=
+                        NAMETAG_DISABLED)
+                    {
                         match_type = ddata->match_type;
                         if ((s32) match_type < 3) {
                             if ((s32) match_type == 0) {
@@ -3896,7 +3902,8 @@ void fn_802633B0(HSD_GObj* gobj)
                         }
                     }
                 }
-                mnCharSel_804D6CB0->data.data.players[port].xA = 0x78;
+                mnCharSel_804D6CB0->data.data.players[port].nametag_id =
+                    NAMETAG_DISABLED;
                 tag->use_tag = 0;
                 tag->state = 4;
                 lbAudioAx_80024030(2);
@@ -3936,7 +3943,7 @@ void fn_802633B0(HSD_GObj* gobj)
                     CSSData* ddata = mnCharSel_804D6CB0;
                     for (p = 0; p < (s32) mnCharSel_804D6CF5; p++) {
                         if (p != (s32) port &&
-                            (s32) ddata->data.data.players[p].xA ==
+                            (s32) ddata->data.data.players[p].nametag_id ==
                                 (s32) (row - 1))
                         {
                             goto block_116;
@@ -3951,8 +3958,8 @@ void fn_802633B0(HSD_GObj* gobj)
                         ((HSD_Text*) tag->text)->hidden = 0;
                         {
                             CSSData* ddata2 = mnCharSel_804D6CB0;
-                            if ((s32) ddata2->data.data.players[port].xA !=
-                                (s32) (row - 1))
+                            if ((s32) ddata2->data.data.players[port]
+                                    .nametag_id != (s32) (row - 1))
                             {
                                 match_type = ddata2->match_type;
                                 if ((s32) match_type < 3) {
@@ -3973,8 +3980,8 @@ void fn_802633B0(HSD_GObj* gobj)
                                 }
                             }
                         }
-                        mnCharSel_804D6CB0->data.data.players[port].xA =
-                            row - 1;
+                        mnCharSel_804D6CB0->data.data.players[port]
+                            .nametag_id = row - 1;
                         tag->use_tag = 1;
                         tag->state = 4;
                         lbAudioAx_80024030(2);
@@ -4005,8 +4012,8 @@ void fn_802633B0(HSD_GObj* gobj)
                 port2 = tag->port;
                 if ((u8) gmMainLib_8015CC34()->handicap == 1) {
                     hval = (u8) gm_801685D4(
-                        port2,
-                        mnCharSel_804D6CB0->data.data.players[port2].xA);
+                        port2, mnCharSel_804D6CB0->data.data.players[port2]
+                                   .nametag_id);
                 } else {
                     hval = (u8) mnCharSel_804D6CB0->data.data.players[port2]
                                .handicap;
@@ -4032,8 +4039,8 @@ void fn_802633B0(HSD_GObj* gobj)
                     port3 = tag->port;
                     if ((u8) gmMainLib_8015CC34()->handicap == 1) {
                         hval2 = (u8) gm_801685D4(
-                            port3,
-                            mnCharSel_804D6CB0->data.data.players[port3].xA);
+                            port3, mnCharSel_804D6CB0->data.data.players[port3]
+                                       .nametag_id);
                     } else {
                         hval2 =
                             (u8) mnCharSel_804D6CB0->data.data.players[port3]
@@ -4565,15 +4572,17 @@ s32 mnCharSel_802640A0(void)
             if (clear != 0) {
                 mnCharSel_804D6CB0->ko_star_counts[player] = 0;
             }
-            mnCharSel_804D6CB0->data.data.players[player].xA =
+            mnCharSel_804D6CB0->data.data.players[player].nametag_id =
                 mnCharSel_804D6CF8 - 1;
             mnCharSel_804D6CF8 = td->next_tag;
         }
-        if ((u8) mnCharSel_804D6CB0->data.data.players[player].xA != 0x78) {
+        if ((u8) mnCharSel_804D6CB0->data.data.players[player].nametag_id !=
+            NAMETAG_DISABLED)
+        {
             char* name;
             td->use_tag = 1;
-            name =
-                GetNameText(mnCharSel_804D6CB0->data.data.players[player].xA);
+            name = GetNameText(
+                mnCharSel_804D6CB0->data.data.players[player].nametag_id);
             HSD_SisLib_803A70A0((HSD_Text*) td->text, 0, name);
             ((HSD_Text*) td->text)->default_kerning = 0;
         }
@@ -4971,7 +4980,8 @@ s32 mnCharSel_802640A0(void)
                             -1);
                 if ((u8) gmMainLib_8015CC34()->handicap == 1) {
                     hval = gm_801685D4(
-                        (u8) i, mnCharSel_804D6CB0->data.data.players[i].xA);
+                        (u8) i,
+                        mnCharSel_804D6CB0->data.data.players[i].nametag_id);
                 } else {
                     hval = mnCharSel_804D6CB0->data.data.players[i].handicap;
                 }

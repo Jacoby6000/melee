@@ -12,6 +12,9 @@
 
 #define FIGHTERVARS_SIZE 0xF8
 
+#define NUM_UNLOCKABLE_CHARACTERS 11
+#define NUM_UNLOCKABLE_STAGES 11
+
 typedef enum_t FtMotionId;
 typedef struct ArticleDynamicBones ArticleDynamicBones;
 typedef struct CostumeTObjList CostumeTObjList;

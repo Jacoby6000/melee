@@ -83,7 +83,7 @@ void gm_801B98E8(GameScene* scene)
         lb_8001CE00();
     }
     gm_801B06B0(css, 0x10, vs->data.players[0].c_kind, 1,
-                vs->data.players[0].color, vs->data.players[0].xA, 0,
+                vs->data.players[0].color, vs->data.players[0].nametag_id, 0,
                 gm_804D68F8);
     game_cache = &lbDvd_8001822C()->game_cache;
     lbDvd_800174BC();
@@ -106,7 +106,8 @@ void gm_801B999C(GameScene* scene)
     }
     gm_80167A14(vs->data.players);
     gm_801B0730(temp_r3, &vs->data.players[0].c_kind, NULL,
-                &vs->data.players[0].color, &vs->data.players[0].xA, NULL);
+                &vs->data.players[0].color, &vs->data.players[0].nametag_id,
+                NULL);
     vs->data.players[1].c_kind = CHKIND_SANDBAG;
     vs->data.players[1].xE = 0xF;
     vs->data.players[1].x1C = 1.0f;
@@ -156,8 +157,8 @@ void gm_801B9A3C(GameScene* arg0)
     gm_801B0620(&data->players[0], vs->data.players[0].c_kind,
                 vs->data.players[0].color, 1, gm_804D68F8);
     data->players[0].xD_b2 = true;
-    gm_8016F088(data);
-    gm_80181A00(data->players[0].c_kind, (u8) data->players[0].xA);
+    gm_PrepareRumbleMode(data);
+    gm_80181A00(data->players[0].c_kind, (u8) data->players[0].nametag_id);
     gm_80180B18();
 }
 

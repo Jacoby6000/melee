@@ -5,6 +5,7 @@
 
 #include "baselib/memory.h"
 #include "gm/gmmain_lib.h"
+#include "if/ifnametag.h"
 #include "if/textlib.h"
 #include "lb/lb_00B0.h"
 #include "lb/lbcardgame.h"
@@ -92,11 +93,11 @@ void gm_801BFABC(GameScene* arg0)
                 temp_r31->x2);
     gm_801B0664(&temp_r30->players[1], temp_r31->x4, 0, 1, 1);
     tmp = temp_r31->x3;
-    temp_r30->players[0].xA = tmp;
-    temp_r30->players[1].xA = 0x78;
+    temp_r30->players[0].nametag_id = tmp;
+    temp_r30->players[1].nametag_id = NAMETAG_DISABLED;
     temp_r30->players[1].xE = 4;
     temp_r30->players[1].cpu_level = gm_80172CC0(temp_r31->x4, tmp);
-    gm_8016F088(temp_r30);
+    gm_PrepareRumbleMode(temp_r30);
 }
 
 void gm_801BFBA8(GameScene* arg0)

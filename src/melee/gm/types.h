@@ -7,6 +7,7 @@
 #include "baselib/forward.h"
 
 #include "dolphin/types.h"
+#include "mn/mnevent.h"
 
 #include <melee/ft/forward.h>
 #include <melee/gm/forward.h> // IWYU pragma: export
@@ -112,8 +113,7 @@ struct gmm_x1CB0 {
 struct FighterData {
     /* 0x00 */ u16 fighter_kos[25];
     /* 0x32 */ u8 padding_0x32[2];
-    /* 0x34 */ u16 sd_count;
-    /* 0x36 */ u8 padding_0x36[2];
+    /* 0x34 */ u32 sd_count;
     /* 0x38 */ u32 attacks_hit;
     /* 0x3C */ u32 attacks_total;
     /* 0x40 */ s32 damage_dealt;
@@ -168,8 +168,7 @@ struct FighterData {
 
 struct NameTagData {
     /* 0x000 */ u16 vs_kos[120];
-    /* 0x0F0 */ u16 sd_count;
-    /* 0x0F2 */ u8 padding_0xF2[2];
+    /* 0x0F0 */ u32 sd_count;
     /* 0x0F4 */ u32 attacks_hit;
     /* 0x0F8 */ u32 attacks_total;
     /* 0x0FC */ s32 damage_dealt;
@@ -191,7 +190,7 @@ struct NameTagData {
     /* 0x134 */ u32 play_time_by_fighter[25];
     /* 0x198 */ char namedata[8];
     /* 0x1A0 */ s8 x1A0;
-    /* 0x1A1 */ u8 x1A1;
+    /* 0x1A1 */ u8 enable_rumble;
     /* 0x1A2 */ s8 x1A2;
     /* 0x1A3 */ u8 padding_x1A2;
 };
@@ -296,11 +295,10 @@ struct gmm_x1868 {
     /* 0x01F4 */ s32 x1A5C;
     /* 0x01F8 */ s32 x1A60;
     /* 0x01FC */ s32 x1A64;
-    /* 0x0200 */ s64 x1A68;
-    /* 0x0208 */ s32 x1A70[4];
-    /* 0x0218 */ u8 padding_x1A70[0xBC];
+    /* 0x0200 */ s64 completed_event_matches_bitmask;
+    /* 0x0208 */ s32 event_match_records[NUM_EVENT_MATCHES - 1];
     /* 0x02D4 */ u8 x1B3C;
-    /* 0x02D5 */ char pad_2D5[3]; /* maybe part of x1B3C[4]? */
+    /* 0x02D5 */ char padding_2D5[3];
     /* 0x02D8 */ u32 x1B40[3];
     /* 0x02E4 */ u32 x1B4C[3];
     /* 0x02F0 */ u32 x1B58[3];
@@ -337,44 +335,46 @@ struct gmm_x0 {
         /* 0x052D */ u8 x5;
     } unk_51C, unk_522, unk_528;
     struct EventData {
-        /* 0x0530 */ u8 x0;
+        /* 0x0530 */ u8 player_ckind;
         /* 0x0531 */ u8 x1;
-        /* 0x0532 */ s8 x2;
-        /* 0x0533 */ u8 x3;
-        /* 0x0534 */ u8 x4;
-        /* 0x0535 */ u8 unk_535;
+        /* 0x0532 */ s8
+            x2; ///< CharacterKind  (Forced character for this event?)
+        /* 0x0533 */ u8
+            x3; ///< Color (costume?) (Forced color for this event?)
+        /* 0x0534 */ u8 x4; ///< Nametag (Forced nametag for this event?)
+        /* 0x0535 */ u8 event_match_number; // Selected Event Match ID?
         /* 0x0536 */ u8 x6;
         /* 0x0537 */ u8 x7;
         /* 0x0538 */ s8 x8;
         /* 0x0539 */ s8 x9;
         /* 0x053A */ s8 xA;
         /* 0x053B */ u8 xB_0 : 1;
-        /* 0x053B */ u8 xB_1 : 1;
+        /* 0x053B */ u8 xB_1 : 1; //< did the player win?
         /* 0x053B */ u8 xB_2 : 1;
         /* 0x053B */ u8 xB_3 : 1;
         /* 0x053B */ u8 xB_4 : 1;
         /* 0x053B */ u8 xB_5 : 1;
-        /* 0x053B */ u8 xB_6 : 1;
+        /* 0x053B */ u8 xB_6 : 1; ///< is this the first completion?
         /* 0x053B */ u8 xB_7 : 1;
-        /* 0x053C */ int xC;
+        /* 0x053C */ int xC; //< timer after match (frames?)
         /* 0x0540 */ int x10;
         /* 0x0544 */ int x14;
         /* 0x0548 */ int x18;
         /* 0x054C */ float x1C;
         /* 0x0550 */ int x20;
-        /* 0x0554 */ int x24;
+        /* 0x0554 */ int player_stocks;
         /* 0x0558 */ int x28;
-        /* 0x055C */ int x2C; // timer seconds
+        /* 0x055C */ int x2C; //< timer seconds
         /* 0x0560 */ int x30;
         /* 0x0564 */ int x34;
-        /* 0x0568 */ u8 x38;
+        /* 0x0568 */ u8 forced_player_ckind;
         /* 0x056C */ int x3C;
         /* 0x0570 */ int x40;
         /* 0x0574 */ s8 x44;
         /* 0x0575 */ u8 x45;
         /* 0x0578 */ InternalStageId x48;
-        /* 0x057C */ s8 x4C[4]; ///< CharacterKind
-        /* 0x0580 */ u8 x50[4]; ///< character color
+        /* 0x057C */ s8 player_ckinds[4];
+        /* 0x0580 */ u8 player_colors[4];
         struct gmm_x0_584_t {
             /* 0x0584 */ s8 unk_584;
             /* 0x0585 */ u8 unk_585;
@@ -479,6 +479,26 @@ struct Placeholder_8016AE38_flags_2 {
     /* +2:6 */ u8 x2_b6 : 1;
     /* +2:7 */ u8 x2_b7 : 1;
 };
+
+typedef struct gm_801BAB40_src {
+    /* 0x00 */ u8 c_kind;
+    /* 0x01 */ u8 slot_type;
+    /* 0x02 */ u8 stocks;
+    /* 0x03 */ u8 color;
+    /* 0x04 */ u8 x5;
+    /* 0x05 */ u8 sub_color;
+    /* 0x06 */ u8 team;
+    /* 0x07 */ u8 xB;
+    /* 0x08 */ u8 flags; ///< See PLAYER_FLAGS_*
+    /* 0x09 */ u8 xE;
+    /* 0x0A */ u8 cpu_level;
+    /* 0x0B */ u8 pad;
+    /* 0x0C */ u16 x12;
+    /* 0x0E */ u16 hp;
+    /* 0x10 */ f32 x18;
+    /* 0x14 */ f32 x1C;
+    /* 0x18 */ f32 x20;
+} gm_801BAB40_src;
 
 struct lbl_8046B6A0_t {
     /* 0x0000 */ u8 unk_0; ///< 0 During a match
@@ -610,27 +630,27 @@ STATIC_ASSERT(sizeof(struct MatchTeamData) == 0xC);
 struct MatchPlayerData {
     u8 slot_type;
     s8 character_kind;
-    s8 character_id;
-    u8 x3 : 6;
+    s8 fighter_kind;
+    u8 costume : 6;
     u8 x3_6 : 1;
     u8 x3_7 : 1;
-    u8 x4;
+    u8 nametag_slot_id;
     u8 is_big_loser;
     u8 is_small_loser;
     u8 team;
     s8 stocks;
-    u8 x9;
+    u8 remaining_hp;
     u16 self_destructs;
     u16 percent;
     u16 xE;
     u16 kills[4];
     u16 x18;
-    s32 x1C;
+    s32 coins;
     s32 x20;
-    int x24;
-    u32 x28;
+    int falls; ///< Deaths
+    u32 eliminated_at_frame;
     int score;
-    u32 x30;
+    u32 rank; ///< Rank
     u8 x34;
     u8 x35_pad[0x38 - 0x35];
     u32 x38;
@@ -643,7 +663,7 @@ struct MatchPlayerData {
     u32 x54;
     u32 x58;
     u32 x5C;
-    u32 x60;
+    u32 total_coins;
     u32 x64;
     u32 x68;
     u32 x6C;
@@ -665,8 +685,8 @@ struct MatchPlayerData {
 STATIC_ASSERT(sizeof(struct MatchPlayerData) == 0xA8);
 
 struct MatchEnd {
-    /* 0x00 */ u32 x0; ///< timer
-    /* 0x04 */ u8 result;
+    /* 0x00 */ u32 x0;    ///< timer
+    /* 0x04 */ u8 result; ///< MatchOutcome
     /* 0x05 */ u8 x5;
     /* 0x06 */ u8 is_teams;
     /* 0x07 */ u8 x7;

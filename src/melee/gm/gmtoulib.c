@@ -2431,7 +2431,7 @@ void gm_801905F0(StartMeleeData* arg0)
     for (i = 0; i < 4; i++) {
         if (i < tm->x30) {
             arg0->players[i].x20 = 1.0f;
-            arg0->players[i].xA = (u8) MIN(tm->x4B8[i].x6, 0x78);
+            arg0->players[i].nametag_id = (u8) MIN(tm->x4B8[i].x6, 0x78);
             if (tm->x4B8[i].x2 != 0) {
                 arg0->players[i].c_kind = gm_801905F0_inline0(fn_8018F410());
                 arg0->players[i].color =
@@ -2444,9 +2444,10 @@ void gm_801905F0(StartMeleeData* arg0)
             arg0->players[i].stocks = temp_r31->stock_count;
             arg0->players[i].sub_color = 0;
             arg0->players[i].team = 0xFF;
-            arg0->players[i].xC_b0 = gm_801677F8(i, arg0->players[i].xA);
+            arg0->players[i].rumble_enabled =
+                gm_IsRumbleEnabled(i, arg0->players[i].nametag_id);
             if (tm->x4B8[i].x0 == 1) {
-                arg0->players[i].xC_b0 = false;
+                arg0->players[i].rumble_enabled = false;
             }
             arg0->players[i].xE = 4;
             arg0->players[i].cpu_level = tm->x4B8[i].x4;

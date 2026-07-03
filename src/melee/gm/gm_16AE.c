@@ -1566,8 +1566,8 @@ void fn_8016D8AC(int arg0, struct PlayerInitData* arg1)
 
     Player_SetHandicap(arg0, arg1->handicap);
     Player_SetTeam(arg0, arg1->team);
-    Player_SetFlagsBit0(arg0, arg1->xC_b0);
-    Player_SetNametagSlotID(arg0, (u8) arg1->xA);
+    Player_SetFlagsBit0(arg0, arg1->rumble_enabled);
+    Player_SetNametagSlotID(arg0, arg1->nametag_id);
     if (arg1->xC_b1) {
         tmp->unk_A += 5;
         Player_SetFlagsBit3(arg0, 1);
@@ -1599,14 +1599,14 @@ void fn_8016D8AC(int arg0, struct PlayerInitData* arg1)
     }
 
     tmp->FighterMatchInfo[arg0].x4_b1 = arg1->xC_b3;
-    tmp->FighterMatchInfo[arg0].x4_b0 = arg1->xC_b2;
-    if (arg1->xC_b2) {
+    tmp->FighterMatchInfo[arg0].x4_b0 = arg1->metal;
+    if (arg1->metal) {
         Player_SetFlagsBit5(arg0, true);
     } else {
         Player_SetFlagsBit5(arg0, false);
     }
-    tmp->FighterMatchInfo[arg0].x4_b2 = arg1->xC_b4;
-    if (arg1->xC_b4) {
+    tmp->FighterMatchInfo[arg0].x4_b2 = arg1->invisible;
+    if (arg1->invisible) {
         Player_SetFlagsBit6(arg0, 1);
         Player_SetFlagsBit7(arg0, 0);
     } else {
@@ -2211,7 +2211,7 @@ void fn_8016F030(StartMeleeData* arg0)
     }
 }
 
-void gm_8016F088(StartMeleeData* arg0)
+void gm_PrepareRumbleMode(StartMeleeData* arg0)
 {
     int var_r3;
     int temp_r3;
@@ -2225,9 +2225,10 @@ void gm_8016F088(StartMeleeData* arg0)
             } else {
                 var_r3 = temp_r3 - 1;
             }
-            arg0->players[i].xC_b0 = gm_801677F8(var_r3, arg0->players[i].xA);
+            arg0->players[i].rumble_enabled =
+                gm_IsRumbleEnabled(var_r3, arg0->players[i].nametag_id);
         } else {
-            arg0->players[i].xC_b0 = false;
+            arg0->players[i].rumble_enabled = false;
         }
     }
 }

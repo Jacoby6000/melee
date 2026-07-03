@@ -59,7 +59,7 @@ s32 fn_8017ADA8(s32 slot)
     s32 var_r3;
 
     me = fn_80174274();
-    var_r3 = me->player_standings[slot].x1C;
+    var_r3 = me->player_standings[slot].coins;
     if (var_r3 > 999999) {
         var_r3 = 999999;
     } else if (var_r3 < -999999) {
@@ -149,7 +149,7 @@ s32 fn_8017B010(s32 arg0)
     MatchEnd* me;
 
     me = fn_80174274();
-    var_r3 = me->player_standings[arg0].x24 -
+    var_r3 = me->player_standings[arg0].falls -
              me->player_standings[arg0].self_destructs;
     if (var_r3 > 999999) {
         var_r3 = 999999;

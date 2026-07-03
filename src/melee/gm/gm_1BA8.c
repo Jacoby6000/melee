@@ -4,7 +4,12 @@
 
 #include "gm_unsplit.h"
 
+#include "ft/forward.h"
 #include "gm/forward.h"
+
+#include "gm/gm_1601.h"
+
+#include "mn/forward.h"
 
 #include "vi/vi1201v1.h"
 
@@ -97,11 +102,11 @@ void gm_801BA938(struct EventData* arg0, int lo, int hi, bool arg3)
     int i;
 
     for (i = lo; i < hi; i++) {
-        char_id = arg0->x4C[i];
+        char_id = arg0->player_ckinds[i];
         if (char_id != CHKIND_NONE) {
             temp_r7->entries[i].char_id = char_id;
-            temp_r7->entries[i].color = arg0->x50[i];
-            if (arg0->x45 != 0 && i > 0 && arg0->x4C[i] == 4) {
+            temp_r7->entries[i].color = arg0->player_colors[i];
+            if (arg0->x45 != 0 && i > 0 && arg0->player_ckinds[i] == 4) {
                 temp_r7->entries[i].x5 = 0;
             }
         }
@@ -113,8 +118,8 @@ void gm_801BA938(struct EventData* arg0, int lo, int hi, bool arg3)
     lbDvd_80018254();
     mask = 0;
     for (i = lo; i < hi; i++) {
-        if (arg0->x4C[i] != CHKIND_NONE) {
-            mask |= lbAudioAx_80026E84(arg0->x4C[i]);
+        if (arg0->player_ckinds[i] != CHKIND_NONE) {
+            mask |= lbAudioAx_80026E84(arg0->player_ckinds[i]);
         }
     }
     mask |= lbAudioAx_80026EBC(arg0->x48);
@@ -154,66 +159,46 @@ void gm_801BAAD0(GameScene* arg0)
     temp_r31->xA = -1;
 }
 
-typedef struct gm_801BAB40_src {
-    /* 0x00 */ u8 c_kind;
-    /* 0x01 */ u8 slot_type;
-    /* 0x02 */ u8 stocks;
-    /* 0x03 */ u8 color;
-    /* 0x04 */ u8 x5;
-    /* 0x05 */ u8 sub_color;
-    /* 0x06 */ u8 team;
-    /* 0x07 */ u8 xB;
-    /* 0x08 */ u8 flags;
-    /* 0x09 */ u8 xE;
-    /* 0x0A */ u8 cpu_level;
-    /* 0x0B */ u8 pad;
-    /* 0x0C */ u16 x12;
-    /* 0x0E */ u16 hp;
-    /* 0x10 */ f32 x18;
-    /* 0x14 */ f32 x1C;
-    /* 0x18 */ f32 x20;
-} gm_801BAB40_src;
-
 struct gm_event_char_list {
     u8 c_kind[33];
 };
 
-void gm_801BAB40(PlayerInitData* arg0, int arg1)
+void gm_801BAB40(PlayerInitData* targetPlayerInit, gm_801BAB40_src* src)
 {
-    gm_801BAB40_src* src = (gm_801BAB40_src*) arg1;
-    gm_8016795C(arg0);
-    arg0->c_kind = src->c_kind;
-    arg0->slot_type = src->slot_type;
-    arg0->stocks = src->stocks;
-    arg0->color = src->color;
-    arg0->slot = 0;
-    arg0->x5 = src->x5;
-    arg0->sub_color = src->sub_color;
-    arg0->handicap = 9;
-    arg0->team = src->team;
-    arg0->xA = 0x78;
-    arg0->xB = src->xB;
-    arg0->xC_b0 = 0;
-    arg0->xC_b1 = (src->flags & 0x80) >> 7;
-    arg0->xC_b2 = (src->flags & 0x40) >> 6;
-    arg0->xC_b3 = (src->flags & 0x20) >> 5;
-    arg0->xC_b4 = (src->flags & 0x10) >> 4;
-    arg0->xC_b6 = (src->flags & 0x08) >> 3;
-    arg0->xC_b7 = (src->flags & 0x04) >> 2;
-    arg0->xD_b1 = 0;
-    arg0->xD_b2 = 0;
-    arg0->xD_b4 = 0;
-    arg0->xE = src->xE;
-    arg0->cpu_level = src->cpu_level;
-    arg0->x10 = 0;
-    arg0->x12 = src->x12;
-    arg0->hp = src->hp;
-    arg0->x18 = src->x18;
-    arg0->x1C = src->x1C;
-    arg0->x20 = src->x20;
+    gm_8016795C(targetPlayerInit);
+    targetPlayerInit->c_kind = src->c_kind;
+    targetPlayerInit->slot_type = src->slot_type;
+    targetPlayerInit->stocks = src->stocks;
+    targetPlayerInit->color = src->color;
+    targetPlayerInit->slot = 0;
+    targetPlayerInit->x5 = src->x5;
+    targetPlayerInit->sub_color = src->sub_color;
+    targetPlayerInit->handicap = 9;
+    targetPlayerInit->team = src->team;
+    targetPlayerInit->nametag_id = 0x78;
+    targetPlayerInit->xB = src->xB;
+    targetPlayerInit->rumble_enabled = !PLAYER_FLAGS_XC_RUMBLE;
+    targetPlayerInit->xC_b1 = (src->flags & PLAYER_FLAGS_XC_UNK1) >> 7;
+    targetPlayerInit->metal = (src->flags & PLAYER_FLAGS_XC_METAL) >> 6;
+    targetPlayerInit->xC_b3 = (src->flags & PLAYER_FLAGS_XC_UNK3) >> 5;
+    targetPlayerInit->invisible =
+        (src->flags & PLAYER_FLAGS_XC_INVISIBLE) >> 4;
+    targetPlayerInit->xC_b6 = (src->flags & PLAYER_FLAGS_XC_UNK6) >> 3;
+    targetPlayerInit->xC_b7 = (src->flags & PLAYER_FLAGS_XC_UNK7) >> 2;
+    targetPlayerInit->xD_b1 = 0;
+    targetPlayerInit->xD_b2 = 0;
+    targetPlayerInit->xD_b4 = 0;
+    targetPlayerInit->xE = src->xE;
+    targetPlayerInit->cpu_level = src->cpu_level;
+    targetPlayerInit->x10 = 0;
+    targetPlayerInit->x12 = src->x12;
+    targetPlayerInit->hp = src->hp;
+    targetPlayerInit->x18 = src->x18;
+    targetPlayerInit->x1C = src->x1C;
+    targetPlayerInit->x20 = src->x20;
 }
 
-s32 gm_801BAC9C(GameScene* arg0, s32 arg1)
+s32 gm_801BAC9C(GameScene* arg0, s32 player_idx)
 {
     UNUSED u8 _[8];
     u8 chars[33];
@@ -224,17 +209,18 @@ s32 gm_801BAC9C(GameScene* arg0, s32 arg1)
     s32 k;
     s32 count = 0;
     struct gm_event_char_list* src =
-        (struct gm_event_char_list*) (*gm_804D6900)[ev->unk_535]->x4;
+        (struct gm_event_char_list*) (*gm_804D6900)[ev->event_match_number]
+            ->x4;
     PAD_STACK(8);
 
-    for (i = 0; i < 0x21; i++) {
+    for (i = 0; i < CHKIND_MAX; i++) {
         u8 c = src->c_kind[i];
-        if ((s32) c == 0x21) {
+        if ((s32) c == CHKIND_NONE) {
             break;
         }
         {
             found = 0;
-            for (k = 0; k < arg1; k++) {
+            for (k = 0; k < player_idx; k++) {
                 if (data->players[k].c_kind == (s8) c) {
                     found++;
                 }
@@ -268,7 +254,8 @@ struct gm_evstage {
     u16 stage;
 };
 
-struct gm_evinit {
+struct gm_evinit { ///< Initialized via cast from StartMeleeRules.
+                   ///< May just be first 24 bytes of that struct
     /* 0x00 */ u8 unk0;
     /* 0x01 */ u8 unk1;
     /* 0x02 */ u8 unk2;
@@ -278,8 +265,7 @@ struct gm_evinit {
     /* 0x06 */ u16 unk6;
     /* 0x08 */ u32 unk8;
     /* 0x0C */ u8 padC[4];
-    /* 0x10 */ u32 x10;
-    /* 0x14 */ s32 unk14;
+    /* 0x10 */ u64 x10; // Item Mask
     /* 0x18 */ s32 x18;
     /* 0x1C */ f32 x1C;
     /* 0x20 */ f32 unk20;
@@ -289,12 +275,6 @@ struct gm_evinit {
 struct gm_evstage_list {
     u16 count;
     u16 stage[1];
-};
-
-struct gm_evspawn_table {
-    u8 count;
-    u8 pad[0xF];
-    gm_801BAB40_src* entries[5];
 };
 
 struct gm_evbonus {
@@ -336,14 +316,14 @@ void gm_801BAD70(GameScene* arg0)
 {
     struct EventData* ev = &gmMainLib_804D3EE0->unk_530;
     StartMeleeData* md = gm_801A427C(arg0);
-    u8* r3b = (u8*) md;
-    u8 level = ev->unk_535;
+    StartMeleeData* r3b = md;
+    u8 event_match_number = ev->event_match_number;
     gm_803DF94C_t** event_info = gm_803DF94C;
     struct gm_804D6900_t** levels;
     struct gm_804D6900_t** lvlpp;
     struct gm_evlevel* level_info;
     s32 player_idx;
-    s32 player_init_off;
+    PlayerInitData* player_init_off;
     s32 spawn_off;
     PAD_STACK(0x20);
 
@@ -351,7 +331,7 @@ void gm_801BAD70(GameScene* arg0)
                           "sqEventInitDataLevelTbl", 0);
     levels = gm_804D6900[0];
     gm_80167A64(&md->rules);
-    lvlpp = &levels[level];
+    lvlpp = &levels[event_match_number];
     level_info = (struct gm_evlevel*) *lvlpp;
     md->rules.x0_0 = (*lvlpp)->x8->x0_0;
     md->rules.x0_3 = (*lvlpp)->x8->x0_3;
@@ -396,14 +376,13 @@ void gm_801BAD70(GameScene* arg0)
     {
         struct gm_evinit* init = (struct gm_evinit*) (*lvlpp)->x8;
         u32 x10 = init->x10;
-        *(s32*) (r3b + 0x24) = init->unk14;
-        *(u32*) (r3b + 0x20) = x10;
+        r3b->rules.x20 = x10;
     }
     md->rules.x28 = ((struct gm_evinit*) (*lvlpp)->x8)->x18;
     md->rules.x30 = ((struct gm_evinit*) (*lvlpp)->x8)->x1C;
     md->rules.x34 = ((struct gm_evinit*) (*lvlpp)->x8)->unk20;
     md->rules.x44 = fn_801BBFE8;
-    if (r3b[0] & 1) {
+    if (r3b->rules.x0_0 & 1) {
         ev->xB_0 = 1;
     }
     if ((((struct gm_evinit*) (*lvlpp)->x8)->unk1 >> 7) & 1) {
@@ -427,15 +406,15 @@ void gm_801BAD70(GameScene* arg0)
         }
         gm_8016A92C(&md->rules);
     }
-    r3b[0x61] = 3;
+    r3b->players[0].slot_type = 3;
     player_idx = 0;
-    player_init_off = 0;
-    r3b[0x85] = 3;
+    player_init_off = NULL;
+    r3b->players[1].slot_type = 3;
     spawn_off = 0;
-    r3b[0xA9] = 3;
-    r3b[0xCD] = 3;
-    r3b[0xF1] = 3;
-    r3b[0x115] = 3;
+    r3b->players[2].slot_type = 3;
+    r3b->players[3].slot_type = 3;
+    r3b->players[4].slot_type = 3;
+    r3b->players[5].slot_type = 3;
 
     while (player_idx < (s32) ((level_info->flags >> 5) & 7)) {
         gm_801BAB40_src* init = level_info->player_init[player_idx];
@@ -445,71 +424,74 @@ void gm_801BAD70(GameScene* arg0)
             spawn_off += 4;
             init = level_info->player_init[player_idx];
         }
-        gm_801BAB40((PlayerInitData*) (r3b + player_init_off + 0x60),
-                    (int) init);
+        gm_801BAB40(&r3b->players[player_idx], init);
         if (player_idx == 0) {
             gm_801B05F4((PlayerInitData*) (r3b + 0x60), ev->x6);
-            ev->x7 = r3b[0x69];
-            if ((s8) r3b[0x60] == 0x21) {
-                r3b[0x60] = ev->x2;
-                r3b[0x63] = ev->x3;
-                r3b[0x6A] = ev->x4;
+            ev->x7 = r3b->players[0].team;
+            if ((s8) r3b->players[0].c_kind == FTKIND_NONE) {
+                r3b->players[0].c_kind = ev->x2;
+                r3b->players[0].color = ev->x3;
+                r3b->players[0].nametag_id = ev->x4;
             }
             {
-                u8 c = r3b[0x60];
-                ev->x0 = c;
-                ev->x4C[0] = (s8) c;
+                u8 c = r3b->players[0].c_kind;
+                ev->player_ckind = c;
+                ev->player_ckinds[0] = (s8) c;
             }
             {
-                u8 c = r3b[0x63];
+                u8 c = r3b->players[0].color;
                 ev->x1 = c;
-                ev->x50[0] = c;
+                ev->player_colors[0] = c;
             }
-            r3b[0x6C] = (r3b[0x6C] & ~0x80) |
-                        ((gm_801677F8(ev->x6, r3b[0x6A]) << 7) & 0x80);
+            r3b->players[0].flags =
+                (r3b->players[0].flags & ~PLAYER_FLAGS_XC_RUMBLE) |
+                ((gm_IsRumbleEnabled(ev->x6, r3b->players[0].nametag_id)
+                  << 7) &
+                 PLAYER_FLAGS_XC_RUMBLE);
         } else {
             if (init->team == 0) {
-                r3b[player_init_off + 0x69] = r3b[0x69];
-                ((PlayerInitData*) (r3b + player_init_off + 0x60))->xD_b1 = 1;
+                r3b->players[player_idx].team = r3b->players[0].team;
+                r3b->players[player_idx].xD_b1 = 1;
             }
-            if ((s8) init->c_kind == 0x21) {
+            if (init->c_kind == CHKIND_NONE) {
                 s8* t = &ev->x8 + player_idx - 1;
                 s8 v = *t;
                 if (v == -1) {
                     u8 nv = gm_801BAC9C(arg0, player_idx);
-                    r3b[player_init_off + 0x60] = nv;
-                    *t = (s8) r3b[player_init_off + 0x60];
+                    r3b->players[player_idx].c_kind = nv;
+                    *t = r3b->players[player_idx].c_kind;
                 } else {
-                    r3b[player_init_off + 0x60] = v;
+                    r3b->players[player_idx].c_kind = v;
                 }
             }
-            if ((s8) r3b[player_init_off + 0x60] == (s8) r3b[0x60]) {
-                u8 c = r3b[player_init_off + 0x63];
-                if (c == r3b[0x63]) {
+            if (r3b->players[player_idx].c_kind == r3b->players[0].c_kind) {
+                u8 c = r3b->players[player_idx].color;
+                if (c == r3b->players[0].color) {
                     if (c <= 2) {
                         c += 1;
                     } else {
                         c = 0;
                     }
-                    r3b[player_init_off + 0x63] = c;
+                    r3b->players[player_idx].color = c;
                 }
             }
-            if ((s8) r3b[0x60] == 0x13 &&
-                (s8) r3b[player_init_off + 0x60] == 0x12)
+            if ((s8) r3b->players[0].c_kind == CKIND_SEAK &&
+                (s8) r3b->players[player_idx].c_kind == CKIND_ZELDA)
             {
-                u8 c = r3b[player_init_off + 0x63];
-                if (c == r3b[0x63]) {
+                u8 c = r3b->players[player_idx].color;
+                if (c == r3b->players[0].color) {
                     if (c <= 2) {
                         c += 1;
                     } else {
                         c = 0;
                     }
-                    r3b[player_init_off + 0x63] = c;
+                    r3b->players[player_idx].color = c;
                 }
             }
             if (player_idx < 4) {
-                ev->x4C[player_idx] = (s8) r3b[player_init_off + 0x60];
-                ev->x50[player_idx] = r3b[player_init_off + 0x63];
+                ev->player_ckinds[player_idx] =
+                    r3b->players[player_idx].c_kind;
+                ev->player_colors[player_idx] = r3b->players[player_idx].color;
             }
         }
         player_idx += 1;
@@ -519,62 +501,63 @@ void gm_801BAD70(GameScene* arg0)
 
     if (level_info->kind == 2) {
         if (ev->x20 > 0) {
-            r3b[0x62] = (s8) ev->x24;
+            r3b->players[0].stocks = (s8) ev->player_stocks;
             *(s16*) (r3b + 0x70) = (s16) ev->x28;
             ((PlayerInitData*) (r3b + 0x60))->xC_b1 = 0;
             {
-                u8 c = ev->x38;
-                if (c != 0x21) {
-                    r3b[0x60] = c;
-                    ev->x0 = c;
-                    ev->x4C[0] = (s8) c;
+                u8 c = ev->forced_player_ckind;
+                if (c != CHKIND_NONE) {
+                    r3b->players[0].c_kind = c;
+                    ev->player_ckind = c;
+                    ev->player_ckinds[0] = c;
                 }
             }
         }
         {
             struct gm_evspawn_table* spawn_table = level_info->x10;
-            gm_801BAB40((PlayerInitData*) (r3b + 0x84),
-                        (int) spawn_table->entries[ev->x20]);
+            gm_801BAB40(&r3b->players[1], spawn_table->entries[ev->x20]);
         }
-        if ((s8) r3b[0x84] == (s8) r3b[0x60]) {
-            u8 c = r3b[0x87];
-            if (c == r3b[0x63]) {
+        if (r3b->players[1].c_kind == r3b->players[0].c_kind) {
+            u8 c = r3b->players[1].color;
+            if (c == r3b->players[0].color) {
                 if (c <= 2) {
                     c += 1;
                 } else {
                     c = 0;
                 }
-                r3b[0x87] = c;
+                r3b->players[1].color = c;
             }
         }
-        if ((s8) r3b[0x60] == 0x13 && (s8) r3b[0x84] == 0x12) {
-            u8 c = r3b[0x87];
-            if (c == r3b[0x63]) {
+        if (r3b->players[0].c_kind == CKIND_SEAK &&
+            r3b->players[1].c_kind == CKIND_ZELDA)
+        {
+            u8 c = r3b->players[1].color;
+            if (c == r3b->players[0].color) {
                 if (c <= 2) {
                     c += 1;
                 } else {
                     c = 0;
                 }
-                r3b[0x87] = c;
+                r3b->players[1].color = c;
             }
         }
-        ev->x4C[1] = (s8) r3b[0x84];
-        ev->x50[1] = r3b[0x87];
+        ev->player_ckinds[1] = r3b->players[1].c_kind;
+        ev->player_colors[1] = r3b->players[1].color;
     }
-    if (level == 0x2B) {
-        u8 c = ev->x50[2];
-        if ((s8) (u8) ev->x4C[2] == (s8) (u8) ev->x4C[0] &&
-            (u8) ev->x50[0] == c)
+    if (event_match_number == 0x2B) {
+        u8 c = ev->player_colors[2];
+        if ((s8) (u8) ev->player_ckinds[2] == (s8) (u8) ev->player_ckinds[0] &&
+            (u8) ev->player_colors[0] == c)
         {
             if (c <= 2) {
                 c = c + 1;
             } else {
                 c = 0;
             }
-            ev->x50[2] = c;
+            ev->player_colors[2] = c;
         }
     }
-    if (level == 0x31) {
+    if (event_match_number == 0x31) {
         md->players[1].spawn_dir = 1;
         md->players[2].spawn_dir = -1;
         md->players[1].xD_b0 = 1;
@@ -590,7 +573,7 @@ void gm_801BAD70(GameScene* arg0)
         ev->xB_3 = 1;
         if (bonus->x5 == 1) {
             var_r9 = 1;
-            if ((s8) ev->x0 == bonus->c_kind) {
+            if ((s8) ev->player_ckind == bonus->c_kind) {
                 u8 c;
                 if ((u8) ev->x1 == (c = bonus->color)) {
                     if (c <= 2) {
@@ -598,7 +581,7 @@ void gm_801BAD70(GameScene* arg0)
                     } else {
                         c = 0;
                     }
-                    ev->x50[1] = c;
+                    ev->player_colors[1] = c;
                 }
             }
         } else {
@@ -606,16 +589,16 @@ void gm_801BAD70(GameScene* arg0)
         }
         k = bonus->c_kind;
         sp8 = (k == 4) ? bonus->x17 : 0;
-        gm_8016A22C(k, 0x21, 0x21, ev->x50[1], 0, 0, var_r9, 0, sp8, ev->x0,
-                    ev->x1, bonus->x1, bonus->x2, bonus->x3, bonus->x4, 0, 1,
-                    bonus->x8, bonus->xC);
+        gm_8016A22C(k, 0x21, 0x21, ev->player_colors[1], 0, 0, var_r9, 0, sp8,
+                    ev->player_ckind, ev->x1, bonus->x1, bonus->x2, bonus->x3,
+                    bonus->x4, 0, 1, bonus->x8, bonus->xC);
         gm_8016A414(bonus->x10);
         gm_8016A21C(&md->rules);
         if ((bonus->flags >> 7) & 1) {
             gm_8016A434();
         }
-        if (event_info[level]->x4 != NULL) {
-            gm_8016A404((s32) event_info[level]->x4);
+        if (event_info[event_match_number]->x4 != NULL) {
+            gm_8016A404((s32) event_info[event_match_number]->x4);
         }
         if (bonus->x15 != 0) {
             gm_8016A424((s8) bonus->x15);
@@ -631,8 +614,8 @@ void gm_801BAD70(GameScene* arg0)
             gm_801BA938(ev, 0, 4, 1);
             break;
         case 2:
-            cache->entries[0].char_id = (s8) ev->x4C[0];
-            cache->entries[0].color = ev->x50[0];
+            cache->entries[0].char_id = (s8) ev->player_ckinds[0];
+            cache->entries[0].color = ev->player_colors[0];
             lbDvd_80018254();
             lbDvd_80018C2C(0xC7);
             gm_801BA938(ev, 1, 4, 1);
@@ -643,15 +626,15 @@ void gm_801BAD70(GameScene* arg0)
             break;
         case 4:
             lbDvd_80018C6C();
-            cache->entries[0].char_id = (s8) ev->x4C[0];
-            cache->entries[0].color = ev->x50[0];
+            cache->entries[0].char_id = (s8) ev->player_ckinds[0];
+            cache->entries[0].color = ev->player_colors[0];
             lbDvd_80018254();
             lbDvd_80017700(4);
             gm_801BA938(ev, 1, 4, 1);
             break;
         }
     }
-    gm_8016F088(md);
+    gm_PrepareRumbleMode(md);
     gm_80168F88();
 }
 
@@ -659,35 +642,35 @@ void gm_801BB758(GameScene* arg0)
 {
     struct EventData* ev = &gmMainLib_804D3EE0->unk_530;
     MatchExitInfo* exit = gm_801A4284(arg0);
-    u8 stage = ev->unk_535;
+    u8 eventMatchId = ev->event_match_number;
     u8 b;
     u8 kind;
     s32 t;
 
     gm_8016A164();
-    if (exit->match_end.result == 8) {
+    if (exit->match_end.result == OUTCOME_RETRY) {
         s32 do_save = 0;
         if (ev->x20 != 0) {
             do_save = 1;
         }
-        if (stage == 0x31) {
+        if (eventMatchId == 0x31) {
             do_save = 0;
         }
         ev->xB_5 = 0;
         ev->x20 = 0;
-        ev->x24 = 0;
+        ev->player_stocks = 0;
         ev->x28 = 0;
         ev->x2C = 0;
         ev->x30 = 0;
         ev->x34 = 0;
-        ev->x38 = 0x21;
+        ev->forced_player_ckind = 0x21;
         ev->x3C = 0;
         ev->x40 = 0;
         gm_801BBB64();
         if (do_save != 0) {
             struct GameCache* gc = &lbDvd_8001822C()->game_cache;
             lbDvd_80018C6C();
-            gc->entries[0].char_id = (s8) ev->x0;
+            gc->entries[0].char_id = (s8) ev->player_ckind;
             gc->entries[0].color = ev->x1;
             lbDvd_80018254();
             lbDvd_80017700(4);
@@ -695,7 +678,7 @@ void gm_801BB758(GameScene* arg0)
         gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
-    if (exit->match_end.result == 7) {
+    if (exit->match_end.result == OUTCOME_NO_CONTEST) {
         gm_RequestPendingGameMode(1);
         return;
     }
@@ -703,7 +686,8 @@ void gm_801BB758(GameScene* arg0)
     ev->x40 += (s32) exit->match_end.frame_count;
     b = ((u8*) ev)[0xB];
     if (((b >> 3) & 1) && ((b >> 5) & 1)) {
-        ev->x24 = gm_804979D8[0].match_end.player_standings[0].stocks;
+        ev->player_stocks =
+            gm_804979D8[0].match_end.player_standings[0].stocks;
         ev->x28 = gm_804979D8[0].match_end.player_standings[0].percent;
         ev->xB_2 = 0;
         ev->xB_5 = 0;
@@ -714,31 +698,31 @@ void gm_801BB758(GameScene* arg0)
         return;
     }
     if (ev->xB_1) {
-        u32 cur = ev->xC;
-        u32 best = gmMainLib_8015CF5C(stage);
+        u32 currentTime = ev->xC;
+        u32 bestTime = gmMainLib_GetEventMatchRecordTime(eventMatchId);
         s32 upd = 0;
         if (ev->xB_6) {
-            if (best == 0 || cur < best) {
-                best = cur;
+            if (bestTime == 0 || currentTime < bestTime) {
+                bestTime = currentTime;
                 upd = 1;
             }
-        } else if (cur > best) {
-            best = cur;
+        } else if (currentTime > bestTime) {
+            bestTime = currentTime;
             upd = 1;
         }
         if (upd != 0) {
-            gmMainLib_8015CF70(stage, best);
+            gmMainLib_SetEventMatchRecordTime(eventMatchId, bestTime);
         }
-        gmMainLib_8015CEB4(stage);
+        gmMainLib_SetEventMatchCompletedFlag(eventMatchId);
     }
     gm_8016247C(ev->x3C);
     gm_SetSinglePlayerTime((u32) ev->x40 / 60);
     if (ev->xB_1) {
-        kind = gm_801732D8(ev->unk_535);
+        kind = gm_801732D8(ev->event_match_number);
     } else {
         kind = CHKIND_MAX;
     }
-    if (ev->unk_535 == gm_801BEBC0(0x32) &&
+    if (ev->event_match_number == gm_EventIdToEventNumber(0x32) &&
         exit->match_end.player_standings[0].stocks == 3)
     {
         gmMainLib_8015CF84();
@@ -750,12 +734,12 @@ void gm_801BB758(GameScene* arg0)
         }
     }
     if (ev->xB_1) {
-        gm_80173D3C(ev->unk_535);
+        gm_80173D3C(ev->event_match_number);
     }
     gm_80173EEC();
     gm_80172898(0x10);
     if (kind != 0x21) {
-        gm_801736E8(ev->x0, ev->x1, ev->x6, ev->x4, kind, 1);
+        gm_801736E8(ev->player_ckind, ev->x1, ev->x6, ev->x4, kind, 1);
         gm_RequestPendingGameMode(0x14);
         return;
     }
@@ -770,12 +754,12 @@ void gm_801BBA60_OnInit(void)
     int i;
 
     temp_r6 = &gmMainLib_804D3EE0->unk_530;
-    gmMainLib_804D3EE0->unk_530.x0 = 0;
+    gmMainLib_804D3EE0->unk_530.player_ckind = 0;
     temp_r6->x1 = 0;
     temp_r6->x2 = 0x21;
     temp_r6->x3 = 0;
     temp_r6->x4 = 0x78;
-    temp_r6->unk_535 = 0;
+    temp_r6->event_match_number = 0;
     temp_r6->x6 = 0;
     temp_r6->x7 = 0;
     temp_r6->x8 = -1;
@@ -794,12 +778,12 @@ void gm_801BBA60_OnInit(void)
     temp_r6->x18 = 0;
     temp_r6->x1C = 1.0F;
     temp_r6->x20 = 0;
-    temp_r6->x24 = 0;
+    temp_r6->player_stocks = 0;
     temp_r6->x28 = 0;
     temp_r6->x2C = 0;
     temp_r6->x30 = 0;
     temp_r6->x34 = 0;
-    temp_r6->x38 = 0x21;
+    temp_r6->forced_player_ckind = 0x21;
     temp_r6->x3C = 0;
     temp_r6->x40 = 0;
     temp_r6->x44 = -1;
@@ -807,8 +791,8 @@ void gm_801BBA60_OnInit(void)
     temp_r6->x48 = 0;
 
     for (i = 0; i < 4; i++) {
-        temp_r6->x4C[i] = 0x21;
-        temp_r6->x50[i] = 0;
+        temp_r6->player_ckinds[i] = 0x21;
+        temp_r6->player_colors[i] = 0;
     }
 }
 
@@ -825,7 +809,7 @@ s32 gm_801BBB64(void)
 
     ev = &gmMainLib_804D3EE0->unk_530;
     tbl = gm_804D6900[0];
-    idx = gmMainLib_804D3EE0->unk_530.unk_535;
+    idx = gmMainLib_804D3EE0->unk_530.event_match_number;
     if (*tbl[idx]->x14 != 0x21) {
         ev->x44 = 0;
     } else {
@@ -835,42 +819,42 @@ s32 gm_801BBB64(void)
     ev->x48 = (InternalStageId) * (u16*) ((u8*) (*pp)->x8 + 6);
     player_init = (*pp)->x14;
     if (player_init != NULL) {
-        ev->x4C[0] = *(u8*) player_init;
-        ev->x50[0] = ((u8*) (*pp)->x14)[3];
+        ev->player_ckinds[0] = *(u8*) player_init;
+        ev->player_colors[0] = ((u8*) (*pp)->x14)[3];
     } else {
-        ev->x4C[0] = 0x21;
-        ev->x50[0] = 0;
+        ev->player_ckinds[0] = 0x21;
+        ev->player_colors[0] = 0;
     }
     player_init = (*pp)->x18;
     if (player_init != NULL) {
-        ev->x4C[1] = *(u8*) player_init;
-        ev->x50[1] = ((u8*) (*pp)->x18)[3];
+        ev->player_ckinds[1] = *(u8*) player_init;
+        ev->player_colors[1] = ((u8*) (*pp)->x18)[3];
     } else {
-        ev->x4C[1] = 0x21;
-        ev->x50[1] = 0;
+        ev->player_ckinds[1] = 0x21;
+        ev->player_colors[1] = 0;
     }
     player_init = *(s8**) ((u8*) *pp + 0x1C);
     if (player_init != NULL) {
-        ev->x4C[2] = *player_init;
-        ev->x50[2] = ((u8*) *(s8**) ((u8*) *pp + 0x1C))[3];
+        ev->player_ckinds[2] = *player_init;
+        ev->player_colors[2] = ((u8*) *(s8**) ((u8*) *pp + 0x1C))[3];
     } else {
-        ev->x4C[2] = 0x21;
-        ev->x50[2] = 0;
+        ev->player_ckinds[2] = 0x21;
+        ev->player_colors[2] = 0;
     }
     player_init = *(s8**) ((u8*) *pp + 0x20);
     if (player_init != NULL) {
-        ev->x4C[3] = *player_init;
-        ev->x50[3] = ((u8*) *(s8**) ((u8*) *pp + 0x20))[3];
+        ev->player_ckinds[3] = *player_init;
+        ev->player_colors[3] = ((u8*) *(s8**) ((u8*) *pp + 0x20))[3];
     } else {
-        ev->x4C[3] = 0x21;
-        ev->x50[3] = 0;
+        ev->player_ckinds[3] = 0x21;
+        ev->player_colors[3] = 0;
     }
     if (*(u8*) *pp == 1) {
-        ev->x4C[1] = (s8) (*pp)->xC->unk0[0];
+        ev->player_ckinds[1] = (s8) (*pp)->xC->unk0[0];
         if ((*pp)->xC->unk0[5] == 1) {
-            ev->x50[1] = (*pp)->xC->unk0[6];
+            ev->player_colors[1] = (*pp)->xC->unk0[6];
         } else {
-            ev->x50[1] = 0xFF;
+            ev->player_colors[1] = 0xFF;
         }
         if (((u8*) (*pp)->xC)[0x17] == 1) {
             ev->x45 = 1;
@@ -894,46 +878,46 @@ s32 gm_801BBB64(void)
             ev->x44 = 4;
         }
         event_entry = ((void**) ((u8*) (*pp)->x10 + 0x10))[ev->x20];
-        ev->x4C[1] = *(u8*) event_entry;
+        ev->player_ckinds[1] = *(u8*) event_entry;
         event_entry = ((void**) ((u8*) (*pp)->x10 + 0x10))[ev->x20];
-        ev->x50[1] = ((u8*) event_entry)[3];
+        ev->player_colors[1] = ((u8*) event_entry)[3];
         return (s32) event_entry;
     case 35:
         if (ev->x20 == 0) {
             ev->x44 = 2;
             event_entry = ((void**) ((u8*) (*pp)->x10 + 0x10))[0];
-            ev->x4C[1] = *(u8*) event_entry;
+            ev->player_ckinds[1] = *(u8*) event_entry;
             event_entry = ((void**) ((u8*) (*pp)->x10 + 0x10))[0];
-            ev->x50[1] = ((u8*) event_entry)[3];
+            ev->player_colors[1] = ((u8*) event_entry)[3];
             event_entry = ((void**) ((u8*) (*pp)->x10 + 0x10))[2];
-            ev->x4C[2] = *(u8*) event_entry;
+            ev->player_ckinds[2] = *(u8*) event_entry;
             event_entry = ((void**) ((u8*) (*pp)->x10 + 0x10))[2];
-            ev->x50[2] = ((u8*) event_entry)[3];
+            ev->player_colors[2] = ((u8*) event_entry)[3];
             event_entry = ((void**) ((u8*) (*pp)->x10 + 0x10))[3];
-            ev->x4C[3] = *(u8*) event_entry;
+            ev->player_ckinds[3] = *(u8*) event_entry;
             event_entry = ((void**) ((u8*) (*pp)->x10 + 0x10))[3];
-            ev->x50[3] = ((u8*) event_entry)[3];
+            ev->player_colors[3] = ((u8*) event_entry)[3];
             return (s32) event_entry;
         }
         if (ev->x20 == 1) {
             ev->x44 = 4;
             event_entry = ((void**) ((u8*) (*pp)->x10 + 0x10))[1];
-            ev->x4C[1] = *(u8*) event_entry;
+            ev->player_ckinds[1] = *(u8*) event_entry;
             event_entry = ((void**) ((u8*) (*pp)->x10 + 0x10))[1];
-            ev->x50[1] = ((u8*) event_entry)[3];
+            ev->player_colors[1] = ((u8*) event_entry)[3];
             event_entry = ((void**) ((u8*) (*pp)->x10 + 0x10))[4];
-            ev->x4C[2] = *(u8*) event_entry;
+            ev->player_ckinds[2] = *(u8*) event_entry;
             event_entry = ((void**) ((u8*) (*pp)->x10 + 0x10))[4];
-            ev->x50[2] = ((u8*) event_entry)[3];
+            ev->player_colors[2] = ((u8*) event_entry)[3];
             return (s32) event_entry;
         }
         return result;
     case 43:
         x4 = (*pp)->x4;
         event_entry = (void*) x4->x4;
-        ev->x4C[2] = *(s8*) event_entry;
+        ev->player_ckinds[2] = *(s8*) event_entry;
         event_entry = (void*) x4->x4;
-        ev->x50[2] = ((u8*) event_entry)[3];
+        ev->player_colors[2] = ((u8*) event_entry)[3];
         result = (s32) event_entry;
         /* fallthrough */
     default:
@@ -953,8 +937,8 @@ void gm_801BBEA8_OnLoad(void)
     gm_801BA8FC();
 
     temp_r29 = gm_804D6900[0];
-    temp_r28 = temp_r30->unk_535;
-    temp_r30->x0 = 0;
+    temp_r28 = temp_r30->event_match_number;
+    temp_r30->player_ckind = 0;
     temp_r30->x1 = 0;
     temp_r30->x6 = gm_801677F0();
     temp_r30->x7 = 0;
@@ -971,12 +955,12 @@ void gm_801BBEA8_OnLoad(void)
     temp_r30->x18 = 0;
     temp_r30->x1C = 1.0F;
     temp_r30->x20 = 0;
-    temp_r30->x24 = 0;
+    temp_r30->player_stocks = 0;
     temp_r30->x28 = 0;
     temp_r30->x2C = 0;
     temp_r30->x30 = 0;
     temp_r30->x34 = 0;
-    temp_r30->x38 = 0x21;
+    temp_r30->forced_player_ckind = 0x21;
     temp_r30->x3C = 0;
     temp_r30->x40 = 0;
     gm_801BBB64();
@@ -998,7 +982,7 @@ s32 gm_801BC00C(void)
     struct gm_804D6900_t** event_levels;
     gm_803DF94C_t** event_info = gm_803DF94C;
     struct EventData* ev = &gmMainLib_804D3EE0->unk_530;
-    u8 idx = gmMainLib_804D3EE0->unk_530.unk_535;
+    u8 idx = gmMainLib_804D3EE0->unk_530.event_match_number;
     void* event_entry;
     u8 ckind;
     u8 costume;
@@ -1055,8 +1039,8 @@ s32 gm_801BC00C(void)
     case 43:
         chr = Player_800325C8(
             (CharacterKind) (s8) * (u8*) event_levels[idx]->x4->x4, 0);
-        ftLib_80087508(chr, ev->x50[2]);
-        if ((s8) ev->x0 == 4) {
+        ftLib_80087508(chr, ev->player_colors[2]);
+        if ((s8) ev->player_ckind == 4) {
             Player_80031DA8(chr, ev->x1);
         }
         break;
@@ -1093,7 +1077,9 @@ s32 gm_801BC00C(void)
             costume = *((u8*) event_entry + 3);
             {
                 struct EventData* ev2 = &gmMainLib_804D3EE0->unk_530;
-                if ((s8) ev2->x0 == (s8) ckind && (u8) ev2->x1 == costume) {
+                if ((s8) ev2->player_ckind == (s8) ckind &&
+                    (u8) ev2->x1 == costume)
+                {
                     if (costume <= 2) {
                         costume += 1;
                     } else {
@@ -1111,7 +1097,9 @@ s32 gm_801BC00C(void)
             costume = *((u8*) event_entry + 3);
             {
                 struct EventData* ev2 = &gmMainLib_804D3EE0->unk_530;
-                if ((s8) ev2->x0 == (s8) ckind && (u8) ev2->x1 == costume) {
+                if ((s8) ev2->player_ckind == (s8) ckind &&
+                    (u8) ev2->x1 == costume)
+                {
                     if (costume <= 2) {
                         costume += 1;
                     } else {
@@ -1125,7 +1113,9 @@ s32 gm_801BC00C(void)
             costume = *((u8*) event_entry + 3);
             {
                 struct EventData* ev2 = &gmMainLib_804D3EE0->unk_530;
-                if ((s8) ev2->x0 == (s8) ckind && (u8) ev2->x1 == costume) {
+                if ((s8) ev2->player_ckind == (s8) ckind &&
+                    (u8) ev2->x1 == costume)
+                {
                     if (costume <= 2) {
                         costume += 1;
                     } else {
@@ -1139,7 +1129,9 @@ s32 gm_801BC00C(void)
             costume = *((u8*) event_entry + 3);
             {
                 struct EventData* ev2 = &gmMainLib_804D3EE0->unk_530;
-                if ((s8) ev2->x0 == (s8) ckind && (u8) ev2->x1 == costume) {
+                if ((s8) ev2->player_ckind == (s8) ckind &&
+                    (u8) ev2->x1 == costume)
+                {
                     if (costume <= 2) {
                         costume += 1;
                     } else {
@@ -1155,7 +1147,9 @@ s32 gm_801BC00C(void)
             costume = *((u8*) event_entry + 3);
             {
                 struct EventData* ev2 = &gmMainLib_804D3EE0->unk_530;
-                if ((s8) ev2->x0 == (s8) ckind && (u8) ev2->x1 == costume) {
+                if ((s8) ev2->player_ckind == (s8) ckind &&
+                    (u8) ev2->x1 == costume)
+                {
                     if (costume <= 2) {
                         costume += 1;
                     } else {
@@ -1169,7 +1163,9 @@ s32 gm_801BC00C(void)
             costume = *((u8*) event_entry + 3);
             {
                 struct EventData* ev2 = &gmMainLib_804D3EE0->unk_530;
-                if ((s8) ev2->x0 == (s8) ckind && (u8) ev2->x1 == costume) {
+                if ((s8) ev2->player_ckind == (s8) ckind &&
+                    (u8) ev2->x1 == costume)
+                {
                     if (costume <= 2) {
                         costume += 1;
                     } else {
@@ -1190,7 +1186,10 @@ s32 gm_801BC00C(void)
                                     event_info[idx]->x0, 0x15);
 }
 
-static u8 gm_803DF918[] = {
+static u8 gm_803DF918_event_match_number_to_event_match_id_mapping[] = {
+    ///< Index represents the event
+    ///< match in order from the top of the event
+    ///< match list
     0x00, 0x11, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A,
     0x0B, 0x0C, 0x0D, 0x24, 0x0F, 0x10, 0x01, 0x12, 0x13, 0x14, 0x15,
     0x1A, 0x17, 0x18, 0x19, 0x16, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20,
@@ -1697,10 +1696,10 @@ void gm_801BC4F4(HSD_GObj* gobj)
     u32 var_r4;
     PAD_STACK(8);
 
-    temp_r30 = gmMainLib_804D3EE0->unk_530.unk_535;
+    temp_r30 = gmMainLib_804D3EE0->unk_530.event_match_number;
     temp_r28 = &gmMainLib_804D3EE0->unk_530;
     temp_r28->xB_1 = true;
-    temp_r29 = gmMainLib_8015CF5C(temp_r30);
+    temp_r29 = gmMainLib_GetEventMatchRecordTime(temp_r30);
     var_r25 = false;
     if (temp_r28->xB_6) {
         var_r4 = gm_8016AEDC();
@@ -1755,17 +1754,17 @@ void gm_801BC670(HSD_GObj* arg0)
     PAD_STACK(0x10);
 
     temp_r31->xB_2 = true;
-    temp_r31->x10 = 0x78 - temp_r30->x4;
+    temp_r31->x10 = 0x78 - (temp_r30->x4);
     temp_r31->x2C = gm_8016AEEC();
     temp_r31->x30 = gm_8016AEFC();
     if (temp_r31->x2C < temp_r30->x0) {
         temp_r31->x2C = temp_r30->x0;
         temp_r31->x30 = 0;
     }
-    if (Player_80036394(0) == 7) {
-        temp_r31->x38 = 0x13;
+    if (Player_GetSlotFighterKind(0) == 7) {
+        temp_r31->forced_player_ckind = 0x13;
     } else {
-        temp_r31->x38 = 0x21;
+        temp_r31->forced_player_ckind = 0x21;
     }
     temp_r31->x34 += gm_8016AEDC();
     Player_80036844(0, 1);
@@ -1879,7 +1878,7 @@ void gm_801BC9E8(HSD_GObj* gobj)
     bool var_r0;
     struct EventData* temp_r30_2;
     struct gm_804D6900_x4_t* temp_r30 =
-        (*gm_804D6900)[gmMainLib_804D3EE0->unk_530.unk_535]->x4;
+        (*gm_804D6900)[gmMainLib_804D3EE0->unk_530.event_match_number]->x4;
     u32 coins = Player_GetCoins(0);
     PAD_STACK(0x28);
 
@@ -1927,7 +1926,7 @@ void gm_801BCAF0(HSD_GObj* gobj)
         if ((Player_GetStocks(var_r30) <= 0) &&
             (temp_r3 = Player_GetEntity(var_r30), ((temp_r3 == NULL) == 0)))
         {
-            if (ftLib_800872A4(temp_r3) == FTKIND_SEAK) {
+            if (ftLib_GetFighterKindFromGObj(temp_r3) == FTKIND_SEAK) {
                 var_r0 = 1;
             } else {
                 Player_SetStocks(var_r30, 1);
@@ -1985,7 +1984,7 @@ void gm_801BCC9C(HSD_GObj* arg0)
 {
     struct gm_804D6900_t** temp_r29 = gm_804D6900[0];
     struct EventData* ev = &gmMainLib_804D3EE0->unk_530;
-    u8 idx = gmMainLib_804D3EE0->unk_530.unk_535;
+    u8 idx = gmMainLib_804D3EE0->unk_530.event_match_number;
     struct gm_804D6900_x4_t* x4 = (*temp_r29)->x4;
     struct EventData* ev2;
     struct gm_804D6900_t** entry;
@@ -2010,7 +2009,7 @@ void gm_801BCC9C(HSD_GObj* arg0)
         inner = (u8*) (*entry)->x10;
         cd = ((struct gm_evspawn**) (inner + 0x10))[ev->x20];
         costume = cd->unk3;
-        if ((s8) ev2->x0 == cd->unk0 && (u8) ev2->x1 == costume) {
+        if ((s8) ev2->player_ckind == cd->unk0 && (u8) ev2->x1 == costume) {
             if (costume <= 2) {
                 costume += 1;
             } else {
@@ -2118,7 +2117,7 @@ void gm_801BD028(HSD_GObj* arg0)
     s32 cond;
     struct EventData* ev = &gmMainLib_804D3EE0->unk_530;
     struct gm_804D6900_t** levels = gm_804D6900[0];
-    u8 level = gmMainLib_804D3EE0->unk_530.unk_535;
+    u8 level = gmMainLib_804D3EE0->unk_530.event_match_number;
     PAD_STACK(0x1C);
 
     if (gmMainLib_804D3EE0->unk_530.x10 == 0) {
@@ -2635,7 +2634,7 @@ void gm_801BDE94(HSD_GObj* arg0)
     PlayerInitData sp50;
     struct gm_804D6900_t** tbl = gm_804D6900[0];
     struct EventData* ev = &gmMainLib_804D3EE0->unk_530;
-    u8 level = ev->unk_535;
+    u8 level = ev->event_match_number;
     u64 mask;
     struct gm_804D6900_x4_t* x4 = (*tbl)->x4;
     PAD_STACK(0x44);
@@ -2643,26 +2642,14 @@ void gm_801BDE94(HSD_GObj* arg0)
     if (!ev->xB_5) {
         ev->xB_5 = 1;
         if (ev->x20 == 0) {
-            mask = lbAudioAx_80026E84(
-                (enum CharacterKind)(s8) (u8) *tbl[level]->x14);
-            mask |= lbAudioAx_80026E84(
-                (enum CharacterKind)((struct gm_evx10*) tbl[level]->x10)
-                    ->unk10->unk0);
-            mask |= lbAudioAx_80026E84(
-                (enum CharacterKind)((struct gm_evx10*) tbl[level]->x10)
-                    ->unk18->unk0);
-            mask |= lbAudioAx_80026E84(
-                (enum CharacterKind)((struct gm_evx10*) tbl[level]->x10)
-                    ->unk1C->unk0);
+            mask = lbAudioAx_80026E84(*tbl[level]->x14);
+            mask |= lbAudioAx_80026E84(tbl[level]->x10->entries[0]->c_kind);
+            mask |= lbAudioAx_80026E84(tbl[level]->x10->entries[2]->c_kind);
+            mask |= lbAudioAx_80026E84(tbl[level]->x10->entries[3]->c_kind);
         } else {
-            mask = lbAudioAx_80026E84(
-                (enum CharacterKind)(s8) (u8) *tbl[level]->x14);
-            mask |= lbAudioAx_80026E84(
-                (enum CharacterKind)((struct gm_evx10*) tbl[level]->x10)
-                    ->unk14->unk0);
-            mask |= lbAudioAx_80026E84(
-                (enum CharacterKind)((struct gm_evx10*) tbl[level]->x10)
-                    ->unk20->unk0);
+            mask = lbAudioAx_80026E84(*tbl[level]->x14);
+            mask |= lbAudioAx_80026E84(tbl[level]->x10->entries[1]->c_kind);
+            mask |= lbAudioAx_80026E84(tbl[level]->x10->entries[4]->c_kind);
         }
         lbAudioAx_80026F2C(0x14);
         lbAudioAx_8002702C(4, mask);
@@ -2682,16 +2669,14 @@ void gm_801BDE94(HSD_GObj* arg0)
         case 0:
             if (Player_GetStocks(1) <= 0) {
                 ev->x18 = 1;
-                gm_801BAB40(&sp50,
-                            (int) ((struct gm_evx10*) tbl[level]->x10)->unk18);
+                gm_801BAB40(&sp50, tbl[level]->x10->entries[2]);
                 gm_8016EDDC(2, &sp50);
             }
             break;
         case 1:
             if (Player_GetStocks(2) <= 0) {
                 ev->x18 = 2;
-                gm_801BAB40(&sp50,
-                            (int) ((struct gm_evx10*) tbl[level]->x10)->unk1C);
+                gm_801BAB40(&sp50, tbl[level]->x10->entries[3]);
                 gm_8016EDDC(3, &sp50);
             }
             break;
@@ -2701,7 +2686,9 @@ void gm_801BDE94(HSD_GObj* arg0)
                 struct gm_evspawn* sp =
                     ((struct gm_evx10*) tbl[level]->x10)->unk1C;
                 u8 color = sp->unk3;
-                if ((s8) ev2->x0 == sp->unk0 && (u8) ev2->x1 == color) {
+                if ((s8) ev2->player_ckind == sp->unk0 &&
+                    (u8) ev2->x1 == color)
+                {
                     if (color <= 2) {
                         color += 1;
                     } else {
@@ -2730,8 +2717,7 @@ void gm_801BDE94(HSD_GObj* arg0)
         case 0:
             if (Player_GetStocks(1) <= 0) {
                 ev->x18 = 1;
-                gm_801BAB40(&sp50,
-                            (int) ((struct gm_evx10*) tbl[level]->x10)->unk20);
+                gm_801BAB40(&sp50, tbl[level]->x10->entries[4]);
                 gm_8016EDDC(2, &sp50);
             }
             break;
@@ -2741,7 +2727,9 @@ void gm_801BDE94(HSD_GObj* arg0)
                 struct gm_evspawn* sp =
                     ((struct gm_evx10*) tbl[level]->x10)->unk20;
                 u8 color = sp->unk3;
-                if ((s8) ev2->x0 == sp->unk0 && (u8) ev2->x1 == color) {
+                if ((s8) ev2->player_ckind == sp->unk0 &&
+                    (u8) ev2->x1 == color)
+                {
                     if (color <= 2) {
                         color += 1;
                     } else {
@@ -2813,7 +2801,7 @@ void gm_801BE39C(HSD_GObj* gobj)
     PAD_STACK(0x34);
 
     temp_r28 = gm_804D6900[0];
-    temp_r0 = gmMainLib_804D3EE0->unk_530.unk_535;
+    temp_r0 = gmMainLib_804D3EE0->unk_530.event_match_number;
     temp_r31 = &gmMainLib_804D3EE0->unk_530;
     temp_r30 = temp_r28[temp_r0]->x4;
     if (!temp_r31->xB_5) {
@@ -2854,8 +2842,8 @@ void gm_801BE39C(HSD_GObj* gobj)
     }
     if (temp_r31->x10 == 0 && gm_8016AEEC() >= temp_r30->x0) {
         temp_r31->x10 = 1;
-        gm_801BAB40(&sp40, temp_r30->x4);
-        sp40.color = temp_r31->x50[2];
+        gm_801BAB40(&sp40, (gm_801BAB40_src*) temp_r30->x4);
+        sp40.color = temp_r31->player_colors[2];
         gm_8016EDDC(2, &sp40);
     }
     temp_r27_5 = &gmMainLib_804D3EE0->unk_530;
@@ -3029,7 +3017,8 @@ void gm_801BE638(HSD_GObj* gobj)
 void gm_801BEA10(int arg0)
 {
     Player_SetPlayerAndEntityCpuType(
-        arg0, (*gm_804D6900)[gmMainLib_804D3EE0->unk_530.unk_535]->xC->x16);
+        arg0, (*gm_804D6900)[gmMainLib_804D3EE0->unk_530.event_match_number]
+                  ->xC->x16);
 }
 
 void gm_801BEA4C(int arg0)
@@ -3065,12 +3054,12 @@ void gm_801BEB68(int arg0)
 
 void gm_801BEB74(u8 arg0)
 {
-    gmMainLib_804D3EE0->unk_530.unk_535 = arg0;
+    gmMainLib_804D3EE0->unk_530.event_match_number = arg0;
 }
 
 u8 gm_801BEB80(void)
 {
-    return gmMainLib_804D3EE0->unk_530.unk_535;
+    return gmMainLib_804D3EE0->unk_530.event_match_number;
 }
 
 bool gm_801BEB8C(u8 arg0)
@@ -3078,50 +3067,52 @@ bool gm_801BEB8C(u8 arg0)
     return (*gm_804D6900)[arg0]->x8->x1_0;
 }
 
-u8 gm_801BEBA8(u8 arg0)
+u8 gm_EventNumberToEventId(u8 selectedEventMatchNumber)
 {
-    return gm_803DF918[arg0];
+    return gm_803DF918_event_match_number_to_event_match_id_mapping
+        [selectedEventMatchNumber];
 }
 
-u8 gm_801BEBC0(u8 arg0)
+u8 gm_EventIdToEventNumber(u8 eventMatchId)
 {
-    u8* tmp = gm_803DF918;
-    u8 i;
-    for (i = 0; i < 0x33; i++) {
-        if (arg0 == tmp[i]) {
+    u8* eventMatchIds =
+        gm_803DF918_event_match_number_to_event_match_id_mapping;
+    u8 eventNumber;
+    for (eventNumber = 0; eventNumber < 0x33; eventNumber++) {
+        if (eventMatchId == eventMatchIds[eventNumber]) {
             break;
         }
     }
-    return i;
+    return eventNumber;
 }
 
-u8 gm_801BEBF8(u8 arg0)
+u8 gm_801BEBF8(u8 eventMatchId)
 {
-    u8* table = gm_803DF918;
-    u8 i;
-    struct gm_804D6900_t** array = gm_804D6900[0];
-    struct gm_804D6900_t* entry;
+    u8* table = gm_803DF918_event_match_number_to_event_match_id_mapping;
+    u8 eventNumber;
+    struct gm_804D6900_t** eventMatches = gm_804D6900[0];
+    struct gm_804D6900_t* selectedEventMatch;
     u8* ptr;
 
-    for (i = 0; i < 0x33; i++) {
-        if (arg0 == table[i]) {
+    for (eventNumber = 0; eventNumber < 0x33; eventNumber++) {
+        if (eventMatchId == table[eventNumber]) {
             break;
         }
     }
 
-    entry = array[i];
-    if (entry == NULL) {
+    selectedEventMatch = eventMatches[eventNumber];
+    if (selectedEventMatch == NULL) {
         return 0x21;
     }
 
-    ptr = *(u8**) ((u8*) entry + 0x14);
+    ptr = *(u8**) ((u8*) selectedEventMatch->x14);
     return *ptr;
 }
 
 UNK_T gm_801BEC54(void)
 {
     struct gm_804D6900_t* temp_r3;
-    temp_r3 = (*gm_804D6900)[gmMainLib_804D3EE0->unk_530.unk_535];
+    temp_r3 = (*gm_804D6900)[gmMainLib_804D3EE0->unk_530.event_match_number];
     if (temp_r3 == NULL) {
         return NULL;
     }
@@ -3366,7 +3357,7 @@ void gm_801BF128(void)
     count = 0;
     c = 0;
     do {
-        if (gm_80164840(c) != 0) {
+        if (gm_IsCharacterUnlocked(c) != 0) {
             character_pool[count] = c;
             count += 1;
         }
@@ -3480,7 +3471,7 @@ void gm_801BF4DC(GameScene* arg0)
     temp_r30 = &gmMainLib_804D3EE0->unk_1710;
     temp_r31 = gm_801A427C(arg0);
     gm_80167BC8(temp_r30);
-    gm_8016F088(temp_r31);
+    gm_PrepareRumbleMode(temp_r31);
     gm_80168FC4();
     gm_80167A64(&temp_r31->rules);
 

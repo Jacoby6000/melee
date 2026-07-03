@@ -4,6 +4,7 @@
 #include "gm_1B0FF.h"
 #include "gmvsdata.h"
 
+#include "gm/gm_16AE.h"
 #include "gm/gm_1A3F.h"
 #include "gm/gm_1BA8.h"
 #include "gm/gmmovieend.h"
@@ -398,7 +399,7 @@ void gm_801B16A8(GameScene* arg0)
 void gm_801B16C8(GameScene* arg0)
 {
     gm_801A5F64(arg0, gm_801A5244(), 0);
-    if (gm_801743A4(gm_8047C020.match_end.result) == 0) {
+    if (gm_IsQuitOrRetry(gm_8047C020.match_end.result) == 0) {
         gm_801623A4(&gm_8047C020.match_end);
     }
 }
@@ -457,7 +458,7 @@ void gm_801B1834(GameScene* arg0)
         gm_801628C4(mei->match_end.frame_count / 60,
                     gm_80162800(&mei->match_end));
     }
-    if ((gm_80167140(&mei->match_end) != 0) &&
+    if ((gm_MatchHasWinner(&mei->match_end) != 0) &&
         (gm_8018F1B0(&mei->match_end) != 0))
     {
         gm_SetPendingSceneToSuccessorOf(5);
@@ -532,11 +533,11 @@ void gm_801B1B74(GameScene* arg0)
         lb_8001CE00();
     }
     gm_801B06B0(css, 0x17U, vs_data->data.players[0].c_kind, 1,
-                vs_data->data.players[0].color, vs_data->data.players[0].xA,
-                9U, gm_804D68C0);
+                vs_data->data.players[0].color,
+                vs_data->data.players[0].nametag_id, 9U, gm_804D68C0);
     gm_801B07B4(css, vs_data->data.players[1].c_kind, 1,
-                vs_data->data.players[1].color, vs_data->data.players[1].xA,
-                0U, gm_804D68C0);
+                vs_data->data.players[1].color,
+                vs_data->data.players[1].nametag_id, 0U, gm_804D68C0);
     lbDvd_800174BC();
     gm_804D68C1 = lbTime_8000AF74((u32) gm_804D68C1, 1);
 }
@@ -564,10 +565,11 @@ void gm_801B1C24(GameScene* arg0)
     }
     gm_80167A14(vs->data.players);
     gm_801B0730(css, &vs->data.players[0].c_kind, NULL,
-                &vs->data.players[0].color, &vs->data.players[0].xA, NULL);
+                &vs->data.players[0].color, &vs->data.players[0].nametag_id,
+                NULL);
     gm_801B07E8_layer(css, &vs->data.players[1].c_kind, NULL,
                       (s8*) &vs->data.players[1].color,
-                      (s8*) &vs->data.players[1].xA, NULL);
+                      (s8*) &vs->data.players[1].nametag_id, NULL);
     j = (i = 2);
     vs->data.players[1].xE = 0;
     for (; i < 4; i++, j++) {
@@ -872,7 +874,7 @@ void gm_PrepCameraModeVSScene(GameScene* arg0)
     }
 
     gm_801B0348(start);
-    gm_8016F088(start);
+    gm_PrepareRumbleMode(start);
     gm_80168FC4();
     lb_8001C550();
     lbSnap_8001E218(lbDvd_GetPreloadedArchive(0x7D7),

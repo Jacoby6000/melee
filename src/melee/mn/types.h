@@ -51,27 +51,44 @@ struct Menu_GObj {
 typedef struct HSD_GObj Menu_GObj;
 #endif
 
+#define PLAYER_FLAGS_XC_RUMBLE 0x80    //
+#define PLAYER_FLAGS_XC_UNK1 0x40      //
+#define PLAYER_FLAGS_XC_METAL 0x20     //
+#define PLAYER_FLAGS_XC_UNK3 0x10      //
+#define PLAYER_FLAGS_XC_INVISIBLE 0x08 //
+#define PLAYER_FLAGS_XC_UNK5 0x04      //
+#define PLAYER_FLAGS_XC_UNK6 0x02      //
+#define PLAYER_FLAGS_XC_UNK7 0x01      //
+
 struct PlayerInitData {
-    /*0x00*/ s8 c_kind;    ///< uses CharacterKind (CKIND_*) values
-    /*0x01*/ u8 slot_type; ///< uses Gm_PKind values
-    /*0x02*/ s8 stocks;    // stocks
-    /*0x03*/ u8 color;     // color
-    /*0x04*/ u8 slot;      // port
-    /*0x05*/ s8 x5;        // spawnpos32
-    /*0x06*/ s8 spawn_dir; // spawn direction
-    /*0x07*/ u8 sub_color; // subcolor
-    /*0x08*/ s8 handicap;  // handicap
-    /*0x09*/ u8 team;      // team
-    /*0x0A*/ u8 xA;        // nametag
+    /*0x00*/ s8 c_kind;     ///< uses CharacterKind (CKIND_*) values
+    /*0x01*/ u8 slot_type;  ///< uses Gm_PKind values
+    /*0x02*/ s8 stocks;     // stocks
+    /*0x03*/ u8 color;      // color
+    /*0x04*/ u8 slot;       // port
+    /*0x05*/ s8 x5;         // spawnpos32
+    /*0x06*/ s8 spawn_dir;  // spawn direction
+    /*0x07*/ u8 sub_color;  // subcolor
+    /*0x08*/ s8 handicap;   // handicap
+    /*0x09*/ u8 team;       // team
+    /*0x0A*/ u8 nametag_id; // nametag?
     /*0x0B*/ u8 xB;
-    /*0x0C*/ u8 xC_b0 : 1; ///< rumble enabled
-    u8 xC_b1 : 1;
-    u8 xC_b2 : 1; ///< metal
-    u8 xC_b3 : 1;
-    u8 xC_b4 : 1; ///< invisible
-    u8 xC_b5 : 1;
-    u8 xC_b6 : 1;
-    u8 xC_b7 : 1;
+    /*0x0C*/ union { ///< Sometimes the code does bitflag style assignment,
+                     ///< sometimes it does explicit individual field
+                     ///< assignments.  This union allows us to do both without
+                     ///< giving up anything
+        u8 flags;    ///< See PLAYER_FLAGS_*
+        struct {
+            u8 rumble_enabled : 1;
+            u8 xC_b1 : 1;
+            u8 metal : 1;
+            u8 xC_b3 : 1;
+            u8 invisible : 1;
+            u8 xC_b5 : 1;
+            u8 xC_b6 : 1;
+            u8 xC_b7 : 1;
+        };
+    };
     /*0x0D*/ u8 xD_b0 : 1;
     u8 xD_b1 : 1;
     u8 xD_b2 : 1;

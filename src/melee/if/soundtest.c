@@ -510,7 +510,7 @@ void un_802FFF2C(StartMeleeData* arg0)
         data->players[0].color = sp->x38[0];
         data->players[0].sub_color = sp->x48[0];
         data->players[0].team = sp->x58[0];
-        data->players[0].xC_b0 = sp->xDC[0];
+        data->players[0].rumble_enabled = sp->xDC[0];
         data->players[0].x12 = sp->x68[0];
         data->players[0].x18 = sp->x78[0];
         data->players[0].x1C = sp->x88[0];
@@ -524,7 +524,7 @@ void un_802FFF2C(StartMeleeData* arg0)
         data->players[1].color = sp->x38[1];
         data->players[1].sub_color = sp->x48[1];
         data->players[1].team = sp->x58[1];
-        data->players[1].xC_b0 = sp->xDC[1];
+        data->players[1].rumble_enabled = sp->xDC[1];
         data->players[1].x12 = sp->x68[1];
         data->players[1].x18 = sp->x78[1];
         data->players[1].x1C = sp->x88[1];

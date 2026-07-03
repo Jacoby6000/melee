@@ -149,7 +149,7 @@ void gm_801B931C(GameScene* arg0)
     }
 
     gm_801B0348(start);
-    gm_8016F088(start);
+    gm_PrepareRumbleMode(start);
     gm_80168FC4();
 }
 

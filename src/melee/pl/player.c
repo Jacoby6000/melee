@@ -1776,7 +1776,7 @@ pl_StaleMoveTableExt_t* Player_GetStaleMoveTableIndexPtr2(s32 slot)
     return stale_move_table;
 }
 
-FighterKind Player_80036394(s32 slot)
+FighterKind Player_GetSlotFighterKind(s32 slot)
 {
     StaticPlayer* player;
     HSD_GObj* entity;
@@ -1786,7 +1786,7 @@ FighterKind Player_80036394(s32 slot)
     entity = player->player_entity[player->transformed[0]];
 
     if (entity) {
-        return ftLib_800872A4(entity);
+        return ftLib_GetFighterKindFromGObj(entity);
     }
     return -1;
 }

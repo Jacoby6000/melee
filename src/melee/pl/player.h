@@ -292,7 +292,7 @@ plActionStats* Player_GetActionStats(int slot);
 StaleMoveTable* Player_GetStaleMoveTableIndexPtr(s32 slot);
 struct pl_x5EC_t* Player_GetUnk6A8Ptr(int slot);
 pl_StaleMoveTableExt_t* Player_GetStaleMoveTableIndexPtr2(s32 slot);
-FighterKind Player_80036394(s32 slot);
+FighterKind Player_GetSlotFighterKind(s32 slot);
 s32 Player_80036428(s32 slot);
 void Player_SetUnk45(s32 slot, int unk45);
 u32 Player_GetUnk45(s32 slot);

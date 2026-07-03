@@ -302,7 +302,7 @@ void gm_801B6428(GameScene* arg0)
         var_r4_2 = temp_r31->unk_584;
     }
     gm_801B0620(temp_r3->players, var_r4_2, temp_r31->unk_585, 1, gm_804D68E8);
-    temp_r3->players[0].xA = temp_r31->unk_586;
+    temp_r3->players[0].nametag_id = temp_r31->unk_586;
     temp_r3->players[0].xC_b1 = false;
     temp_r3->rules.xE = gm_801647F8(temp_r3->players[0].c_kind);
     {
@@ -310,7 +310,7 @@ void gm_801B6428(GameScene* arg0)
         scene->game_cache.stage_id = temp_r3->rules.xE;
     }
     lbDvd_80018254();
-    gm_8016F088(temp_r3);
+    gm_PrepareRumbleMode(temp_r3);
 }
 
 void gm_801B65D4(GameScene* arg0)
@@ -458,7 +458,7 @@ bool gm_801B688C(bool arg0)
         if (temp_r3 != 0x21) {
             gm_801736E8(temp_r29->data.players[0].c_kind,
                         temp_r29->data.players[0].color, gm_804D68F0,
-                        temp_r29->data.players[0].xA, temp_r3,
+                        temp_r29->data.players[0].nametag_id, temp_r3,
                         gm_GetCurrentGameMode());
             gm_RequestPendingGameMode(GM_CHALLENGER_APPROACH);
             return true;
@@ -482,8 +482,8 @@ static void gm_801B6AD8_inline(GameScene* scene, int x)
     temp_r31->data.players[0].x18 = 1.0F;
     temp_r31->data.players[0].x1C = 1.0F;
     gm_801B06B0(temp_r3, x, temp_r31->data.players[0].c_kind, 1,
-                temp_r31->data.players[0].color, temp_r31->data.players[0].xA,
-                0, gm_804D68F0);
+                temp_r31->data.players[0].color,
+                temp_r31->data.players[0].nametag_id, 0, gm_804D68F0);
     temp_r31_2 = &lbDvd_8001822C()->game_cache;
     lbDvd_800174BC();
     temp_r31_2->entries[1].char_id = CKIND_BOY;
@@ -541,7 +541,7 @@ void gm_801B6B70(GameScene* scene)
     gm_80167A14(temp_r31->data.players);
     gm_801B0730(temp_r3, &temp_r31->data.players[0].c_kind, NULL,
                 &temp_r31->data.players[0].color,
-                &temp_r31->data.players[0].xA, NULL);
+                &temp_r31->data.players[0].nametag_id, NULL);
 }
 
 void gm_801B6BE8(GameScene* scene)
@@ -571,7 +571,7 @@ void gm_801B6BE8(GameScene* scene)
         temp_r3->players[i].team = !temp_r3->players[0].team;
     }
 
-    gm_8016F088(temp_r3);
+    gm_PrepareRumbleMode(temp_r3);
     gm_80182554(temp_r3->players[0].c_kind, 0x21);
     temp_r29 =
         gmMainLib_8015D6A4(gm_80164024(temp_r31->data.players[0].c_kind));
@@ -643,7 +643,7 @@ void gm_801B70DC(GameScene* scene)
     gm_80167A14(temp_r31->data.players);
     gm_801B0730(temp_r3, &temp_r31->data.players[0].c_kind, NULL,
                 &temp_r31->data.players[0].color,
-                &temp_r31->data.players[0].xA, NULL);
+                &temp_r31->data.players[0].nametag_id, NULL);
 }
 
 void gm_801B7154(GameScene* scene)
@@ -674,7 +674,7 @@ void gm_801B7154(GameScene* scene)
         temp_r3->players[i].team = !temp_r3->players[0].team;
         temp_r3->players[i].xC_b1 = false;
     }
-    gm_8016F088(temp_r3);
+    gm_PrepareRumbleMode(temp_r3);
     gm_80182554(temp_r3->players[0].c_kind, 0x22);
     temp_r29 =
         gmMainLib_8015D6F8(gm_80164024(temp_r31->data.players[0].c_kind));
@@ -744,7 +744,7 @@ void gm_801B7688(GameScene* scene)
     gm_80167A14(temp_r31->data.players);
     gm_801B0730(temp_r3, &temp_r31->data.players[0].c_kind, NULL,
                 &temp_r31->data.players[0].color,
-                &temp_r31->data.players[0].xA, NULL);
+                &temp_r31->data.players[0].nametag_id, NULL);
 }
 
 static inline VsModeData* getMultimanData(void)
@@ -783,7 +783,7 @@ void gm_801B7700(GameScene* scene)
         temp_r3->players[i].xC_b1 = false;
     }
 
-    gm_8016F088(temp_r3);
+    gm_PrepareRumbleMode(temp_r3);
     gm_80182554(temp_r3->players[0].c_kind, 0x23);
     temp_r27 =
         gmMainLib_8015D74C(gm_80164024(temp_r30->data.players[0].c_kind));
@@ -849,7 +849,7 @@ void gm_801B7C0C(GameScene* scene)
     gm_80167A14(temp_r31->data.players);
     gm_801B0730(temp_r3, &temp_r31->data.players[0].c_kind, NULL,
                 &temp_r31->data.players[0].color,
-                &temp_r31->data.players[0].xA, NULL);
+                &temp_r31->data.players[0].nametag_id, NULL);
 }
 
 void gm_801B7C84(GameScene* scene)
@@ -884,7 +884,7 @@ void gm_801B7C84(GameScene* scene)
         temp_r3->players[i].xC_b1 = false;
     }
 
-    gm_8016F088(temp_r3);
+    gm_PrepareRumbleMode(temp_r3);
     gm_80182554(temp_r3->players[0].c_kind, 0x24);
     temp_r27 =
         gmMainLib_8015D7A4(gm_80164024(temp_r30->data.players[0].c_kind));
@@ -951,7 +951,7 @@ void gm_801B81A8(GameScene* scene)
     gm_80167A14(temp_r31->data.players);
     gm_801B0730(temp_r3, &temp_r31->data.players[0].c_kind, NULL,
                 &temp_r31->data.players[0].color,
-                &temp_r31->data.players[0].xA, NULL);
+                &temp_r31->data.players[0].nametag_id, NULL);
 }
 
 void gm_801B8220(GameScene* scene)
@@ -985,7 +985,7 @@ void gm_801B8220(GameScene* scene)
         temp_r3->players[i].xC_b1 = false;
     }
 
-    gm_8016F088(temp_r3);
+    gm_PrepareRumbleMode(temp_r3);
     gm_80182554(temp_r3->players[0].c_kind, 0x25);
     temp_r29 =
         gmMainLib_8015D7BC(gm_80164024(temp_r30->data.players[0].c_kind));
@@ -1040,7 +1040,7 @@ void gm_801B86D4(GameScene* scene)
     gm_80167A14(temp_r31->data.players);
     gm_801B0730(temp_r3, &temp_r31->data.players[0].c_kind, NULL,
                 &temp_r31->data.players[0].color,
-                &temp_r31->data.players[0].xA, NULL);
+                &temp_r31->data.players[0].nametag_id, NULL);
 }
 
 void gm_801B874C(GameScene* scene)
@@ -1076,7 +1076,7 @@ void gm_801B874C(GameScene* scene)
         temp_r3->players[i].xC_b1 = false;
     }
 
-    gm_8016F088(temp_r3);
+    gm_PrepareRumbleMode(temp_r3);
     gm_80182554(temp_r3->players[0].c_kind, 0x26);
     temp_r28 =
         gmMainLib_8015D7D4(gm_80164024(temp_r29->data.players[0].c_kind));

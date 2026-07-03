@@ -12,7 +12,7 @@
 /* 1BA938 */ void gm_801BA938(struct EventData*, int lo, int hi, bool);
 /* 1BAA60 */ void gm_801BAA60(GameScene*);
 /* 1BAAD0 */ void gm_801BAAD0(GameScene*);
-/* 1BAB40 */ UNK_RET gm_801BAB40(PlayerInitData*, int);
+/* 1BAB40 */ UNK_RET gm_801BAB40(PlayerInitData*, gm_801BAB40_src*);
 /* 1BAC9C */ s32 gm_801BAC9C(GameScene*, s32);
 /* 1BAD70 */ void gm_801BAD70(GameScene*);
 /* 1BB758 */ void gm_801BB758(GameScene*);
@@ -57,8 +57,8 @@
 /* 1BEB74 */ void gm_801BEB74(u8);
 /* 1BEB80 */ u8 gm_801BEB80(void);
 /* 1BEB8C */ bool gm_801BEB8C(u8);
-/* 1BEBA8 */ u8 gm_801BEBA8(u8);
-/* 1BEBC0 */ u8 gm_801BEBC0(u8);
+/* 1BEBA8 */ u8 gm_EventNumberToEventId(u8);
+/* 1BEBC0 */ u8 gm_EventIdToEventNumber(u8);
 /* 1BEBF8 */ u8 gm_801BEBF8(u8 arg0);
 /* 1BEC54 */ void* gm_801BEC54(void);
 /* 1BEC80 */ void gm_801BEC80(GameScene*);

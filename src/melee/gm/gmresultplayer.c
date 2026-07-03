@@ -177,7 +177,7 @@ void fn_80177748(void)
             HSD_JObjClearFlagsAll(data->player_data[i].jobjs[0], JOBJ_HIDDEN);
             inline0(data->player_data[i].jobjs[0], gm_80168B34(ckind, 0, 0));
             HSD_JObjClearFlagsAll(data->player_data[i].jobjs[4], JOBJ_HIDDEN);
-            if (gm_801743A4(temp_r3->result) != 0) {
+            if (gm_IsQuitOrRetry(temp_r3->result) != 0) {
                 var_r24 = 4;
             } else if (temp_r3->is_teams == 0) {
                 if (temp_r3->player_standings[i].is_small_loser == 0) {
@@ -779,10 +779,10 @@ static inline void fn_80178BB4_init_players(ResultsData* data,
                 int ckind;
                 u8 is_big_loser;
                 ckind = match_end->player_standings[(*i)].character_kind;
-                cid = match_end->player_standings[(*i)].character_id;
+                cid = match_end->player_standings[(*i)].fighter_kind;
                 is_big_loser = match_end->player_standings[(*i)].is_big_loser;
 
-                if (gm_801743A4(match_end->result) == 0 &&
+                if (gm_IsQuitOrRetry(match_end->result) == 0 &&
                     (u8) match_end->is_teams == 0 && (s32) is_big_loser == 0)
                 {
                     ResultsData* d2 = &lbl_8046DBE8;
@@ -828,8 +828,8 @@ static inline void fn_80178BB4_init_players(ResultsData* data,
                             ->player_standings[(*i)]
                             .character_kind,
                         (int) (s8) (u8) match_end->player_standings[(*i)]
-                            .character_id,
-                        match_end->player_standings[(*i)].x3);
+                            .fighter_kind,
+                        match_end->player_standings[(*i)].costume);
                     HSD_JObj* taunt_jobj = data->player_data[(*i)].jobjs[7];
                     HSD_ForeachAnim(taunt_jobj, JOBJ_TYPE, ALL_TYPE_MASK,
                                     HSD_AObjSetRate, AOBJ_ARG_AF, 0.0);
@@ -879,7 +879,7 @@ void fn_80178BB4(HSD_GObj* gobj)
     fn_80175DC8(gobj);
     fn_80175C5C();
 
-    if (gm_801743A4(match_end->result) != 0) {
+    if (gm_IsQuitOrRetry(match_end->result) != 0) {
         int anim_n = 0xB8;
         HSD_TObj* tobj = data->x30->u.dobj->next->mobj->tobj;
         HSD_AObj* aobj = tobj->aobj;
@@ -925,7 +925,7 @@ bool fn_801791E4(void)
 
     PAD_STACK(8);
 
-    if (gm_801743A4(end->result) != 0) {
+    if (gm_IsQuitOrRetry(end->result) != 0) {
         for (i = 0; i < 4; i++) {
             if (end->player_standings[i].slot_type == Gm_PKind_Human &&
                 HSD_PadMasterStatus[(u8) i].err == 0 &&
@@ -958,22 +958,22 @@ static inline void fn_80179350_update(ResultsData* data, MatchEnd* match_end,
     }
 
     if ((u32) data->x8 == 0xA2) {
-        if (gm_801743A4(match_end->result) == 0) {
+        if (gm_IsQuitOrRetry(match_end->result) == 0) {
             lbAudioAx_800237A8(0xB5, 0x7F, 0x40);
         }
     } else if ((u32) data->x8 == 0x2) {
-        if (gm_801743A4(match_end->result) == 0) {
+        if (gm_IsQuitOrRetry(match_end->result) == 0) {
             lbAudioAx_800237A8(0xC355, 0x7F, 0x40);
             lbAudioAx_800237A8(0x144, 0x7F, 0x40);
         } else {
             lbAudioAx_800237A8(0x148, 0x7F, 0x40);
         }
     } else if ((u32) data->x8 == 0x9A) {
-        if (gm_801743A4(match_end->result) != 0) {
+        if (gm_IsQuitOrRetry(match_end->result) != 0) {
             lbAudioAx_800237A8(0xC350, 0x7F, 0x40);
         } else {
             fn_80168E54(match_end->player_standings[data->x6].character_kind,
-                        match_end->player_standings[data->x6].character_id,
+                        match_end->player_standings[data->x6].fighter_kind,
                         match_end->player_standings[data->x6].team,
                         (match_end->is_teams == 1));
         }
@@ -1524,7 +1524,8 @@ Fighter_GObj* fn_8017A67C(CharacterKind kind, int arg1, int arg2)
         *(s32*) &cz = *(s32*) &config->x7C;
 
         if ((u32) (kind - 0x12) <= 1U) {
-            if ((int) (s8) match_end->player_standings[arg2].character_id == 7)
+            if ((int) (s8) match_end->player_standings[arg2].fighter_kind ==
+                FTKIND_SEAK)
             {
                 kind = CKIND_SEAK;
             } else {

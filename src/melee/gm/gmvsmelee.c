@@ -194,7 +194,7 @@ void gm_801A583C(GameScene* scene_data, VsModeData* vs_data,
     }
 
     gm_801B0348(match_start_data);
-    gm_8016F088(match_start_data);
+    gm_PrepareRumbleMode(match_start_data);
     gm_80168FC4();
 }
 
@@ -252,7 +252,7 @@ void gm_801A5C3C(GameScene* scene_data, VsModeData* vs_data,
         }
     }
     gm_801B0348(match_start_data);
-    gm_8016F088(match_start_data);
+    gm_PrepareRumbleMode(match_start_data);
     gm_801B0474(match_start_data, &gm_80479D98.match_end);
 }
 
@@ -281,7 +281,7 @@ void gm_801A5F64(GameScene* scene_data, VsModeData* vs_data, u8 next_scene)
     u16 foo;
 
     match_end = &gm_80479D98.match_end;
-    if (!gm_801743A4(match_end->result)) {
+    if (!gm_IsQuitOrRetry(match_end->result)) {
         gm_80168638(match_end);
         gm_80168710(match_end, vs_data);
     }
@@ -297,20 +297,23 @@ void gm_801A5F64(GameScene* scene_data, VsModeData* vs_data, u8 next_scene)
             unk = gm_80172DD4(gmMainLib_8015ED98()->x0);
             if (unk != 0x21) {
                 gm_801736E8(match_end->player_standings[idx].character_kind,
-                            (match_end->player_standings[idx].x3), idx,
-                            match_end->player_standings[idx].x4, unk, 0);
+                            (match_end->player_standings[idx].costume), idx,
+                            match_end->player_standings[idx].nametag_slot_id,
+                            unk, 0);
                 gm_SetPendingSceneToSuccessorOf(0x80);
                 unk_bool = true;
             } else if ((unk = gm_80172D78()) != 0x21) {
                 gm_801736E8(match_end->player_standings[idx].character_kind,
-                            (match_end->player_standings[idx].x3), idx,
-                            match_end->player_standings[idx].x4, unk, 0);
+                            (match_end->player_standings[idx].costume), idx,
+                            match_end->player_standings[idx].nametag_slot_id,
+                            unk, 0);
                 gm_SetPendingSceneToSuccessorOf(0x80);
                 unk_bool = true;
             } else if ((unk = gm_80172E74()) != 0x21) {
                 gm_801736E8(match_end->player_standings[idx].character_kind,
-                            (match_end->player_standings[idx].x3), idx,
-                            match_end->player_standings[idx].x4, unk, 0);
+                            (match_end->player_standings[idx].costume), idx,
+                            match_end->player_standings[idx].nametag_slot_id,
+                            unk, 0);
                 gm_SetPendingSceneToSuccessorOf(0x80);
                 unk_bool = true;
             }

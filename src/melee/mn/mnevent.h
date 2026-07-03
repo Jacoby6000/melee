@@ -8,6 +8,8 @@
 #include <baselib/jobj.h>
 #include <baselib/sislib.h>
 
+#define NUM_EVENT_MATCHES 51
+
 typedef struct MnEventData {
     /* 0x00 */ u8 page;
     /* 0x01 */ u8 pad_01[3];

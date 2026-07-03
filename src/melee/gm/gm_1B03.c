@@ -2,6 +2,9 @@
 
 #include "gm_1B03.static.h"
 
+#include "ft/forward.h"
+#include "gm/forward.h"
+
 #include "gm/gm_1A3F.h"
 #include "if/soundtest.h"
 
@@ -289,65 +292,68 @@ void gm_801B0348(StartMeleeData* arg0)
 }
 
 static inline void player_standings_inline(StartMeleeData* arg0,
-                                           MatchEnd* arg1, int i,
-                                           u32 is_big_loser, int var_r7)
+                                           MatchEnd* matchEnd, int slot,
+                                           u32 is_big_loser, int stocks)
 {
-    if (is_big_loser == 0 && var_r7 > 0) {
-        s8 var_r6 = arg1->player_standings[i].character_kind;
-        if (var_r6 == 0x12 || var_r6 == 0x13) {
-            if (arg1->player_standings[i].character_id == 7) {
-                var_r6 = 0x13;
+    if (is_big_loser == 0 && stocks > 0) {
+        s8 ckind = matchEnd->player_standings[slot].character_kind;
+        if (ckind == CKIND_ZELDA || ckind == CKIND_SEAK) {
+            if (matchEnd->player_standings[slot].fighter_kind == FTKIND_SEAK) {
+                ckind = CKIND_SEAK;
             } else {
-                var_r6 = 0x12;
+                ckind = CKIND_ZELDA;
             }
         }
-        arg0->players[i].c_kind = var_r6;
-        arg0->players[i].stocks = 1;
-        arg0->players[i].x12 = 0x12C;
+        arg0->players[slot].c_kind = ckind;
+        arg0->players[slot].stocks = 1;
+        arg0->players[slot].x12 = 0x12C;
     } else {
-        arg0->players[i].slot_type = Gm_PKind_NA;
+        arg0->players[slot].slot_type = Gm_PKind_NA;
     }
 }
 
-static inline int gm_801B0474_inline(MatchEnd* arg1, int i)
+static inline int get_final_stocks_for_player_inline(
+    MatchEnd* matchEnd, int slot) ///< If not a stock battle, returns 1
 {
-    if (arg1->x5 == 1) {
-        if (arg1->result == 1) {
-            return arg1->player_standings[i].stocks;
+    if (matchEnd->x5 == 1) {
+        if (matchEnd->result == OUTCOME_TIMEOUT) {
+            return matchEnd->player_standings[slot].stocks;
         } else {
-            u8 var_r7 = arg1->player_standings[i].stocks;
-            if (arg1->player_standings[i].x28 < arg1->frame_count ||
-                var_r7 != 0)
+            u8 finalStocks = matchEnd->player_standings[slot].stocks;
+            if (matchEnd->player_standings[slot].eliminated_at_frame <
+                    matchEnd->frame_count ||
+                finalStocks != 0)
             {
-                return var_r7;
+                return finalStocks;
             }
         }
     }
     return 1;
 }
 
-void gm_801B0474(StartMeleeData* arg0, MatchEnd* arg1)
+void gm_801B0474(StartMeleeData* arg0, MatchEnd* matchEnd)
 {
-    int var_r7;
-    int i;
+    int stocks;
+    int slot;
 
     arg0->rules.x0_0 = 1;
     arg0->rules.x0_6 = false;
     arg0->rules.x2_5 = false;
 
-    for (i = 0; i < 6; i++) {
-        if (arg0->players[i].slot_type != Gm_PKind_NA) {
-            var_r7 = gm_801B0474_inline(arg1, i);
-            if (arg1->is_teams == 1) {
+    for (slot = 0; slot < 6; slot++) {
+        if (arg0->players[slot].slot_type != Gm_PKind_NA) {
+            stocks = get_final_stocks_for_player_inline(matchEnd, slot);
+            if (matchEnd->is_teams == 1) {
                 player_standings_inline(
-                    arg0, arg1, i,
-                    arg1->team_standings[arg1->player_standings[i].team]
+                    arg0, matchEnd, slot,
+                    matchEnd
+                        ->team_standings[matchEnd->player_standings[slot].team]
                         .is_big_loser,
-                    var_r7);
+                    stocks);
             } else {
-                player_standings_inline(arg0, arg1, i,
-                                        arg1->player_standings[i].is_big_loser,
-                                        var_r7);
+                player_standings_inline(
+                    arg0, matchEnd, slot,
+                    matchEnd->player_standings[slot].is_big_loser, stocks);
             }
         }
     }
@@ -393,7 +399,7 @@ void gm_801B06B0(CSSData* css_data, u8 type, s8 c_kind, s8 stocks, s8 color,
     css_data->data.data.players[slot].stocks = stocks;
     css_data->data.data.players[slot].color = color;
     css_data->data.data.players[slot].cpu_level = level;
-    css_data->data.data.players[slot].xA = arg5;
+    css_data->data.data.players[slot].nametag_id = arg5;
     css_data->data.data.players[0].cpu_level = level;
     css_data->data.data.players[0].stocks = stocks;
 }
@@ -419,7 +425,7 @@ void gm_801B0730(CSSData* css_data, s8* c_kind, u8* stocks, u8* color,
         *level = css_data->data.data.players[slot].cpu_level;
     }
     if (nametag != NULL) {
-        *nametag = css_data->data.data.players[slot].xA;
+        *nametag = css_data->data.data.players[slot].nametag_id;
     }
 }
 #pragma pop
@@ -438,11 +444,11 @@ void gm_801B07B4(CSSData* css_data, s8 c_kind, s8 stocks, s8 color, u8 arg4,
     css_data->data.data.players[var_r0].stocks = stocks;
     css_data->data.data.players[var_r0].color = color;
     css_data->data.data.players[var_r0].cpu_level = level;
-    css_data->data.data.players[var_r0].xA = arg4;
+    css_data->data.data.players[var_r0].nametag_id = arg4;
 }
 
 void gm_801B07E8(CSSData* css_data, s8* c_kind, s8* stocks, s8* color,
-                 s8* arg4, u8* level)
+                 s8* nametag_id, u8* level)
 {
     s32 slot;
 
@@ -463,8 +469,8 @@ void gm_801B07E8(CSSData* css_data, s8* c_kind, s8* stocks, s8* color,
     if (level != NULL) {
         *level = css_data->data.data.players[slot].cpu_level;
     }
-    if (arg4 != NULL) {
-        *arg4 = css_data->data.data.players[slot].xA;
+    if (nametag_id != NULL) {
+        *nametag_id = css_data->data.data.players[slot].nametag_id;
     }
 }
 

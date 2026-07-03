@@ -13,6 +13,7 @@
 #include "baselib/particle.h"
 #include "cm/camera.h"
 
+#include "ft/forward.h"
 #include "gm/forward.h"
 
 #include "gm/types.h"
@@ -773,7 +774,7 @@ const char* gm_80160A60(int arg0)
     if (Player_GetPlayerSlotType(arg0) != Gm_PKind_NA) {
         ckind = Player_GetPlayerCharacter(arg0);
         if (ckind == CKIND_ZELDA || ckind == CKIND_SEAK) {
-            if (Player_80036394(arg0) == FTKIND_SEAK) {
+            if (Player_GetSlotFighterKind(arg0) == FTKIND_SEAK) {
                 if (lbLang_IsSavedLanguageUS()) {
                     return lbl_803D4FDC[CKIND_SEAK];
                 } else {
@@ -937,7 +938,7 @@ s32 fn_80161004(MatchEnd* match_end)
     return max;
 }
 
-s32 fn_80161154(MatchEnd* arg0)
+s32 fn_80161154(MatchEnd* me)
 {
     u8 operand_pad[4];
     u8 spC[4];
@@ -946,15 +947,15 @@ s32 fn_80161154(MatchEnd* arg0)
     s32 cnt;
     MatchPlayerData* player;
     s32 i;
-    s32 var_r3 = fn_80161004(arg0);
+    s32 var_r3 = fn_80161004(me);
 
     idx = 4;
     cnt = 0;
-    if (arg0->is_teams == 1) {
+    if (me->is_teams == 1) {
         for (i = 0; i < 4; i++) {
-            player = &arg0->player_standings[i];
+            player = &me->player_standings[i];
             if (player->slot_type != 3 &&
-                arg0->team_standings[player->team].is_big_loser == var_r3)
+                me->team_standings[player->team].is_big_loser == var_r3)
             {
                 spC[i] = 1;
                 cnt = 1;
@@ -965,7 +966,7 @@ s32 fn_80161154(MatchEnd* arg0)
         }
     } else {
         for (i = 0; i < 4; i++) {
-            player = &arg0->player_standings[i];
+            player = &me->player_standings[i];
             if (player->slot_type != 3 && player->is_big_loser == var_r3) {
                 if (idx != 4) {
                     cnt = 1;
@@ -985,19 +986,19 @@ s32 fn_80161154(MatchEnd* arg0)
     idx = 4;
     for (i = 0; i < 4; i++) {
         if (spC[i]) {
-            player = &arg0->player_standings[i];
+            player = &me->player_standings[i];
             if (idx == 4 ||
-                (u32) arg0->player_standings[idx].x20 > (u32) player->x20)
+                (u32) me->player_standings[idx].x20 > (u32) player->x20)
             {
                 idx = i;
             }
-            var_r31 = &arg0->player_standings[idx];
+            var_r31 = &me->player_standings[idx];
         }
     }
     cnt = 0;
     for (i = 0; i < 4; i++) {
         if (spC[i] && idx != i) {
-            player = &arg0->player_standings[i];
+            player = &me->player_standings[i];
             if ((u32) player->x20 == (u32) var_r31->x20) {
                 cnt += 1;
             } else {
@@ -1012,20 +1013,20 @@ s32 fn_80161154(MatchEnd* arg0)
     idx = 4;
     for (i = 0; i < 4; i++) {
         if (spC[i]) {
-            player = &arg0->player_standings[i];
+            player = &me->player_standings[i];
             if (idx == 4 ||
-                (u32) arg0->player_standings[idx].x24 < (u32) player->x24)
+                (u32) me->player_standings[idx].falls < (u32) player->falls)
             {
                 idx = i;
             }
-            var_r31 = &arg0->player_standings[idx];
+            var_r31 = &me->player_standings[idx];
         }
     }
     cnt = 0;
     for (i = 0; i < 4; i++) {
         if (spC[i] && idx != i) {
-            player = &arg0->player_standings[i];
-            if ((u32) player->x24 == (u32) var_r31->x24) {
+            player = &me->player_standings[i];
+            if ((u32) player->falls == (u32) var_r31->falls) {
                 cnt += 1;
             } else {
                 spC[i] = 0;
@@ -1039,17 +1040,17 @@ s32 fn_80161154(MatchEnd* arg0)
     idx = 4;
     for (i = 0; i < 4; i++) {
         if (spC[i]) {
-            player = &arg0->player_standings[i];
-            if (idx == 4 || arg0->player_standings[idx].x44 > player->x44) {
+            player = &me->player_standings[i];
+            if (idx == 4 || me->player_standings[idx].x44 > player->x44) {
                 idx = i;
             }
-            var_r31 = &arg0->player_standings[idx];
+            var_r31 = &me->player_standings[idx];
         }
     }
     cnt = 0;
     for (i = 0; i < 4; i++) {
         if (spC[i] && idx != i) {
-            player = &arg0->player_standings[i];
+            player = &me->player_standings[i];
             if (player->x44 == var_r31->x44) {
                 cnt += 1;
             } else {
@@ -1064,17 +1065,17 @@ s32 fn_80161154(MatchEnd* arg0)
     idx = 4;
     for (i = 0; i < 4; i++) {
         if (spC[i]) {
-            player = &arg0->player_standings[i];
-            if (idx == 4 || arg0->player_standings[idx].x50 < player->x50) {
+            player = &me->player_standings[i];
+            if (idx == 4 || me->player_standings[idx].x50 < player->x50) {
                 idx = i;
             }
-            var_r31 = &arg0->player_standings[idx];
+            var_r31 = &me->player_standings[idx];
         }
     }
     cnt = 0;
     for (i = 0; i < 4; i++) {
         if (spC[i] && idx != i) {
-            player = &arg0->player_standings[i];
+            player = &me->player_standings[i];
             if (player->x50 == var_r31->x50) {
                 cnt += 1;
             } else {
@@ -1123,9 +1124,9 @@ struct gm_stats {
     /* 0x40 */ u32 unk40;
 };
 
-void fn_80161C90(MatchEnd* arg0, int arg1, u16* arg2)
+void fn_80161C90(MatchEnd* arg0, int slot, u32* arg2)
 {
-    MatchPlayerData* p = &arg0->player_standings[arg1];
+    MatchPlayerData* p = &arg0->player_standings[slot];
     struct gm_stats* s = (struct gm_stats*) arg2;
     u32 count;
     s32 flag;
@@ -1149,7 +1150,7 @@ void fn_80161C90(MatchEnd* arg0, int arg1, u16* arg2)
         s->unk18 = p->x4C;
     }
     s->unk1A = (s->unk1A + 1 > 0xFFFF) ? 0xFFFF : s->unk1A + 1;
-    if (arg1 == fn_80165548(arg0, fn_80165418(arg0), fn_801654A0(arg0))) {
+    if (slot == fn_80165548(arg0, fn_80165418(arg0), fn_801654A0(arg0))) {
         flag = 1;
     } else {
         flag = 0;
@@ -1157,7 +1158,7 @@ void fn_80161C90(MatchEnd* arg0, int arg1, u16* arg2)
     if (flag != 0) {
         s->unk1C = (s->unk1C + 1 > 0xFFFF) ? 0xFFFF : s->unk1C + 1;
     }
-    if (arg1 == fn_80161154(arg0)) {
+    if (slot == fn_80161154(arg0)) {
         flag = 1;
     } else {
         flag = 0;
@@ -1199,8 +1200,9 @@ void fn_80161C90(MatchEnd* arg0, int arg1, u16* arg2)
     s->unk34 =
         (s->unk34 + p->x5C > 0xFFFFFFFFU) ? 0xFFFFFFFFU : s->unk34 + p->x5C;
     if (arg0->x5 == 2) {
-        s->unk38 = (s->unk38 + p->x60 > 0xFFFFFFFFU) ? 0xFFFFFFFFU
-                                                     : s->unk38 + p->x60;
+        s->unk38 = (s->unk38 + p->total_coins > 0xFFFFFFFFU)
+                       ? 0xFFFFFFFFU
+                       : s->unk38 + p->total_coins;
         s->unk3C = (s->unk3C + p->x64 > 0xFFFFFFFFU) ? 0xFFFFFFFFU
                                                      : s->unk3C + p->x64;
         s->unk40 = (s->unk40 + p->x68 > 0xFFFFFFFFU) ? 0xFFFFFFFFU
@@ -1254,12 +1256,13 @@ static inline void fn_80162170_inner(MatchEnd* arg0)
     for (i = 0; i < 4; i++) {
         p = &arg0->player_standings[i];
         if (p->slot_type != 3) {
-            if (p->x4 != 0x78) {
-                struct NameTagData* nt = GetPersistentNameData(p->x4);
+            if (p->nametag_slot_id != 0x78) {
+                struct NameTagData* nt =
+                    GetPersistentNameData(p->nametag_slot_id);
                 for (j = 0; j < 4; j++) {
                     q = &arg0->player_standings[j];
                     if (i != j && q->slot_type != 3) {
-                        u8 ock = q->x4;
+                        u8 ock = q->nametag_slot_id;
                         if (ock != 0x78) {
                             s32 v = p->kills[j] + nt->vs_kos[ock];
                             if (v > 0xFFFF) {
@@ -2140,7 +2143,7 @@ int fn_80163FA4(u8 arg0)
     int i;
     int count = 0;
     for (i = 0; i < arg0; i++) {
-        if (gmMainLib_8015CEFC(i)) {
+        if (gmMainLib_IsEventMatchComplete(i)) {
             count++;
         }
     }
@@ -2383,10 +2386,10 @@ int gm_801647F8(u8 arg0)
 }
 
 /// Is a specific character unlocked?
-bool gm_IsCharacterUnlocked(u8 characterKind)
+bool gm_IsCharacterUnlocked(u8 ckind)
 {
     u16* temp_r31 = gmMainLib_GetUnlockedCharactersBitmask();
-    u8 var = lbl_803B78A4[characterKind];
+    u8 var = lbl_803B78A4[ckind];
     u8 unlockableCharacterIndex = fn_801605EC_GetUnlockableCharacterIndex(var);
 
     if (unlockableCharacterIndex == NUM_UNLOCKABLE_CHARACTERS ||
@@ -2829,8 +2832,8 @@ u32 fn_801656A8(MatchEnd* arg0, u32 arg1)
             s32 cnt_lt = 0;
             for (j = 0; j < 6; j++) {
                 if (arg0->player_standings[j].slot_type != 3 &&
-                    (u32) arg0->player_standings[arg1].x24 <
-                        (u32) arg0->player_standings[j].x24)
+                    (u32) arg0->player_standings[arg1].falls <
+                        (u32) arg0->player_standings[j].falls)
                 {
                     cnt_lt += 1;
                 }
@@ -2987,8 +2990,8 @@ MatchEnd* fn_80165D60(MatchEnd* arg0)
                 if ((u8) arg0->player_standings[j].slot_type != 3 && i != j &&
                     (u8) arg0->player_standings[i].is_big_loser ==
                         (u8) arg0->player_standings[j].is_big_loser &&
-                    arg0->player_standings[i].x30 <
-                        arg0->player_standings[j].x30)
+                    arg0->player_standings[i].rank <
+                        arg0->player_standings[j].rank)
                 {
                     arg0->player_standings[i].is_small_loser++;
                 }
@@ -2998,7 +3001,8 @@ MatchEnd* fn_80165D60(MatchEnd* arg0)
 
     return arg0;
 }
-void fn_80165E7C(MatchEnd* arg0)
+
+void gm_CalculateTeamScores(MatchEnd* arg0)
 {
     s32 i;
     int new_var;
@@ -3032,13 +3036,13 @@ void fn_80165E7C(MatchEnd* arg0)
             }
 
             arg0->team_standings[team].subscore +=
-                arg0->player_standings[i].x30;
+                arg0->player_standings[i].rank;
             arg0->team_standings[team].active = 1;
         }
     }
 }
 
-s32 fn_80165FA4(MatchEnd* arg0)
+MatchEnd* gm_CalculateTeamWinners(MatchEnd* arg0)
 {
     s32 max_loser;
     s32 count;
@@ -3073,10 +3077,10 @@ s32 fn_80165FA4(MatchEnd* arg0)
         }
     }
     arg0->n_team_winners = count;
-    return (s32) arg0;
+    return arg0;
 }
 
-s32 fn_801661E0(MatchEnd* arg0)
+MatchEnd* gm_CalculateTeamSmallLoser(MatchEnd* arg0)
 {
     s32 i;
     s32 j;
@@ -3098,7 +3102,7 @@ s32 fn_801661E0(MatchEnd* arg0)
         }
     }
 
-    return (s32) arg0;
+    return arg0;
 }
 
 void gm_80166378(lbl_8046B6A0_24C_t* arg0_raw)
@@ -3121,23 +3125,27 @@ void gm_80166378(lbl_8046B6A0_24C_t* arg0_raw)
         if (arg0->player_standings[i].slot_type != 3) {
             arg0->player_standings[i].character_kind =
                 Player_GetPlayerCharacter(i);
-            arg0->player_standings[i].character_id = Player_80036394(i);
+            arg0->player_standings[i].fighter_kind =
+                Player_GetSlotFighterKind(i);
             arg0->player_standings[i].stocks = Player_GetStocks(i);
-            arg0->player_standings[i].x3 = Player_GetCostumeId(i);
-            arg0->player_standings[i].x4 = Player_GetNametagSlotID(i);
-            arg0->player_standings[i].x1C = Player_GetCoins(i);
-            arg0->player_standings[i].x28 = Player_GetMatchFrameCount(i);
-            if (arg0->player_standings[i].x28 == -1U) {
-                arg0->player_standings[i].x28 = gm_8016AEDC();
+            arg0->player_standings[i].costume = Player_GetCostumeId(i);
+            arg0->player_standings[i].nametag_slot_id =
+                Player_GetNametagSlotID(i);
+            arg0->player_standings[i].coins = Player_GetCoins(i);
+            arg0->player_standings[i].eliminated_at_frame =
+                Player_GetMatchFrameCount(i);
+            if (arg0->player_standings[i].eliminated_at_frame == -1U) {
+                arg0->player_standings[i].eliminated_at_frame = gm_8016AEDC();
             }
             arg0->player_standings[i].self_destructs =
                 Player_GetSuicideCount(i);
-            arg0->player_standings[i].x24 = Player_GetFalls(i);
+            arg0->player_standings[i].falls = Player_GetFalls(i);
             arg0->player_standings[i].team = Player_GetTeam(i);
             arg0->player_standings[i].percent = Player_GetDamage(i);
             arg0->player_standings[i].x3_6 = Player_800353BC(i);
             arg0->player_standings[i].x3_7 = Player_GetMoreFlagsBit2(i);
-            arg0->player_standings[i].x9 = (s8) Player_GetRemainingHP(i);
+            arg0->player_standings[i].remaining_hp =
+                (s8) Player_GetRemainingHP(i);
             cnt = Player_GetJoystickCountByIndex(i, 0);
             sp48.y = 0.031f * ((f32) cnt * fn_8016B5B0());
             fn_80166A8C((Vec3*) ((u8*) &sp48 + 4), (Vec3*) ((u8*) &sp48));
@@ -3153,7 +3161,7 @@ void gm_80166378(lbl_8046B6A0_24C_t* arg0_raw)
             arg0->player_standings[i].x54 = (u32) pl_80040C48(i) * 0xA;
             arg0->player_standings[i].x58 = (u32) pl_80040C6C(i) * 0xA;
             arg0->player_standings[i].x5C = (u32) pl_80040C90(i) * 0xA;
-            arg0->player_standings[i].x60 = Player_GetTotalCoins(i);
+            arg0->player_standings[i].total_coins = Player_GetTotalCoins(i);
             arg0->player_standings[i].x64 = Player_GetUnk98(i);
             arg0->player_standings[i].x68 = Player_GetUnk9C(i);
             arg0->player_standings[i].x6C = (u32) pl_80040CB4(i) / 60U;
@@ -3195,7 +3203,7 @@ void gm_80166378(lbl_8046B6A0_24C_t* arg0_raw)
                         } else {
                             arg0->player_standings[i].self_destructs +=
                                 arg0->player_standings[i].kills[j];
-                            arg0->player_standings[i].x24 +=
+                            arg0->player_standings[i].falls +=
                                 arg0->player_standings[i].kills[j];
                         }
                     }
@@ -3213,7 +3221,7 @@ void gm_80166378(lbl_8046B6A0_24C_t* arg0_raw)
                         } else {
                             arg0->player_standings[i].self_destructs +=
                                 arg0->player_standings[i].kills[j];
-                            arg0->player_standings[i].x24 +=
+                            arg0->player_standings[i].falls +=
                                 arg0->player_standings[i].kills[j];
                         }
                     }
@@ -3224,14 +3232,14 @@ void gm_80166378(lbl_8046B6A0_24C_t* arg0_raw)
     for (i = 0; i < 6; i++) {
         if (arg0->player_standings[i].slot_type != 3) {
             arg0->player_standings[i].score = fn_8016588C(arg0_raw, i);
-            arg0->player_standings[i].x30 = fn_801656A8(arg0, i);
+            arg0->player_standings[i].rank = fn_801656A8(arg0, i);
         }
     }
     fn_80165AC0(arg0);
     fn_80165D60(arg0);
-    fn_80165E7C(arg0);
-    fn_80165FA4(arg0);
-    fn_801661E0(arg0);
+    gm_CalculateTeamScores(arg0);
+    gm_CalculateTeamWinners(arg0);
+    gm_CalculateTeamSmallLoser(arg0);
 }
 
 #ifdef MWERKS_GEKKO
@@ -3249,14 +3257,14 @@ float fn_80166A8C(register Vec3* src, register Vec3* dst)
 #endif
 
 // Probably some code to setup or end a 4 player match?
-s32 gm_80166A98(MatchEnd* arg0, s32 arg1, s8 arg2, u8 arg3, s8 arg4, u8 arg5,
-                s8 arg6, u8 arg7, u8 arg_sp8, u8 arg_spC)
+MatchEnd* gm_80166A98(MatchEnd* arg0, s32 arg1, s8 arg2, u8 arg3, s8 arg4,
+                      u8 arg5, s8 arg6, u8 arg7, u8 arg_sp8, u8 arg_spC)
 {
     s32 score0;
     s32 score1;
     s32 score2;
     s32 score3;
-    u32 i;
+    u32 slot;
 
     memzero(arg0, 0x227C);
 
@@ -3274,32 +3282,32 @@ s32 gm_80166A98(MatchEnd* arg0, s32 arg1, s8 arg2, u8 arg3, s8 arg4, u8 arg5,
     arg0->player_standings[3].character_kind = arg_sp8;
 
     // Apply player color to all 4 players?
-    for (i = 0; i < 4; i++) {
-        arg0->player_standings[i].x3 = arg1;
+    for (slot = 0; slot < 4; slot++) {
+        arg0->player_standings[slot].costume = arg1;
     }
 
     arg0->player_standings[0].score = score0;
     arg0->player_standings[1].score = score1;
     arg0->player_standings[2].score = score2;
     arg0->player_standings[3].score = score3;
-    arg0->player_standings[0].x30 = score0;
-    arg0->player_standings[1].x30 = score1;
-    arg0->player_standings[2].x30 = score2;
-    arg0->player_standings[3].x30 = score3;
+    arg0->player_standings[0].rank = score0;
+    arg0->player_standings[1].rank = score1;
+    arg0->player_standings[2].rank = score2;
+    arg0->player_standings[3].rank = score3;
 
-    for (i = 0; i < 4; i++) {
-        arg0->player_standings[i].x30 += 6 - i;
-        if (arg0->player_standings[i].character_kind == 0x21) {
-            arg0->player_standings[i].slot_type = 3;
-        } else if (HSD_PadMasterStatus[(u8) i].err == 0) {
-            arg0->player_standings[i].slot_type = 0;
+    for (slot = 0; slot < 4; slot++) {
+        arg0->player_standings[slot].rank += 6 - slot;
+        if (arg0->player_standings[slot].character_kind == CHKIND_NONE) {
+            arg0->player_standings[slot].slot_type = 3;
+        } else if (HSD_PadMasterStatus[(u8) slot].err == 0) {
+            arg0->player_standings[slot].slot_type = 0;
         } else {
-            arg0->player_standings[i].slot_type = 1;
+            arg0->player_standings[slot].slot_type = 1;
         }
 
-        if (arg0->player_standings[i].character_kind == 0x13) {
-            arg0->player_standings[i].character_kind = 0x12;
-            arg0->player_standings[i].character_id = 7;
+        if (arg0->player_standings[slot].character_kind == CKIND_SEAK) {
+            arg0->player_standings[slot].character_kind = CKIND_ZELDA;
+            arg0->player_standings[slot].fighter_kind = FTKIND_SEAK;
         }
     }
 
@@ -3307,14 +3315,14 @@ s32 gm_80166A98(MatchEnd* arg0, s32 arg1, s8 arg2, u8 arg3, s8 arg4, u8 arg5,
     arg0->player_standings[5].slot_type = 3;
     fn_80165AC0(arg0);
     fn_80165D60(arg0);
-    fn_80165E7C(arg0);
-    fn_80165FA4(arg0);
-    return fn_801661E0(arg0);
+    gm_CalculateTeamScores(arg0);
+    gm_CalculateTeamWinners(arg0);
+    return gm_CalculateTeamSmallLoser(arg0);
 }
 
-u8 fn_80166CBC(MatchEnd* arg0, ssize_t index)
+u8 gm_IsSlotSmallLoser(MatchEnd* matchEnd, ssize_t slot)
 {
-    return arg0->player_standings[index].is_small_loser;
+    return matchEnd->player_standings[slot].is_small_loser;
 }
 
 void gm_80166CCC(MatchEnd* arg0, MatchEnd* arg1)
@@ -3356,8 +3364,8 @@ void gm_80166CCC(MatchEnd* arg0, MatchEnd* arg1)
     if (arg0->n_winners > 1) {
         for (i = 0; i < 6; i++) {
             if (arg0->player_standings[i].slot_type != 3) {
-                arg0->player_standings[i].character_id =
-                    arg1->player_standings[i].character_id;
+                arg0->player_standings[i].fighter_kind =
+                    arg1->player_standings[i].fighter_kind;
                 arg0->player_standings[i].xE += arg1->player_standings[i].xE;
                 if (arg0->player_standings[i].is_big_loser == 0) {
                     if (arg1->player_standings[i].slot_type == 3) {
@@ -3399,15 +3407,15 @@ void gm_80166CCC(MatchEnd* arg0, MatchEnd* arg1)
     }
 }
 
-bool gm_80167140(MatchEnd* me)
+bool gm_MatchHasWinner(MatchEnd* me)
 {
     s32 winners;
 
-    if (me->result != 7) {
+    if (me->result != OUTCOME_NO_CONTEST) {
         if (me->is_teams == 1) {
             winners = me->n_team_winners;
         } else {
-            winners = fn_80167194(me);
+            winners = gm_GetNumFFAMatchWinners(me);
         }
         if (winners > 1) {
             return true;
@@ -3417,7 +3425,7 @@ bool gm_80167140(MatchEnd* me)
     return false;
 }
 
-int fn_80167194(MatchEnd* me)
+int gm_GetNumFFAMatchWinners(MatchEnd* me)
 {
     return me->n_winners;
 }
@@ -3629,14 +3637,14 @@ u8 gm_801677F0(void)
     return lbl_804D6598;
 }
 
-bool gm_801677F8(int port, int arg1)
+bool gm_IsRumbleEnabled(int port, int nameTagId)
 {
     bool result = false;
-    if (arg1 == 0x78) {
+    if (nameTagId == NAMETAG_DISABLED) {
         if (GetRumbleSettingOfPort(port) != 0) {
             result = true;
         }
-    } else if (GetPersistentNameData(arg1)->x1A1 != 0) {
+    } else if (GetPersistentNameData(nameTagId)->enable_rumble != 0) {
         result = true;
     }
     return result;
@@ -3644,7 +3652,7 @@ bool gm_801677F8(int port, int arg1)
 
 void gm_80167858(int port, int arg1, int arg2, int arg3)
 {
-    if (gm_801677F8(port, arg1)) {
+    if (gm_IsRumbleEnabled(port, arg1)) {
         lb_80014574(port, 3, arg2, arg3);
     }
 }
@@ -3668,8 +3676,8 @@ void gm_8016795C(struct PlayerInitData* arg0)
     arg0->sub_color = 0;
     arg0->handicap = 9;
     arg0->team = 0;
-    arg0->xC_b0 = false;
-    arg0->xA = 0x78;
+    arg0->rumble_enabled = false;
+    arg0->nametag_id = 0x78;
     arg0->xC_b1 = true;
     arg0->xE = 4;
     arg0->cpu_level = 0;
@@ -3781,8 +3789,8 @@ void gm_80167BC8(VsModeData* vs_data)
             vs_data->data.players[i].x1C = 1.0f;
             break;
         case 1:
-            handicap =
-                gmMainLib_8015CE44(i, (s32) vs_data->data.players[i].xA);
+            handicap = gmMainLib_8015CE44(
+                i, (s32) vs_data->data.players[i].nametag_id);
             if (handicap != NULL) {
                 vs_data->data.players[i].handicap =
                     *handicap; ///< @todo :: fix these to actually get the
@@ -3979,7 +3987,8 @@ void gm_80168638(MatchEnd* arg0)
     s8* temp_r3;
     if ((u8) gmMainLib_8015CC34()->handicap == 1) {
         for (i = 0; i < 4; i++) {
-            temp_r3 = gmMainLib_8015CE44(i, arg0->player_standings[i].x4);
+            temp_r3 = gmMainLib_8015CE44(
+                i, arg0->player_standings[i].nametag_slot_id);
             if (temp_r3 != NULL) {
                 spC[i] = (u8) *temp_r3;
             } else {
@@ -3989,7 +3998,8 @@ void gm_80168638(MatchEnd* arg0)
         fn_80169000(arg0, spC);
         for (i = 0; i < 4; i++) {
             if ((u8) arg0->player_standings[i].slot_type != 3) {
-                temp_r3 = gmMainLib_8015CE44(i, arg0->player_standings[i].x4);
+                temp_r3 = gmMainLib_8015CE44(
+                    i, arg0->player_standings[i].nametag_slot_id);
                 if (temp_r3 != NULL) {
                     *temp_r3 = (s8) spC[i];
                 }
@@ -4132,7 +4142,7 @@ float gm_80168BF8(int arg0)
 {
     CharacterKind ckind = Player_GetPlayerCharacter(arg0);
     u32 costume = Player_GetCostumeId(arg0);
-    gm_80168B34(ckind, Player_80036394(arg0), costume);
+    gm_80168B34(ckind, Player_GetSlotFighterKind(arg0), costume);
 }
 
 void gm_80168C5C(u32 arg0)

@@ -896,7 +896,7 @@ void gmClassic_801B3A34(GameScene* arg0)
     spC = temp_r28;
     gm_8017CE34(new_var, (UnkAdventureData*) temp_r29, temp_r31->xC->x02,
                 temp_r31->x6, 1, 0, temp_r31->x4, (int) var_r27, sp8, spC);
-    gm_8016F088(new_var);
+    gm_PrepareRumbleMode(new_var);
 }
 
 void gmClassic_801B3B40(GameScene* arg0)

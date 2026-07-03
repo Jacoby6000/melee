@@ -84,7 +84,7 @@ s32 ftLib_80087120(HSD_GObj*);
 void ftLib_80087140(HSD_GObj*);
 void ftLib_800871A8(HSD_GObj*, HSD_GObj*);
 bool ftLib_80087284(HSD_GObj*);
-FighterKind ftLib_800872A4(HSD_GObj*);
+FighterKind ftLib_GetFighterKindFromGObj(HSD_GObj*);
 void* ftLib_800872B0(HSD_GObj*);
 bool ftLib_800872BC(HSD_GObj*);
 s32 ftLib_80087300(HSD_GObj*);

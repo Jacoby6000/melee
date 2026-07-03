@@ -14,9 +14,6 @@
 
 #include <dolphin/mtx.h>
 
-#define NUM_UNLOCKABLE_CHARACTERS 11 ///< 0xB
-#define NUM_UNLOCKABLE_STAGES 11     ///< 0xB
-
 /// struct ResultsData {
 ///     /*  +0 */ char pad_0[0x94];
 ///     /* +94 */ int x94;
@@ -34,7 +31,9 @@ struct lbl_803B78C8_0x6 {
     /* 0x1 */ u8 ckind;
     /* 0x2 */ u8 x2;
     /* 0x3 */ u8 x3;
-    /* 0x4 */ u16 x4;
+    /* 0x4 */ u16 x4; ///< InternalStageId? Seems unlikely given that these are
+                      ///< usually 3 digit hex, but they are assigned values to
+                      ///< structs that may also use InternalStageId
 }; /* size = 0x6 */
 
 struct VictoryTheme {

@@ -265,7 +265,8 @@ struct gm_evinit { ///< Initialized via cast from StartMeleeRules.
     /* 0x06 */ u16 unk6;
     /* 0x08 */ u32 unk8;
     /* 0x0C */ u8 padC[4];
-    /* 0x10 */ u64 x10; // Item Mask
+    /* 0x10 */ u32 x10;
+    /* 0x14 */ s32 unk14;
     /* 0x18 */ s32 x18;
     /* 0x1C */ f32 x1C;
     /* 0x20 */ f32 unk20;
@@ -376,7 +377,8 @@ void gm_801BAD70(GameScene* arg0)
     {
         struct gm_evinit* init = (struct gm_evinit*) (*lvlpp)->x8;
         u32 x10 = init->x10;
-        r3b->rules.x20 = x10;
+        *(s32*) ((u8*) r3b + 0x24) = init->unk14;
+        *(u32*) ((u8*) r3b + 0x20) = x10;
     }
     md->rules.x28 = ((struct gm_evinit*) (*lvlpp)->x8)->x18;
     md->rules.x30 = ((struct gm_evinit*) (*lvlpp)->x8)->x1C;

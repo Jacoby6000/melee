@@ -718,14 +718,15 @@ s32 gm_8017CE34(StartMeleeData* arg0, UnkAdventureData* arg1, s8* enemy_kinds,
     var_r4 = 0;
     arg0->rules.x20 = (u64) -1;
 
-    if (enemy_kinds[0] != CHKIND_NONE) {
+    if ((s32) (u8) enemy_kinds[0] != CHKIND_NONE) {
         var_r4 = 1;
     }
     {
-        if (enemy_kinds[1] != CHKIND_NONE) {
+        s8* p = &enemy_kinds[1];
+        if ((s32) *p != CHKIND_NONE) {
             var_r4 += 1;
         }
-        if (enemy_kinds[2] != CHKIND_NONE) {
+        if ((s32) p[1] != CHKIND_NONE) {
             var_r4 += 1;
         }
     }
@@ -903,7 +904,7 @@ s32 gm_8017CE34(StartMeleeData* arg0, UnkAdventureData* arg1, s8* enemy_kinds,
     for (;;) {
         enemy_kind = &enemy_kinds[enemy_idx];
         (void) enemy_kind;
-        if (enemy_kind[0] != CHKIND_NONE) {
+        if ((s32) (u8) enemy_kind[0] != CHKIND_NONE) {
             if (arg1->x0.x8 & 8) {
                 if (arg1->x4C != NULL) {
                     enemy_level =
@@ -951,8 +952,8 @@ s32 gm_8017CE34(StartMeleeData* arg0, UnkAdventureData* arg1, s8* enemy_kinds,
                     player_slot->player.xC_b1 = 0;
                 }
                 player_kind = (u8) player_slot->player.c_kind;
-                if (player_kind == CKIND_MASTERH ||
-                    player_kind == CKIND_CREZYH)
+                if (((s8) player_kind == CKIND_MASTERH) ||
+                    ((s8) player_kind == CKIND_CREZYH))
                 {
                     player_slot->player.xC_b7 = 1;
                     player_slot->player.hp = 0x12C;

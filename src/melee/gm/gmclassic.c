@@ -433,7 +433,7 @@ loop:
         if (gm_80164430(entry->x00) == 0) {
             goto next;
         }
-        if (gm_80164840(cur_char) == 0) {
+        if (gm_IsCharacterUnlocked(cur_char) == 0) {
             goto next;
         }
         if (cur_char == target_char) {

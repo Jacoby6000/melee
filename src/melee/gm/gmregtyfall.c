@@ -214,7 +214,7 @@ void gm_801A68D8(void)
     Player_SetPlayerId(0, 0);
     Player_SetSlottype(0, Gm_PKind_Demo);
     Player_SetFacingDirection(0, 1.0F);
-    Player_80032768(0, &gm_803DB2C8);
+    Player_SetSpawnPosition(0, &gm_803DB2C8);
     Player_80036F34(0, 7);
 
     temp_r3 = Player_GetEntity(0);

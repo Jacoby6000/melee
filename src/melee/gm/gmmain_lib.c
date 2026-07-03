@@ -97,10 +97,10 @@ struct gmm_x1CB0* gmMainLib_8015CC58(void)
     return &gmMainLib_8015CC40()->x1CB0;
 }
 
-struct FighterData* GetPersistentFighterData(s32 arg0)
+struct FighterData* GetPersistentFighterData(s32 ckind)
 {
     struct FighterData* base = gmMainLib_804D3EE0->thing.x1F2C;
-    return &base[arg0];
+    return &base[ckind];
 }
 
 void* gmMainLib_8015CC78(void)
@@ -185,9 +185,9 @@ void* gmMainLib_GetMatchResetCounter(void)
     return &gmMainLib_804D3EE0->thing.x1A2C;
 }
 
-void* gmMainLib_GetSingleplayerTime(void)
+s32* gmMainLib_GetSingleplayerTime(void)
 {
-    return &gmMainLib_804D3EE0->thing.x1A3C;
+    return &gmMainLib_804D3EE0->thing.timer_seconds;
 }
 
 void* gmMainLib_8015CD80(void)
@@ -297,30 +297,31 @@ bool gmMainLib_8015CF94(void)
     return false;
 }
 
-s8* gmMainLib_8015CFB4(u8 arg0)
+s8* gmMainLib_8015CFB4(u8 ckind)
 {
     struct FighterData* base = &gmMainLib_804D3EE0->thing.x1F2C[0];
-    return &base[arg0].x78;
+    return &base[ckind].x78;
 }
 
-s32 gmMainLib_8015CFCC(u8 arg0)
+s32 gmMainLib_HasPlayedVsModeWithCharacter(u8 ckind)
 {
-    return (1 << arg0) & gmMainLib_8015ED98()->xC;
+    return (1 << ckind) &
+           gmMainLib_8015ED98()->vs_mode_characters_used_bitmask;
 }
 
-void gmMainLib_8015D00C(u8 arg0)
+void gmMainLib_8015D00C(u8 ckind)
 {
     u8 _[12];
 
     struct FighterData* base = &gmMainLib_804D3EE0->thing.x1F2C[0];
-    base[arg0].x7A.b0 = true;
-    gmMainLib_8015ED98()->xC |= 1 << arg0;
+    base[ckind].x7A.b0 = true;
+    gmMainLib_8015ED98()->vs_mode_characters_used_bitmask |= 1 << ckind;
 }
 
-s32* gmMainLib_8015D06C(u8 arg0)
+s32* gmMainLib_8015D06C(u8 ckind)
 {
     struct FighterData* base = &gmMainLib_804D3EE0->thing.x1F2C[0];
-    return &base[arg0].x7C.x84;
+    return &base[ckind].x7C.x84;
 }
 
 s32* gmMainLib_8015D084(u8 arg0)
@@ -328,16 +329,16 @@ s32* gmMainLib_8015D084(u8 arg0)
     return &gmMainLib_8015EDBC()->xB0[arg0];
 }
 
-s32* gmMainLib_8015D0C0(u8 arg0)
+s32* gmMainLib_8015D0C0(u8 ckind)
 {
     struct FighterData* base = &gmMainLib_804D3EE0->thing.x1F2C[0];
-    return &base[arg0].x7C.x88;
+    return &base[ckind].x7C.x88;
 }
 
-bool gmMainLib_8015D0D8(u8 arg0)
+bool gmMainLib_8015D0D8(u8 ckind)
 {
     struct FighterData* base = &gmMainLib_804D3EE0->thing.x1F2C[0];
-    return base[arg0].x7C.b4;
+    return base[ckind].x7C.b4;
 }
 
 s32 gmMainLib_8015D0F4(u8 arg0)
@@ -346,31 +347,31 @@ s32 gmMainLib_8015D0F4(u8 arg0)
     return x10 & (1 << arg0);
 }
 
-void gmMainLib_8015D134(u8 arg0)
+void gmMainLib_8015D134(u8 ckind)
 {
     u8 _[12];
 
     struct FighterData* base = &gmMainLib_804D3EE0->thing.x1F2C[0];
-    base[arg0].x7C.b4 = true;
-    gmMainLib_8015ED98()->x10 |= 1 << arg0;
+    base[ckind].x7C.b4 = true;
+    gmMainLib_8015ED98()->x10 |= 1 << ckind;
 }
 
-u8* gmMainLib_8015D194(u8 arg0)
+u8* gmMainLib_8015D194(u8 ckind)
 {
     struct FighterData* base = &gmMainLib_804D3EE0->thing.x1F2C[0];
-    return &base[arg0].x7C.x80;
+    return &base[ckind].x7C.x80;
 }
 
-s32 gmMainLib_8015D1AC(u8 arg0)
+s32 gmMainLib_8015D1AC(u8 ckind)
 {
     struct FighterData* base = &gmMainLib_804D3EE0->thing.x1F2C[0];
-    return base[arg0].x7C.b789;
+    return base[ckind].x7C.b789;
 }
 
-void gmMainLib_8015D1C8(u8 arg0, int stocks)
+void gmMainLib_8015D1C8(u8 ckind, int stocks)
 {
     struct FighterData* base = &gmMainLib_804D3EE0->thing.x1F2C[0];
-    base[arg0].x7C.b789 = stocks;
+    base[ckind].x7C.b789 = stocks;
 }
 
 s32* gmMainLib_8015D1E8(u8 arg0)
@@ -983,9 +984,9 @@ void gmMainLib_8015ED80(u8 arg0)
     gmMainLib_804D3EE0->thing.x1CB0.sound_balance = arg0;
 }
 
-u16* gmMainLib_8015ED8C(void)
+u16* gmMainLib_GetUnlockedCharactersBitmask(void)
 {
-    return &gmMainLib_804D3EE0->thing.x1868;
+    return &gmMainLib_804D3EE0->thing.unlocked_characters_bitmask;
 }
 
 struct gmm_retval_ED98* gmMainLib_8015ED98(void)

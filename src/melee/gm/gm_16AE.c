@@ -1868,7 +1868,7 @@ void fn_8016E2BC(void)
                 Player_SetFacingDirection(0, direction(sp24.x));
             }
         }
-        Player_80032768(0, &sp24);
+        Player_SetSpawnPosition(0, &sp24);
         is_teams = tmp->x24C8.is_teams == true;
         Player_SetUnk45(0, fn_80160840(gm_80160854(
                                Player_GetPlayerId(0), Player_GetTeam(0),
@@ -1896,7 +1896,7 @@ void fn_8016E2BC(void)
                         Player_SetFacingDirection(i, var_f1_2);
                     }
                 }
-                Player_80032768(i, &sp18);
+                Player_SetSpawnPosition(i, &sp18);
                 is_teams = tmp->x24C8.is_teams == true;
                 Player_SetUnk45(
                     i, fn_80160840(gm_80160854(Player_GetPlayerId(i),
@@ -2167,7 +2167,7 @@ bool gm_8016EDDC(int arg0, PlayerInitData* arg1)
                 Player_SetFacingDirection(arg0, var_f1);
             }
         }
-        Player_80032768(arg0, &sp18);
+        Player_SetSpawnPosition(arg0, &sp18);
         is_teams = lbl_8046B6A0.x24C8.is_teams == true;
         Player_SetUnk45(
             arg0, fn_80160840(gm_80160854(Player_GetPlayerId(arg0),

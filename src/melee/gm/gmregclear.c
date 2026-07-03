@@ -1028,7 +1028,7 @@ bool gm_8017D7AC(MatchExitInfo* arg0, Unk1PData* arg1, u8 arg2)
     gm_8016247C(arg0->match_end.player_standings[0].xE);
     arg1->xC.x1C =
         lbTime_8000AEC8(arg1->xC.x1C, arg0->match_end.player_standings[0].x44);
-    gm_80162968(arg0->match_end.frame_count / 60);
+    gm_SetSinglePlayerTime(arg0->match_end.frame_count / 60);
     if (!(arg1->x8 & 0x80)) {
         arg1->xC.x20 =
             lbTime_8000AEC8(arg1->xC.x20, arg0->match_end.frame_count);

@@ -97,7 +97,7 @@ void un_8031D9F8(CharacterKind char_kind, int costume, int spawn_mode,
     Player_SetPlayerId(0, 0);
     Player_SetSlottype(0, Gm_PKind_Demo);
     Player_SetFacingDirection(0, 1.0f);
-    Player_80032768(0, &initial_pos);
+    Player_SetSpawnPosition(0, &initial_pos);
     Player_80036F34(0, 8);
 
     counts = (u8*) spawn_count;
@@ -113,7 +113,7 @@ void un_8031D9F8(CharacterKind char_kind, int costume, int spawn_mode,
         Player_SetPlayerId(i, 0);
         Player_SetSlottype(i, Gm_PKind_Demo);
         Player_SetFacingDirection(i, 1.0f);
-        Player_80032768(i, &initial_pos);
+        Player_SetSpawnPosition(i, &initial_pos);
         Player_SetUnk4D(i, counts[i - 1]);
         Player_80036F34(i, i + 0xA);
         gobj_ptr[-1] = Player_GetEntity(i);

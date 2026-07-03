@@ -229,8 +229,9 @@ struct gmm_retval_ED98 {
     u32 x0;
     u32 x4;
     u8 padding[0x4];
-    s32 xC;
-    s32 x10;
+    s32 vs_mode_characters_used_bitmask; ///< One bit for each character,
+                                         ///< indexed by CharacterKind
+    s32 x10; ///< Some kind of per-character bitmask
     s32 x14;
     s32 x18;
     s32 x1C;
@@ -257,10 +258,11 @@ struct gmm_retval_EDBC {
 };
 
 struct gmm_x1868 {
-    /* 0x0000 */ u16 x1868; ///< unlocked characters bitmask
-    /* 0x0002 */ u16 x186A; ///< unlocked stages bitmask
-    /* 0x0004 */ u8 x186C;  ///< unlocked features bitmask - score
-                            ///< display/random stage etc...
+    /* 0x0000 */ u16
+        unlocked_characters_bitmask; ///< unlocked characters bitmask
+    /* 0x0002 */ u16 x186A;          ///< unlocked stages bitmask
+    /* 0x0004 */ u8 x186C;           ///< unlocked features bitmask - score
+                                     ///< display/random stage etc...
     /// @remarks this would make sense to be apart of x186C, but seems unused.
     // perhaps features got removed from the unlock system? item switch comes
     // to mind as plausible
@@ -283,7 +285,7 @@ struct gmm_x1868 {
     /* 0x01C8 */ s32 x1A30;
     /* 0x01CC */ s32 x1A34;
     /* 0x01D0 */ s32 x1A38;
-    /* 0x01D4 */ s32 x1A3C;
+    /* 0x01D4 */ s32 timer_seconds;
     /* 0x01D8 */ s32 x1A40;
     /* 0x01DC */ s32 x1A44;
     /* 0x01E0 */ u32 x1A48;

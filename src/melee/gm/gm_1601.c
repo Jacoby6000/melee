@@ -495,9 +495,9 @@ char* gm_80160438(s32 ckind)
     }
 }
 
-bool gm_80160474(CharacterKind ckind, GameModeKind scene)
+bool gm_80160474(CharacterKind ckind, GameModeKind gameMode)
 {
-    switch (scene) {
+    switch (gameMode) {
     case GM_CLASSIC_GOVER:
     case GM_CLASSIC:
         return lbl_803B7978[ckind];
@@ -509,11 +509,11 @@ bool gm_80160474(CharacterKind ckind, GameModeKind scene)
     }
 }
 
-char* gm_801604DC(CharacterKind ckind, GameModeKind scene)
+char* gm_801604DC(CharacterKind ckind, GameModeKind gameMode)
 {
     s16 var_r3;
 
-    switch (scene) {
+    switch (gameMode) {
     case GM_CLASSIC_GOVER:
     case GM_CLASSIC:
         var_r3 = lbl_803B7978[ckind];
@@ -526,14 +526,14 @@ char* gm_801604DC(CharacterKind ckind, GameModeKind scene)
         var_r3 = lbl_803B7A00[ckind];
         break;
     }
-    return Toy_8030813C(var_r3, scene) + 4;
+    return Toy_8030813C(var_r3, gameMode) + 4;
 }
 
-char* gm_80160564(CharacterKind ckind, GameModeKind scene)
+char* gm_80160564(CharacterKind ckind, GameModeKind gameMode)
 {
     s16 var_r3;
 
-    switch (scene) {
+    switch (gameMode) {
     case GM_CLASSIC_GOVER:
     case GM_CLASSIC:
         var_r3 = lbl_803B7978[ckind];
@@ -546,14 +546,26 @@ char* gm_80160564(CharacterKind ckind, GameModeKind scene)
         var_r3 = lbl_803B7A00[ckind];
         break;
     }
-    return Toy_8030813C(var_r3, scene) + 0x24;
+    return Toy_8030813C(var_r3, gameMode) + 0x24;
 }
 
-u8 fn_801605EC(s32 arg0)
+u8 fn_801605EC_GetUnlockableCharacterIndex(
+    s32 lbl_803B78A4_value_for_ckind) ///< Either returns the index of an
+                                      ///< unlockable character, or returns
+                                      ///< NUM_UNLOCKABLE_CHARACTERS if its a
+                                      ///< starting char.
+                                      ///<
+                                      ///< Edgecases exist for Shiek and
+                                      ///< Gannondorf, who behave opposite as
+                                      ///< what you'd expect.
+                                      ///<
+                                      ///< Shiek will return 0x5
+                                      ///< Ganondorf will return
+                                      ///< NUM_UNLOCKABLE_CHARACTERS
 {
     int i;
     for (i = 0; i < NUM_UNLOCKABLE_CHARACTERS; i++) {
-        if (arg0 == lbl_803B78C8[i].ckind) {
+        if (lbl_803B78A4_value_for_ckind == lbl_803B78C8[i].ckind) {
             return lbl_803B78C8[i].idx;
         }
     }
@@ -562,7 +574,7 @@ u8 fn_801605EC(s32 arg0)
 
 s8 gm_80160638(s32 arg0)
 {
-    return fn_801605EC(gm_80164024(arg0));
+    return fn_801605EC_GetUnlockableCharacterIndex(gm_80164024(arg0));
 }
 
 static inline u8 fn_801606A8_inline(int arg0)
@@ -1483,10 +1495,9 @@ void gm_801628C4(u32 arg0, u32 arg1)
     temp_r3_3->x4 = (var_r4 > (u32) -1) ? (u32) -1 : var_r4;
 }
 
-long gm_80162968(u32 seconds)
+long gm_SetSinglePlayerTime(u32 seconds)
 {
     u32* ptr = gmMainLib_GetSingleplayerTime();
-
     *ptr = ((*ptr + seconds) > -1) ? -1 : (*ptr + seconds);
 }
 
@@ -2141,9 +2152,9 @@ u8 gm_8016400C(u8 ckind)
     return lbl_803B7888[ckind];
 }
 
-u8 gm_80164024(u8 arg0)
+u8 gm_80164024(u8 ckind)
 {
-    return lbl_803B78A4[arg0];
+    return lbl_803B78A4[ckind];
 }
 
 bool gm_8016403C(u8 item)
@@ -2372,26 +2383,28 @@ int gm_801647F8(u8 arg0)
 }
 
 /// Is a specific character unlocked?
-bool gm_80164840(u8 ckind)
+bool gm_IsCharacterUnlocked(u8 characterKind)
 {
-    u16* temp_r31 = gmMainLib_8015ED8C();
-    u8 var = lbl_803B78A4[ckind];
-    u8 var_r0 = fn_801605EC(var);
+    u16* temp_r31 = gmMainLib_GetUnlockedCharactersBitmask();
+    u8 var = lbl_803B78A4[characterKind];
+    u8 unlockableCharacterIndex = fn_801605EC_GetUnlockableCharacterIndex(var);
 
-    if (var_r0 == NUM_UNLOCKABLE_CHARACTERS || (*temp_r31 & (1LL << var_r0))) {
+    if (unlockableCharacterIndex == NUM_UNLOCKABLE_CHARACTERS ||
+        (*temp_r31 & (1LL << unlockableCharacterIndex)))
+    {
         return true;
     }
     return false;
 }
 
-static inline bool gm_80164840_inner(u8 ckind)
+static inline bool gm_IsCharacterUnlocked_Proxy(u8 ckind)
 {
-    return gm_80164840(ckind);
+    return gm_IsCharacterUnlocked(ckind);
 }
 
-static inline bool gm_80164840_noinline(u8 ckind)
+static inline bool gm_IsCharacterUnlocked_noinline(u8 ckind)
 {
-    return gm_80164840_inner(ckind);
+    return gm_IsCharacterUnlocked_Proxy(ckind);
 }
 
 void gm_80164910(int arg0)
@@ -2402,10 +2415,10 @@ void gm_80164910(int arg0)
     u8 unlock_idx;
     u8 notify_val;
 
-    char_unlock_mask = gmMainLib_8015ED8C();
+    char_unlock_mask = gmMainLib_GetUnlockedCharactersBitmask();
     internal_id = lbl_803B78A4[(u8) arg0];
 
-    unlock_idx = fn_801605EC(internal_id);
+    unlock_idx = fn_801605EC_GetUnlockableCharacterIndex(internal_id);
 
     if (unlock_idx != NUM_UNLOCKABLE_CHARACTERS) {
         for (i = 0; i < NUM_UNLOCKABLE_CHARACTERS; i++) {
@@ -2424,9 +2437,10 @@ void gm_80164910(int arg0)
 
 void gm_80164A0C(u8 arg0)
 {
-    u16* unlockable_character_bitfield = gmMainLib_8015ED8C();
+    u16* unlockable_character_bitfield =
+        gmMainLib_GetUnlockedCharactersBitmask();
     s32 tmp_p52845 = lbl_803B78A4[arg0];
-    u8 idx = fn_801605EC(tmp_p52845);
+    u8 idx = fn_801605EC_GetUnlockableCharacterIndex(tmp_p52845);
     if (idx != NUM_UNLOCKABLE_CHARACTERS) {
         *unlockable_character_bitfield &= (u16) ~(1ULL << idx);
     }
@@ -2435,7 +2449,8 @@ void gm_80164A0C(u8 arg0)
 /// Are all unlockable characters unlocked?
 bool gm_80164ABC(void)
 {
-    u16* unlockable_character_bitfield = gmMainLib_8015ED8C();
+    u16* unlockable_character_bitfield =
+        gmMainLib_GetUnlockedCharactersBitmask();
     int i;
     for (i = 0; i < NUM_UNLOCKABLE_CHARACTERS; i++) {
         if (!(*unlockable_character_bitfield & (1LL << i))) {
@@ -2466,7 +2481,7 @@ bool fn_80164B48(void)
 
     PAD_STACK(16);
 
-    ptr = gmMainLib_8015ED8C();
+    ptr = gmMainLib_GetUnlockedCharactersBitmask();
     t = base[0x2C2];
     es_base = base + 0x2D0;
     idx = 0xB;
@@ -2488,7 +2503,7 @@ bool fn_80164B48(void)
         return 0;
     }
 
-    ptr = gmMainLib_8015ED8C();
+    ptr = gmMainLib_GetUnlockedCharactersBitmask();
     t = base[0x2C5];
     idx = 0xB;
     {
@@ -2509,7 +2524,7 @@ bool fn_80164B48(void)
         return 0;
     }
 
-    ptr = gmMainLib_8015ED8C();
+    ptr = gmMainLib_GetUnlockedCharactersBitmask();
     t = base[0x2C1];
     idx = 0xB;
     {
@@ -2530,7 +2545,7 @@ bool fn_80164B48(void)
         return 0;
     }
 
-    ptr = gmMainLib_8015ED8C();
+    ptr = gmMainLib_GetUnlockedCharactersBitmask();
     t = base[0x2C0];
     idx = 0xB;
     {
@@ -2551,7 +2566,7 @@ bool fn_80164B48(void)
         return 0;
     }
 
-    ptr = gmMainLib_8015ED8C();
+    ptr = gmMainLib_GetUnlockedCharactersBitmask();
     t = base[0x2C4];
     idx = 0xB;
     {
@@ -2572,7 +2587,7 @@ bool fn_80164B48(void)
         return 0;
     }
 
-    ptr = gmMainLib_8015ED8C();
+    ptr = gmMainLib_GetUnlockedCharactersBitmask();
     t = base[0x2C3];
     idx = 0xB;
     {
@@ -2599,7 +2614,7 @@ void gm_80164F18(void)
     u16* ptr;
     int i;
 
-    ptr = gmMainLib_8015ED8C();
+    ptr = gmMainLib_GetUnlockedCharactersBitmask();
 
     for (i = 0; i < 11; i++) {
         *ptr |= (u16) (1LL << i);
@@ -2608,7 +2623,7 @@ void gm_80164F18(void)
 
 void gm_8016505C(void)
 {
-    u16* temp_r3 = gmMainLib_8015ED8C();
+    u16* temp_r3 = gmMainLib_GetUnlockedCharactersBitmask();
     *temp_r3 = 0;
 }
 
@@ -3451,7 +3466,7 @@ void fn_8016719C(s32 slot, s32 subchar)
     }
 
     respawn_pos.y = Stage_GetCamBoundsTopOffset();
-    Player_80032768(slot, &respawn_pos);
+    Player_SetSpawnPosition(slot, &respawn_pos);
     Player_SetFacingDirection(slot, respawn_pos.x >= 0.0f ? -1.0f : 1.0f);
     Player_SetHPByIndex(slot, subchar, match_info->FighterMatchInfo[slot].x6);
     Player_80032070(slot, subchar);
@@ -4608,13 +4623,17 @@ void fn_80169900(u8 arg0, struct lbl_8046B488_t* arg1, s8* arg2, s8* arg3)
             } else {
                 var_r27 = 5;
                 if (HSD_Randi(2) != 0) {
-                    if ((s32) arg1->x1 != 0x21 && gm_80164840(arg1->x1)) {
+                    if ((s32) arg1->x1 != 0x21 &&
+                        gm_IsCharacterUnlocked(arg1->x1))
+                    {
                         arg2[var_r28] = arg1->x1;
                     } else {
                         arg2[var_r28] = arg1->x0;
                     }
                 } else {
-                    if ((s32) arg1->x2 != 0x21 && gm_80164840(arg1->x2)) {
+                    if ((s32) arg1->x2 != 0x21 &&
+                        gm_IsCharacterUnlocked(arg1->x2))
+                    {
                         arg2[var_r28] = arg1->x2;
                     } else {
                         arg2[var_r28] = arg1->x0;
@@ -4646,7 +4665,7 @@ long fn_80169A84(u8 arg0, s8* arg1, s8* arg2)
         list = lbl_8046B488.x1C0;
         p = list;
         do {
-            if (i != 4 && gm_80164840_noinline((u8) i) != 0) {
+            if (i != 4 && gm_IsCharacterUnlocked_noinline((u8) i) != 0) {
                 *p = i;
             } else {
                 *p = -1;
@@ -5130,7 +5149,7 @@ void fn_8016A4C8(void)
                 Player_SetTeam(spawn_slot, 4);
                 Ground_801C2D24(spawn_slot + (gp->xA - 1), &spawn_pos);
                 spawn_pos.y = Stage_GetCamBoundsTopOffset();
-                Player_80032768(spawn_slot, &spawn_pos);
+                Player_SetSpawnPosition(spawn_slot, &spawn_pos);
                 Player_SetSlottype(spawn_slot, Gm_PKind_Cpu);
                 Player_SetPlayerCharacter(
                     spawn_slot, (CharacterKind) (s8) (u8) gp->xA2[gp->x7]);

@@ -1,8 +1,11 @@
 #include "gm_16F1.h"
 
+#include "gm/gm_1601.static.h"
 #include "gm_16F1.static.h"
 
 #include "gm_unsplit.h"
+
+#include "ft/forward.h"
 
 #include <melee/gm/gm_16AE.h>
 #include <melee/gm/gmmain_lib.h>
@@ -15,6 +18,8 @@
 #include <melee/pl/plbonuslib.h>
 #include <melee/pl/types.h>
 #include <melee/ty/toy.h>
+
+#define VS_MODE_UNIQUE_CHARS_MARTH_THRESHOLD 14
 
 struct lbl_804D65A8_t {
     /* 0x00 */ u8 x0;
@@ -1760,7 +1765,7 @@ void gm_801729EC(void)
     }
 
     for (i = 0; i < 11; i++) {
-        if (gm_80164840(fn_801606A8(i)) == 0) {
+        if (gm_IsCharacterUnlocked(fn_801606A8(i)) == 0) {
             gmMainLib_8015D924(fn_80160710(i));
         }
     }
@@ -1873,7 +1878,7 @@ u8 gm_80172CC0(u8 arg0, u8 arg1)
 u8 gm_80172D78(void)
 {
     u32* temp_r31 = &gmMainLib_8015ED98()->x4;
-    if (!gm_80164840(CKIND_MEWTWO) && *temp_r31 >= 0x11940) {
+    if (!gm_IsCharacterUnlocked(CKIND_MEWTWO) && *temp_r31 >= 0x11940) {
         return CKIND_MEWTWO;
     }
     return CHKIND_NONE;
@@ -1886,7 +1891,7 @@ static inline const struct lbl_803B7AD0_t* inline1(u32 arg0)
     int i;
     for (i = 0; i < 0xB; i++) {
         if (lbl_803B7AD0[i].x4 <= arg0 &&
-            !gm_80164840(fn_801606A8(lbl_803B7AD0[i].x0)))
+            !gm_IsCharacterUnlocked(fn_801606A8(lbl_803B7AD0[i].x0)))
         {
             if (lbl_803B7AD0[i].x4 < var_r30) {
                 var_r30 = lbl_803B7AD0[i].x4;
@@ -1912,12 +1917,17 @@ u8 gm_80172E74(void)
     int i;
     int count = 0;
 
-    for (i = 0; i < 0x19; i++) {
-        if (fn_801605EC(i) == 0xB && gmMainLib_8015CFCC(i)) {
+    for (i = 0; i < CKIND_GANON; i++) {
+        if (fn_801605EC_GetUnlockableCharacterIndex(i) ==
+                NUM_UNLOCKABLE_CHARACTERS &&
+            gmMainLib_HasPlayedVsModeWithCharacter(i))
+        {
             count += 1;
         }
     }
-    if (count >= 0xE && !gm_80164840(CKIND_MARS)) {
+    if (count >= VS_MODE_UNIQUE_CHARS_MARTH_THRESHOLD &&
+        !gm_IsCharacterUnlocked(CKIND_MARS))
+    {
         return CKIND_MARS;
     }
     return CHKIND_NONE;
@@ -2003,30 +2013,34 @@ u8 fn_80173098(int arg0)
 
     temp_r3 = fn_8017DEC8(arg0);
     if (temp_r3->xC.xD == 0) {
-        if (temp_r3->ckind == CKIND_MARS && !gm_80164840(CKIND_EMBLEM)) {
+        if (temp_r3->ckind == CKIND_MARS &&
+            !gm_IsCharacterUnlocked(CKIND_EMBLEM))
+        {
             return CKIND_EMBLEM;
         }
-        if (temp_r3->ckind == CKIND_MARIO && !gm_80164840(CKIND_DRMARIO)) {
+        if (temp_r3->ckind == CKIND_MARIO &&
+            !gm_IsCharacterUnlocked(CKIND_DRMARIO))
+        {
             return CKIND_DRMARIO;
         }
     }
     var_r31 = fn_80173098_CountUnlocked();
     (void) var_r31;
-    if (var_r31 >= 10 && !gm_80164840(CKIND_CLINK)) {
+    if (var_r31 >= 10 && !gm_IsCharacterUnlocked(CKIND_CLINK)) {
         return CKIND_CLINK;
     }
-    if (fn_80172FAC() && !gm_80164840(CKIND_GAMEWATCH)) {
+    if (fn_80172FAC() && !gm_IsCharacterUnlocked(CKIND_GAMEWATCH)) {
         return CKIND_GAMEWATCH;
     }
     if (arg0 == 0) {
         temp_r31 = gm_8017E424();
-        if (!gm_80164840(CKIND_LUIGI) && temp_r31->x74 != 0 &&
+        if (!gm_IsCharacterUnlocked(CKIND_LUIGI) && temp_r31->x74 != 0 &&
             temp_r31->x75 != 0)
         {
             return CKIND_LUIGI;
         }
     }
-    if (!gm_80164840(CKIND_PURIN)) {
+    if (!gm_IsCharacterUnlocked(CKIND_PURIN)) {
         return CKIND_PURIN;
     }
     return CHKIND_NONE;
@@ -2047,10 +2061,10 @@ u8 gm_80173224(int arg0, int arg1)
 /// check for event character unlocks?
 CharacterKind gm_801732D8(u8 arg0)
 {
-    if (!gm_80164840(CKIND_GANON) && gm_801BEBC0(arg0) == 0x1C) {
+    if (!gm_IsCharacterUnlocked(CKIND_GANON) && gm_801BEBC0(arg0) == 0x1C) {
         return CKIND_GANON;
     }
-    if (!gm_80164840(CKIND_PICHU) && gm_801BEBC0(arg0) == 0xE) {
+    if (!gm_IsCharacterUnlocked(CKIND_PICHU) && gm_801BEBC0(arg0) == 0xE) {
         return CKIND_PICHU;
     }
     return CHKIND_NONE;
@@ -2074,7 +2088,7 @@ int gm_8017335C(void)
 
 u8 gm_801733D8(void)
 {
-    if (!gm_80164840(CKIND_GAMEWATCH) && fn_80172FAC()) {
+    if (!gm_IsCharacterUnlocked(CKIND_GAMEWATCH) && fn_80172FAC()) {
         return CKIND_GAMEWATCH;
     }
     return CHKIND_NONE;
@@ -2088,9 +2102,9 @@ u16 gm_8017341C(void)
     return 0x148;
 }
 
-u8 gm_80173460(s8 arg0)
+u8 gm_80173460(s8 characterKind)
 {
-    if (!gm_80164840(CKIND_FALCO)) {
+    if (!gm_IsCharacterUnlocked(CKIND_FALCO)) {
         return CKIND_FALCO;
     }
     return CHKIND_NONE;

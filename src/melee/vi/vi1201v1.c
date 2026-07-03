@@ -88,7 +88,7 @@ void un_8031F9D8(CharacterKind char_index, int costume_id)
     Player_SetPlayerId(0, 0);
     Player_SetSlottype(0, 2);
     Player_SetFacingDirection(0, 0.0f);
-    Player_80032768(0, &player_spawn);
+    Player_SetSpawnPosition(0, &player_spawn);
     Player_80036F34(0, 1);
     un_804D7000 = Player_GetEntity(0);
     lbAudioAx_80026F2C(0x18);

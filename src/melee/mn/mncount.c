@@ -192,7 +192,7 @@ int mnCount_8025035C(s32 skip_count, u32 (*get_val_func)(s32))
         }
 
         for (i = 0; i < arr_size; i++) {
-            if (gm_80164840(gm_8016400C(sp18[i].id)) == 0) {
+            if (gm_IsCharacterUnlocked(gm_8016400C(sp18[i].id)) == 0) {
                 continue;
             }
 
@@ -200,7 +200,7 @@ int mnCount_8025035C(s32 skip_count, u32 (*get_val_func)(s32))
                 skip_count--;
                 j = i + 1;
                 while (j < arr_size) {
-                    if (gm_80164840(gm_8016400C(sp18[j].id)) != 0 &&
+                    if (gm_IsCharacterUnlocked(gm_8016400C(sp18[j].id)) != 0 &&
                         get_val_func(sp18[i].id) == get_val_func(sp18[j].id))
                     {
                         i++;
@@ -214,7 +214,7 @@ int mnCount_8025035C(s32 skip_count, u32 (*get_val_func)(s32))
                 }
             } else {
                 for (j = i + 1; j < arr_size; j++) {
-                    if (gm_80164840(gm_8016400C(sp18[j].id)) == 0) {
+                    if (gm_IsCharacterUnlocked(gm_8016400C(sp18[j].id)) == 0) {
                         continue;
                     }
 
@@ -349,13 +349,13 @@ s32 mnCount_8025092C(s32 rank, u32 (*getVal)(s32), bool mode)
             }
         }
         for (i = 0; i < NUM_CHARACTERS; i++) {
-            if (!gm_80164840(gm_8016400C(entries[i].id))) {
+            if (!gm_IsCharacterUnlocked(gm_8016400C(entries[i].id))) {
                 continue;
             }
             if (rank != 0) {
                 rank--;
                 for (j = i + 1; j < NUM_CHARACTERS; j++) {
-                    if (!gm_80164840(gm_8016400C(entries[j].id))) {
+                    if (!gm_IsCharacterUnlocked(gm_8016400C(entries[j].id))) {
                         continue;
                     }
                     if (getVal(entries[i].id) == getVal(entries[j].id)) {
@@ -369,7 +369,7 @@ s32 mnCount_8025092C(s32 rank, u32 (*getVal)(s32), bool mode)
                 }
             } else {
                 for (j = i + 1; j < NUM_CHARACTERS; j++) {
-                    if (!gm_80164840(gm_8016400C(entries[j].id))) {
+                    if (!gm_IsCharacterUnlocked(gm_8016400C(entries[j].id))) {
                         continue;
                     }
                     if (getVal(entries[i].id) == getVal(entries[j].id)) {
@@ -388,7 +388,7 @@ static inline int mnCount_CountUnlockedChars(void)
     int i;
     int c = 0;
     for (i = 0; i < NUM_CHARACTERS; i++) {
-        if (gm_80164840(gm_8016400C((u8) i))) {
+        if (gm_IsCharacterUnlocked(gm_8016400C((u8) i))) {
             c += 1;
         }
     }

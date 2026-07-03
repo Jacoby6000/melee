@@ -168,23 +168,23 @@ void* gm_801A4284(GameScene* scene)
     return scene->info.leave_data;
 }
 
-void gm_SetScene(GameSceneKind arg0)
+void gm_SetScene(u8 arg0)
 {
     gameState_80479D30.routing.curr_scene = arg0;
     gameState_80479D30.routing.prev_scene = arg0;
 }
 
-void gm_SetPendingSceneToSuccessorOf(GameSceneKind pending_scene)
+void gm_SetPendingSceneToSuccessorOf(u8 pending_scene)
 {
     gameState_80479D30.routing.pending_scene = pending_scene + 1;
 }
 
-GameSceneKind gm_GetPreviousScene(void)
+u8 gm_GetPreviousScene(void)
 {
     return gameState_80479D30.routing.prev_scene;
 }
 
-GameSceneKind gm_GetCurrentScene(void)
+u8 gm_GetCurrentScene(void)
 {
     return gameState_80479D30.routing.curr_scene;
 }
@@ -194,23 +194,23 @@ void gm_801A42D4(void)
     gameState_80479D30.pending = 1;
 }
 
-void gm_SetPendingGameMode(GameModeKind pending_mode)
+void gm_SetPendingGameMode(u8 pending_mode)
 {
     gameState_80479D30.routing.pending_mode = pending_mode;
 }
 
-void gm_RequestPendingGameMode(GameModeKind pending_mode)
+void gm_RequestPendingGameMode(int pending_mode)
 {
     gameState_80479D30.routing.pending_mode = pending_mode;
     gameState_80479D30.pending = 1;
 }
 
-GameModeKind gm_GetCurrentGameMode(void)
+u8 gm_GetCurrentGameMode(void)
 {
     return gameState_80479D30.routing.curr_mode;
 }
 
-GameModeKind gm_GetPreviousGameMode(void)
+u8 gm_GetPreviousGameMode(void)
 {
     return gameState_80479D30.routing.prev_mode;
 }
@@ -252,7 +252,7 @@ inline GameMode* findMode(u8 idx)
     return NULL;
 }
 
-GameModeKind gm_GetPendingGameMode(GameModeKind mode_kind)
+u8 gm_GetPendingGameMode(u8 mode_kind)
 {
     u8 temp_r3;
     GameMode* mode;

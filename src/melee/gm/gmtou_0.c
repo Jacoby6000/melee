@@ -1438,7 +1438,7 @@ void fn_801935B8(void)
 
     tm->x32 = 0;
     for (i = 0; i < 25; i++) {
-        lbl_803D9D20.x72[i] = gm_80164840((u8) fn_8018F6FC(i));
+        lbl_803D9D20.x72[i] = gm_IsCharacterUnlocked((u8) fn_8018F6FC(i));
     }
 }
 #pragma pop

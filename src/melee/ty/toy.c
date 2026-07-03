@@ -2165,7 +2165,7 @@ void _Toy_80307F64(s32 arg0, s32 arg1)
     }
 }
 
-char* Toy_8030813C(s16 arg0, enum_t unused)
+char* Toy_8030813C(s16 arg0, enum_t gameMode)
 {
     char* ptr;
     s32 i;

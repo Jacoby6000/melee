@@ -64,12 +64,13 @@ s32 mnEvent_8024CE74(void)
         }
         return 0x29;
     }
-    if (gm_80164840(0x14) && gm_80164840(7) && gm_80164840(0xF) &&
-        gm_80164840(0x15))
+    if (gm_IsCharacterUnlocked(0x14) && gm_IsCharacterUnlocked(7) &&
+        gm_IsCharacterUnlocked(0xF) && gm_IsCharacterUnlocked(0x15))
     {
-        if (gm_80164840(0xA) && gm_80164840(9) && gm_80164840(3) &&
-            gm_80164840(0x18) && gm_80164840(0x19) && gm_80164840(0x16) &&
-            gm_80164840(0x17))
+        if (gm_IsCharacterUnlocked(0xA) && gm_IsCharacterUnlocked(9) &&
+            gm_IsCharacterUnlocked(3) && gm_IsCharacterUnlocked(0x18) &&
+            gm_IsCharacterUnlocked(0x19) && gm_IsCharacterUnlocked(0x16) &&
+            gm_IsCharacterUnlocked(0x17))
         {
             return 0x29;
         }

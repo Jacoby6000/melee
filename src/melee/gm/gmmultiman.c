@@ -336,7 +336,7 @@ void gm_801B65D4(GameScene* arg0)
     var_r29 = 0;
     temp_r3 = gm_801A4284(arg0);
     temp_r28 = &gmMainLib_804D3EE0->unk_530.unk_584;
-    gm_80162968(temp_r3->match_end.frame_count / 60);
+    gm_SetSinglePlayerTime(temp_r3->match_end.frame_count / 60);
     gm_8016247C(temp_r3->match_end.player_standings[0].xE);
     if (temp_r3->match_end.result == 8) {
         gm_SetPendingSceneToSuccessorOf(1U);
@@ -397,8 +397,8 @@ void gm_801B65D4(GameScene* arg0)
         goto block_22;
     }
 block_22:
-    if (gm_80173754(0xF, gm_804D68E8) == 0) {
-        gm_SetPendingSceneToSuccessorOf(0U);
+    if (gm_80173754(GM_TARGET_TEST, gm_804D68E8) == 0) {
+        gm_SetPendingSceneToSuccessorOf(GS_TITLE);
     }
 }
 
@@ -604,7 +604,7 @@ void gm_801B6F44(GameScene* scene)
         gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
-    gm_80162968(temp_r3->match_end.frame_count / 60);
+    gm_SetSinglePlayerTime(temp_r3->match_end.frame_count / 60);
     gm_8016247C(temp_r3->match_end.player_standings[0].xE);
     gm_80182578();
     temp_r30 =
@@ -706,7 +706,7 @@ void gm_801B74F0(GameScene* scene)
         gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
-    gm_80162968(temp_r3->match_end.frame_count / 60);
+    gm_SetSinglePlayerTime(temp_r3->match_end.frame_count / 60);
     gm_8016247C(temp_r3->match_end.player_standings[0].xE);
     gm_80182578();
     temp_r30 =
@@ -813,7 +813,7 @@ void gm_801B7AA0(GameScene* scene)
         gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
-    gm_80162968(temp_r3->match_end.frame_count / 60);
+    gm_SetSinglePlayerTime(temp_r3->match_end.frame_count / 60);
     gm_8016247C(temp_r3->match_end.player_standings[0].xE);
     gm_80182578();
     temp_r31 =
@@ -914,7 +914,7 @@ void gm_801B8024(GameScene* scene)
         gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
-    gm_80162968(temp_r3->match_end.frame_count / 60);
+    gm_SetSinglePlayerTime(temp_r3->match_end.frame_count / 60);
     gm_8016247C(temp_r3->match_end.player_standings[0].xE);
     gm_80182578();
     temp_r30 =
@@ -1008,7 +1008,7 @@ void gm_801B8580(GameScene* scene)
         gm_SetPendingSceneToSuccessorOf(1U);
         return;
     }
-    gm_80162968(temp_r3->match_end.frame_count / 60);
+    gm_SetSinglePlayerTime(temp_r3->match_end.frame_count / 60);
     gm_8016247C(temp_r3->match_end.player_standings[0].xE);
     gm_80182578();
     temp_r31 =
@@ -1099,7 +1099,7 @@ void gm_801B8AF8(GameScene* arg0)
         gm_SetPendingSceneToSuccessorOf(1);
         return;
     }
-    gm_80162968(temp_r3->match_end.frame_count / 60);
+    gm_SetSinglePlayerTime(temp_r3->match_end.frame_count / 60);
     gm_8016247C(temp_r3->match_end.player_standings[0].xE);
     gm_80182578();
     temp_r31 =

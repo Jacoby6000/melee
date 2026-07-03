@@ -628,7 +628,7 @@ int mnDiagram_GetRankedFighterForName(int rank, int name_idx,
 
     // Find the rank-th unlocked fighter
     for (i = 0; i < 0x19; i++) {
-        if (gm_80164840(gm_8016400C(entries[i].fighter_id)) != 0) {
+        if (gm_IsCharacterUnlocked(gm_8016400C(entries[i].fighter_id)) != 0) {
             if (rank != 0) {
                 rank--;
                 // Check for ties - skip fighters with same value

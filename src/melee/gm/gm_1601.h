@@ -18,7 +18,7 @@
 /* 160474 */ bool gm_80160474(CharacterKind, GameModeKind);
 /* 1604DC */ char* gm_801604DC(CharacterKind, GameModeKind);
 /* 160564 */ char* gm_80160564(CharacterKind, GameModeKind);
-/* 1605EC */ u8 fn_801605EC(s32);
+/* 1605EC */ u8 fn_801605EC_GetUnlockableCharacterIndex(s32);
 /* 160638 */ s8 gm_80160638(s32);
 /* 1606A8 */ u8 fn_801606A8(int);
 /* 160710 */ u8 fn_80160710(int);
@@ -49,7 +49,7 @@
 /* 16279C */ u32 gm_GetVsPlayMatchTotal(void);
 /* 162800 */ u32 gm_80162800(struct MatchEnd*);
 /* 1628C4 */ void gm_801628C4(u32, u32);
-/* 162968 */ long gm_80162968(u32 seconds);
+/* 162968 */ long gm_SetSinglePlayerTime(u32 seconds);
 /* 1629B4 */ long gm_801629B4(s32 amount);
 /* 162A00 */ long gm_GetPlayTime(void);
 /* 162A4C */ long gm_80162A4C(s32 amount);
@@ -117,7 +117,7 @@
 /* 16468C */ UNK_RET gm_8016468C(UNK_PARAMS);
 /* 1647D0 */ void gm_801647D0(void);
 /* 1647F8 */ int gm_801647F8(u8);
-/* 164840 */ bool gm_80164840(u8 ckind);
+/* 164840 */ bool gm_IsCharacterUnlocked(u8 ckind);
 /* 164910 */ void gm_80164910(int);
 /* 164A0C */ void gm_80164A0C(u8);
 /* 164ABC */ bool gm_80164ABC(void);

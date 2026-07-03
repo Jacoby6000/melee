@@ -63,7 +63,7 @@ void vi0102_8031CB00(int mario_costume, int luigi_costume)
     Player_SetPlayerId(0, 0);
     Player_SetSlottype(0, Gm_PKind_Demo);
     Player_SetFacingDirection(0, 1.0f);
-    Player_80032768(0, &initial_pos);
+    Player_SetSpawnPosition(0, &initial_pos);
     Player_80036F34(0, 9);
 
     // Setup Luigi
@@ -73,7 +73,7 @@ void vi0102_8031CB00(int mario_costume, int luigi_costume)
     Player_SetPlayerId(1, 0);
     Player_SetSlottype(1, Gm_PKind_Demo);
     Player_SetFacingDirection(1, 1.0f);
-    Player_80032768(1, &initial_pos);
+    Player_SetSpawnPosition(1, &initial_pos);
     Player_80036F34(1, 9);
 
     lbAudioAx_80026F2C(0x18);

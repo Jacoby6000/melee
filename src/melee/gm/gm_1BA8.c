@@ -4,6 +4,8 @@
 
 #include "gm_unsplit.h"
 
+#include "gm/forward.h"
+
 #include "vi/vi1201v1.h"
 
 #include <sysdolphin/baselib/controller.h>
@@ -730,7 +732,7 @@ void gm_801BB758(GameScene* arg0)
         gmMainLib_8015CEB4(stage);
     }
     gm_8016247C(ev->x3C);
-    gm_80162968((u32) ev->x40 / 60);
+    gm_SetSinglePlayerTime((u32) ev->x40 / 60);
     if (ev->xB_1) {
         kind = gm_801732D8(ev->unk_535);
     } else {
@@ -757,8 +759,8 @@ void gm_801BB758(GameScene* arg0)
         gm_RequestPendingGameMode(0x14);
         return;
     }
-    if (gm_80173754(1, ev->x6) == 0) {
-        gm_RequestPendingGameMode(1);
+    if (gm_80173754(GM_MENU, ev->x6) == 0) {
+        gm_RequestPendingGameMode(GM_MENU);
     }
 }
 
@@ -3141,7 +3143,7 @@ void gm_801BECA8(GameScene* arg)
 void gm_801BECD0(GameScene* arg)
 {
     gm_80172898(4);
-    if (!gm_80173754(1, 0)) {
+    if (!gm_80173754(GM_MENU, 0)) {
         gm_SetPendingGameMode(GM_MENU);
         gm_801A42D4();
     }
@@ -3202,7 +3204,7 @@ void gm_801BEE9C(GameScene* arg0)
     gm_80173EEC();
     gm_80172898(0x40);
     if (temp_r27 == 0x21) {
-        if (!gm_80173754(1, gm_801BEFD0())) {
+        if (!gm_80173754(GM_MENU, gm_801BEFD0())) {
             gm_SetPendingGameMode(*temp_r28);
         }
     } else {
@@ -3338,7 +3340,7 @@ void gm_801BF060(GameScene* arg0)
     } else if (*temp_r3 & 0x1000) {
         gm_80173EEC();
         gm_80172898(0x100);
-        if (!gm_80173754(1, 0)) {
+        if (!gm_80173754(GM_MENU, 0)) {
             gm_SetPendingGameMode(GM_MENU);
         }
         gm_801A42D4();

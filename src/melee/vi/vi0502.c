@@ -91,7 +91,7 @@ void vi0502_8031E124(CharacterKind player_kind, int player_costume,
     Player_SetPlayerId(0, 0);
     Player_SetSlottype(0, Gm_PKind_Demo);
     Player_SetFacingDirection(0, 1.0f);
-    Player_80032768(0, &un_804000D0.initial_pos);
+    Player_SetSpawnPosition(0, &un_804000D0.initial_pos);
     Player_80036F34(0, 8);
 
     Player_80036E20(CKIND_KIRBY, un_804D6F9C, 7);

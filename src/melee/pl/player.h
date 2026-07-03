@@ -173,7 +173,7 @@ void Player_SetSlottype(s32 slot, Gm_PKind value);
 s8 Player_800325C8(CharacterKind, bool b);
 s8 Player_80032610(s32 slot, bool arg1);
 void Player_LoadPlayerCoords(s32 slot, Vec3* out_vec);
-void Player_80032768(s32 slot, Vec3* arg_vec);
+void Player_SetSpawnPosition(s32 slot, Vec3* arg_vec);
 void Player_80032828(s32 slot, s32 index, Vec3* arg_vec);
 void Player_800328D4(int slot, Vec3* arg_vec);
 void Player_80032A04(int slot, Vec3* arg_vec);

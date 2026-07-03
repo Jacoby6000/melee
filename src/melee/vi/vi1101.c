@@ -79,7 +79,7 @@ void un_8031F294(s32 arg0, s32 arg1)
     Player_SetPlayerId(0, 0);
     Player_SetSlottype(0, Gm_PKind_Demo);
     Player_SetFacingDirection(0, un_804DE0D8);
-    Player_80032768(0, un_80400200.spawns);
+    Player_SetSpawnPosition(0, un_80400200.spawns);
     Player_80036F34(0, 8);
     pmtx = grLib_801C9A10();
     Player_80036E20(CKIND_MARIO, un_804D6FCC, 5);
@@ -88,7 +88,7 @@ void un_8031F294(s32 arg0, s32 arg1)
     Player_SetPlayerId(1, 0);
     Player_SetSlottype(1, Gm_PKind_Demo);
     Player_SetFacingDirection(1, un_804DE0DC);
-    Player_80032768(1, un_80400200.spawns);
+    Player_SetSpawnPosition(1, un_80400200.spawns);
     Player_SetFlagsBit5(1, 1);
     Player_80036F34(1, 0xA);
     un_804D6FD0.unk0 = Player_GetEntity(1);
@@ -97,14 +97,14 @@ void un_8031F294(s32 arg0, s32 arg1)
     HSD_JObjAnimAll(jobj);
     pmtx[1] = un_80400200.spawns[1];
     HSD_JObjReqAnimAll(jobj, un_804DE0DC);
-    if (gm_80164840(7) != 0) {
+    if (gm_IsCharacterUnlocked(FTKIND_SEAK) != 0) {
         Player_80036E20(CKIND_LUIGI, un_804D6FCC, 5);
         Player_SetPlayerCharacter(2, CKIND_LUIGI);
         Player_SetCostumeId(2, 0);
         Player_SetPlayerId(2, 0);
         Player_SetSlottype(2, Gm_PKind_Demo);
         Player_SetFacingDirection(2, un_804DE0DC);
-        Player_80032768(2, un_80400200.spawns);
+        Player_SetSpawnPosition(2, un_80400200.spawns);
         Player_SetFlagsBit5(2, 1);
         Player_80036F34(2, 0xA);
         un_804D6FD0.unk4 = Player_GetEntity(2);
@@ -151,7 +151,7 @@ void fn_8031F600(HSD_GObj* gobj)
     HSD_CObjAnim(cobj);
 
     if (170.0f == cobj->aobj->curr_frame) {
-        if (gm_80164840(7) != 0) {
+        if (gm_IsCharacterUnlocked(7) != 0) {
             vi_8031C9B4(0xD, 0);
             lbAudioAx_800237A8(0x209, 0x7F, 0x40);
         }
@@ -163,7 +163,7 @@ void fn_8031F600(HSD_GObj* gobj)
     }
 
     if (241.0f == cobj->aobj->curr_frame) {
-        if (gm_80164840(7) != 0) {
+        if (gm_IsCharacterUnlocked(7) != 0) {
             lbAudioAx_800237A8(0x20A, 0x7F, 0x40);
         }
     }
@@ -210,7 +210,7 @@ void un_8031F714_OnEnter(void* arg)
                             lb_80011AC4(un_804D6FC0->lights));
     GObj_SetupGXLink(temp_r28, HSD_GObj_LObjCallback, 0, 0);
 
-    if (gm_80164840(7) != 0) {
+    if (gm_IsCharacterUnlocked(7) != 0) {
         var_r28 = un_804D6FC0;
     } else {
         var_r28 = un_804D6FC4;

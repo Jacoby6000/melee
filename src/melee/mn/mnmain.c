@@ -2941,7 +2941,7 @@ char null_terminator[1] = "\0";
 
 bool mn_IsFighterUnlocked(int arg0)
 {
-    return gm_80164840(gm_8016400C(arg0));
+    return gm_IsCharacterUnlocked(gm_8016400C(arg0));
 }
 
 void mn_8022E978(u8 item_idx, u8 enable)

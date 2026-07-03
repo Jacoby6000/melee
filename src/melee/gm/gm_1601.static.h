@@ -6,14 +6,16 @@
 
 #include <placeholder.h>
 
+#include "ft/forward.h"
+
 #include "gm/types.h"
 
 #include <baselib/forward.h>
 
 #include <dolphin/mtx.h>
 
-#define NUM_UNLOCKABLE_CHARACTERS 11
-#define NUM_UNLOCKABLE_STAGES 11
+#define NUM_UNLOCKABLE_CHARACTERS 11 ///< 0xB
+#define NUM_UNLOCKABLE_STAGES 11     ///< 0xB
 
 /// struct ResultsData {
 ///     /*  +0 */ char pad_0[0x94];
@@ -96,86 +98,119 @@ static const u8 lbl_803B7844[] = {
     CKIND_GANON,
 };
 /* 3B78A4 */ static const u8 lbl_803B78A4[0x24] = {
-    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B,
-    0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x12, 0x13, 0x14, 0x15, 0x16,
-    0x17, 0x18, 0x08, 0x08, 0x08, 0x19, 0x08, 0x08, 0x00, 0x00, 0x00, 0x00
+    0x00, ///< CKIND_CAPTAIN
+    0x01, ///< CKIND_DONKEY
+    0x02, ///< CKIND_FOX
+    0x03, ///< CKIND_GAMEWATCH
+    0x04, ///< CKIND_KIRBY,
+    0x05, ///< CKIND_KOOPA,
+    0x06, ///< CKIND_LINK,
+    0x07, ///< CKIND_LUIGI,
+    0x08, ///< CKIND_MARIO,
+    0x09, ///< CKIND_MARS,
+    0x0A, ///< CKIND_MEWTWO,
+    0x0B, ///< CKIND_NESS,
+    0x0C, ///< CKIND_PEACH,
+    0x0D, ///< CKIND_PIKACHU,
+    0x0E, ///< CKIND_POPONANA,
+    0x0F, ///< CKIND_PURIN,
+    0x10, ///< CKIND_SAMUS,
+    0x11, ///< CKIND_YOSHI,
+    0x12, ///< CKIND_ZELDA,
+    0x12, ///< CKIND_SEAK,
+    0x13, ///< CKIND_FALCO,
+    0x14, ///< CKIND_CLINK,
+    0x15, ///< CKIND_DRMARIO,
+    0x16, ///< CKIND_EMBLEM,
+    0x17, ///< CKIND_PICHU,
+    0x18, ///< CKIND_GANON,
+    0x08, ///< CKIND_PLAYABLE_COUNT/CKIND_MASTERH
+    0x08, ///< CKIND_BOY
+    0x08, ///< CKIND_GIRL
+    0x19, ///< CKIND_GKOOPS
+    0x08, ///< CKIND_CREZYH
+    0x08, ///< CHKIND_SANDBAG
+    0x00, ///< CHKIND_POPO
+    0x00, ///< CHKIND_NONE / CHKIND_MAX
+    0x00, ///< ???
+    0x00  ///< ???
 };
 
 /* 3B78C8 */ static const struct lbl_803B78C8_0x6
     lbl_803B78C8[NUM_UNLOCKABLE_CHARACTERS] = {
         {
             0,
-            3,
+            CKIND_GAMEWATCH,
             4,
             0,
             0x116,
         },
         {
             1,
-            7,
+            CKIND_LUIGI,
             2,
             0,
             0x114,
         },
         {
             2,
-            9,
+            CKIND_MARS,
             3,
             0,
             0x115,
         },
         {
             3,
-            0xA,
+            CKIND_MEWTWO,
             1,
             0,
             0x113,
         },
         {
             4,
-            0xF,
+            CKIND_PURIN,
             0,
             0,
             0x112,
         },
         {
             5,
-            0x13,
+            CKIND_SEAK,
             8,
             0,
             0x11A,
         },
         {
             6,
-            0x14,
+            CKIND_FALCO,
             7,
             0,
             0x119,
         },
         {
             7,
-            0x15,
+            CKIND_CLINK,
             5,
             0,
             0x117,
         },
         {
             8,
-            0x16,
+            CKIND_DRMARIO,
             0xA,
             0,
             0x11C,
         },
         {
             9,
-            0x17,
+            CKIND_EMBLEM,
             9,
             0,
             0x11B,
         },
         {
-            0xA,
-            0x18,
+            10,
+            CKIND_PICHU,
             6,
             0,
             0x118,

@@ -627,7 +627,7 @@ s32 fn_801851C0(void)
         Player_SetFacingDirection(result, 0.0f);
         Player_SetCostumeId(result, i);
         pos = data->offset[lbl_804735E8.xF4[0]];
-        Player_80032768(result, &pos);
+        Player_SetSpawnPosition(result, &pos);
         if ((u8) lbl_804735E8.xF4[0] == 0xE) {
             pos.x += data->samus_extra.x;
             pos.y += data->samus_extra.y;

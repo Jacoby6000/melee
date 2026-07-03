@@ -72,7 +72,7 @@ void un_8031D030(CharacterKind char_kind, int costume)
     Player_SetFacingDirection(0, 1.0f);
 
     HSD_JObjGetTranslation2(un_804D6F58, &pos);
-    Player_80032768(0, &pos);
+    Player_SetSpawnPosition(0, &pos);
     Player_80036F34(0, 8);
 
     lbAudioAx_80026F2C(0x18);

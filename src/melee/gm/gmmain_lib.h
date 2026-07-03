@@ -29,7 +29,7 @@
 /* 15CD50 */ void* gmMainLib_GetBonusMatchTotal(void);
 /* 15CD5C */ void* gmMainLib_8015CD5C(void);
 /* 15CD68 */ void* gmMainLib_GetMatchResetCounter(void);
-/* 15CD74 */ void* gmMainLib_GetSingleplayerTime(void);
+/* 15CD74 */ s32* gmMainLib_GetSingleplayerTime(void);
 /* 15CD80 */ void* gmMainLib_8015CD80(void);
 /* 15CD8C */ void* gmMainLib_GetPowerCount(void);
 /* 15CD98 */ int* gm_GetPowerTime(void);
@@ -49,7 +49,7 @@
 /* 15CF94 */ bool gmMainLib_8015CF94(void);
 /* 15CFAC */ s32 func_8015CFAC(void);
 /* 15CFB4 */ s8* gmMainLib_8015CFB4(u8);
-/* 15CFCC */ s32 gmMainLib_8015CFCC(u8);
+/* 15CFCC */ s32 gmMainLib_HasPlayedVsModeWithCharacter(u8);
 /* 15D00C */ void gmMainLib_8015D00C(u8);
 /* 15D06C */ s32* gmMainLib_8015D06C(u8);
 /* 15D084 */ s32* gmMainLib_8015D084(u8);
@@ -128,7 +128,7 @@
 /* 15ED68 */ void gmMainLib_8015ED68(s32 arg0);
 /* 15ED74 */ u8 gmMainLib_8015ED74(void);
 /* 15ED80 */ void gmMainLib_8015ED80(u8);
-/* 15ED8C */ u16* gmMainLib_8015ED8C(void);
+/* 15ED8C */ u16* gmMainLib_GetUnlockedCharactersBitmask(void);
 /* 15ED98 */ struct gmm_retval_ED98* gmMainLib_8015ED98(void);
 /* 15EDA4 */ u16* gmMainLib_8015EDA4(void);
 /* 15EDB0 */ struct gmm_retval_EDB0* gmMainLib_8015EDB0(void);

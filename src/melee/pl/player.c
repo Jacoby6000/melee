@@ -525,7 +525,7 @@ void Player_LoadPlayerCoords(s32 slot, Vec3* arg_vec)
     *arg_vec = player_vecs[player->transformed[0]];
 }
 
-void Player_80032768(s32 slot, Vec3* arg_vec)
+void Player_SetSpawnPosition(s32 slot, Vec3* spawnPos)
 {
     StaticPlayer* player;
     Vec3* player_vecs;
@@ -539,11 +539,11 @@ void Player_80032768(s32 slot, Vec3* arg_vec)
 
     player_vecs = player->player_poses.byIndex;
     dst_vec = &player_vecs[player->transformed[0]];
-    *dst_vec = *arg_vec;
+    *dst_vec = *spawnPos;
 
     player_vecs = player->player_poses.byIndex;
     dst_vec2 = &player_vecs[player->transformed[1]];
-    *dst_vec2 = *arg_vec;
+    *dst_vec2 = *spawnPos;
 }
 
 void Player_80032828(s32 slot, s32 index, Vec3* arg_vec)

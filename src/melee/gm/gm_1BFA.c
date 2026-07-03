@@ -107,7 +107,7 @@ void gm_801BFBA8(GameScene* arg0)
 
     mei = gm_801A4284(arg0);
     temp_r31 = gm_801736DC();
-    gm_80162968(mei->match_end.frame_count / 60);
+    gm_SetSinglePlayerTime(mei->match_end.frame_count / 60);
     gm_8016247C((s32) mei->match_end.player_standings[0].xE);
     temp_r0 = mei->match_end.result;
     if ((temp_r0 != 7) && (temp_r0 != 8) &&

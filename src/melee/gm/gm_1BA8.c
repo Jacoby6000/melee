@@ -428,7 +428,7 @@ void gm_801BAD70(GameScene* arg0)
         }
         gm_801BAB40(&r3b->players[player_idx], (int) init);
         if (player_idx == 0) {
-            gm_801B05F4((PlayerInitData*) (r3b + 0x60), ev->x6);
+            gm_801B05F4((PlayerInitData*) ((u8*) r3b + 0x60), ev->x6);
             ev->x7 = r3b->players[0].team;
             if ((s8) r3b->players[0].c_kind == FTKIND_NONE) {
                 r3b->players[0].c_kind = ev->x2;
@@ -504,8 +504,8 @@ void gm_801BAD70(GameScene* arg0)
     if (level_info->kind == 2) {
         if (ev->x20 > 0) {
             r3b->players[0].stocks = (s8) ev->player_stocks;
-            *(s16*) (r3b + 0x70) = (s16) ev->x28;
-            ((PlayerInitData*) (r3b + 0x60))->xC_b1 = 0;
+            *(s16*) ((u8*) r3b + 0x70) = (s16) ev->x28;
+            ((PlayerInitData*) ((u8*) r3b + 0x60))->xC_b1 = 0;
             {
                 u8 c = ev->forced_player_ckind;
                 if (c != CHKIND_NONE) {

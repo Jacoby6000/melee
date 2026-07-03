@@ -15,7 +15,7 @@
 /* 1A42B4 */ u8 gm_GetPreviousScene(void); ///< get previous scene
 /* 1A42C4 */ u8 gm_GetCurrentScene(void);  ///< get current scene
 /* 1A42D4 */ UNK_RET gm_801A42D4(UNK_PARAMS);
-/* 1A42E8 */ void gm_SetPendingGameMode(u8 pending_mode);
+/* 1A42E8 */ void gm_SetPendingGameMode(s8 pending_mode);
 /* 1A42F8 */ void gm_RequestPendingGameMode(int pending_mode);
 /* 1A4310 */ u8 gm_GetCurrentGameMode(void);
 /* 1A4320 */ u8 gm_GetPreviousGameMode(void); ///< get previous mode

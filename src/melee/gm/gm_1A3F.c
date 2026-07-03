@@ -194,7 +194,7 @@ void gm_801A42D4(void)
     gm_80479D30.pending = 1;
 }
 
-void gm_SetPendingGameMode(u8 pending_mode)
+void gm_SetPendingGameMode(s8 pending_mode)
 {
     gm_80479D30.routing.pending_mode = pending_mode;
 }
@@ -322,8 +322,7 @@ void gm_801A4510(void)
     gm_80479D30.routing.prev_mode = GM_COUNT;
 
     while (true) {
-        GameModeKind major =
-            gm_GetPendingGameMode(gm_80479D30.routing.curr_mode);
+        u8 major = gm_GetPendingGameMode(gm_80479D30.routing.curr_mode);
         if (gmMainLib_8046B0F0.resetting) {
             gmMainLib_8046B0F0.resetting = false;
         }

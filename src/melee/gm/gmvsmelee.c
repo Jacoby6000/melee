@@ -220,7 +220,7 @@ void gm_801A5AF0(GameScene* scene_data, u8 id, u8 id2)
                     gm_80162800(&match_exit_info->match_end));
     }
 
-    if (!gm_80167140(&match_exit_info->match_end)) {
+    if (!gm_MatchHasWinner(&match_exit_info->match_end)) {
         gm_SetPendingSceneToSuccessorOf(id);
     } else {
         gm_SetPendingSceneToSuccessorOf(id2);

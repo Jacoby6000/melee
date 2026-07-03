@@ -683,7 +683,7 @@ void gm_801B1F70(GameScene* arg0)
         }
     }
 
-    gm_8016F088(data);
+    gm_PrepareRumbleMode(data);
     gm_80189CDC(data);
 }
 #pragma pop

@@ -2645,13 +2645,18 @@ void gm_801BDE94(HSD_GObj* arg0)
         ev->xB_5 = 1;
         if (ev->x20 == 0) {
             mask = lbAudioAx_80026E84(*tbl[level]->x14);
-            mask |= lbAudioAx_80026E84(tbl[level]->x10->entries[0]->c_kind);
-            mask |= lbAudioAx_80026E84(tbl[level]->x10->entries[2]->c_kind);
-            mask |= lbAudioAx_80026E84(tbl[level]->x10->entries[3]->c_kind);
+            mask |=
+                lbAudioAx_80026E84((s8) tbl[level]->x10->entries[0]->c_kind);
+            mask |=
+                lbAudioAx_80026E84((s8) tbl[level]->x10->entries[2]->c_kind);
+            mask |=
+                lbAudioAx_80026E84((s8) tbl[level]->x10->entries[3]->c_kind);
         } else {
             mask = lbAudioAx_80026E84(*tbl[level]->x14);
-            mask |= lbAudioAx_80026E84(tbl[level]->x10->entries[1]->c_kind);
-            mask |= lbAudioAx_80026E84(tbl[level]->x10->entries[4]->c_kind);
+            mask |=
+                lbAudioAx_80026E84((s8) tbl[level]->x10->entries[1]->c_kind);
+            mask |=
+                lbAudioAx_80026E84((s8) tbl[level]->x10->entries[4]->c_kind);
         }
         lbAudioAx_80026F2C(0x14);
         lbAudioAx_8002702C(4, mask);

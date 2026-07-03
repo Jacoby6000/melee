@@ -1497,7 +1497,7 @@ void gm_801628C4(u32 arg0, u32 arg1)
 
 long gm_SetSinglePlayerTime(u32 seconds)
 {
-    u32* ptr = gmMainLib_GetSingleplayerTime();
+    s32* ptr = gmMainLib_GetSingleplayerTime();
     *ptr = ((*ptr + seconds) > -1) ? -1 : (*ptr + seconds);
 }
 

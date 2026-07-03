@@ -163,39 +163,39 @@ struct gm_event_char_list {
     u8 c_kind[33];
 };
 
-void gm_801BAB40(PlayerInitData* targetPlayerInit, gm_801BAB40_src* src)
+void gm_801BAB40(PlayerInitData* arg0, int arg1)
 {
-    gm_8016795C(targetPlayerInit);
-    targetPlayerInit->c_kind = src->c_kind;
-    targetPlayerInit->slot_type = src->slot_type;
-    targetPlayerInit->stocks = src->stocks;
-    targetPlayerInit->color = src->color;
-    targetPlayerInit->slot = 0;
-    targetPlayerInit->x5 = src->x5;
-    targetPlayerInit->sub_color = src->sub_color;
-    targetPlayerInit->handicap = 9;
-    targetPlayerInit->team = src->team;
-    targetPlayerInit->nametag_id = 0x78;
-    targetPlayerInit->xB = src->xB;
-    targetPlayerInit->rumble_enabled = !PLAYER_FLAGS_XC_RUMBLE;
-    targetPlayerInit->xC_b1 = (src->flags & PLAYER_FLAGS_XC_UNK1) >> 7;
-    targetPlayerInit->metal = (src->flags & PLAYER_FLAGS_XC_METAL) >> 6;
-    targetPlayerInit->xC_b3 = (src->flags & PLAYER_FLAGS_XC_UNK3) >> 5;
-    targetPlayerInit->invisible =
-        (src->flags & PLAYER_FLAGS_XC_INVISIBLE) >> 4;
-    targetPlayerInit->xC_b6 = (src->flags & PLAYER_FLAGS_XC_UNK6) >> 3;
-    targetPlayerInit->xC_b7 = (src->flags & PLAYER_FLAGS_XC_UNK7) >> 2;
-    targetPlayerInit->xD_b1 = 0;
-    targetPlayerInit->xD_b2 = 0;
-    targetPlayerInit->xD_b4 = 0;
-    targetPlayerInit->xE = src->xE;
-    targetPlayerInit->cpu_level = src->cpu_level;
-    targetPlayerInit->x10 = 0;
-    targetPlayerInit->x12 = src->x12;
-    targetPlayerInit->hp = src->hp;
-    targetPlayerInit->x18 = src->x18;
-    targetPlayerInit->x1C = src->x1C;
-    targetPlayerInit->x20 = src->x20;
+    gm_801BAB40_src* src = (gm_801BAB40_src*) arg1;
+    gm_8016795C(arg0);
+    arg0->c_kind = src->c_kind;
+    arg0->slot_type = src->slot_type;
+    arg0->stocks = src->stocks;
+    arg0->color = src->color;
+    arg0->slot = 0;
+    arg0->x5 = src->x5;
+    arg0->sub_color = src->sub_color;
+    arg0->handicap = 9;
+    arg0->team = src->team;
+    arg0->nametag_id = 0x78;
+    arg0->xB = src->xB;
+    arg0->rumble_enabled = 0;
+    arg0->xC_b1 = (src->flags & 0x80) >> 7;
+    arg0->metal = (src->flags & 0x40) >> 6;
+    arg0->xC_b3 = (src->flags & 0x20) >> 5;
+    arg0->invisible = (src->flags & 0x10) >> 4;
+    arg0->xC_b6 = (src->flags & 0x08) >> 3;
+    arg0->xC_b7 = (src->flags & 0x04) >> 2;
+    arg0->xD_b1 = 0;
+    arg0->xD_b2 = 0;
+    arg0->xD_b4 = 0;
+    arg0->xE = src->xE;
+    arg0->cpu_level = src->cpu_level;
+    arg0->x10 = 0;
+    arg0->x12 = src->x12;
+    arg0->hp = src->hp;
+    arg0->x18 = src->x18;
+    arg0->x1C = src->x1C;
+    arg0->x20 = src->x20;
 }
 
 s32 gm_801BAC9C(GameScene* arg0, s32 player_idx)
@@ -424,7 +424,7 @@ void gm_801BAD70(GameScene* arg0)
             spawn_off += 4;
             init = level_info->player_init[player_idx];
         }
-        gm_801BAB40(&r3b->players[player_idx], init);
+        gm_801BAB40(&r3b->players[player_idx], (int) init);
         if (player_idx == 0) {
             gm_801B05F4((PlayerInitData*) (r3b + 0x60), ev->x6);
             ev->x7 = r3b->players[0].team;
@@ -515,7 +515,7 @@ void gm_801BAD70(GameScene* arg0)
         }
         {
             struct gm_evspawn_table* spawn_table = level_info->x10;
-            gm_801BAB40(&r3b->players[1], spawn_table->entries[ev->x20]);
+            gm_801BAB40(&r3b->players[1], (int) spawn_table->entries[ev->x20]);
         }
         if (r3b->players[1].c_kind == r3b->players[0].c_kind) {
             u8 c = r3b->players[1].color;
@@ -2669,14 +2669,14 @@ void gm_801BDE94(HSD_GObj* arg0)
         case 0:
             if (Player_GetStocks(1) <= 0) {
                 ev->x18 = 1;
-                gm_801BAB40(&sp50, tbl[level]->x10->entries[2]);
+                gm_801BAB40(&sp50, (int) tbl[level]->x10->entries[2]);
                 gm_8016EDDC(2, &sp50);
             }
             break;
         case 1:
             if (Player_GetStocks(2) <= 0) {
                 ev->x18 = 2;
-                gm_801BAB40(&sp50, tbl[level]->x10->entries[3]);
+                gm_801BAB40(&sp50, (int) tbl[level]->x10->entries[3]);
                 gm_8016EDDC(3, &sp50);
             }
             break;
@@ -2717,7 +2717,7 @@ void gm_801BDE94(HSD_GObj* arg0)
         case 0:
             if (Player_GetStocks(1) <= 0) {
                 ev->x18 = 1;
-                gm_801BAB40(&sp50, tbl[level]->x10->entries[4]);
+                gm_801BAB40(&sp50, (int) tbl[level]->x10->entries[4]);
                 gm_8016EDDC(2, &sp50);
             }
             break;
@@ -2842,7 +2842,7 @@ void gm_801BE39C(HSD_GObj* gobj)
     }
     if (temp_r31->x10 == 0 && gm_8016AEEC() >= temp_r30->x0) {
         temp_r31->x10 = 1;
-        gm_801BAB40(&sp40, (gm_801BAB40_src*) temp_r30->x4);
+        gm_801BAB40(&sp40, (int) temp_r30->x4);
         sp40.color = temp_r31->player_colors[2];
         gm_8016EDDC(2, &sp40);
     }
@@ -3092,7 +3092,6 @@ u8 gm_801BEBF8(u8 eventMatchId)
     u8 eventNumber;
     struct gm_804D6900_t** eventMatches = gm_804D6900[0];
     struct gm_804D6900_t* selectedEventMatch;
-    u8* ptr;
 
     for (eventNumber = 0; eventNumber < 0x33; eventNumber++) {
         if (eventMatchId == table[eventNumber]) {
@@ -3105,8 +3104,7 @@ u8 gm_801BEBF8(u8 eventMatchId)
         return 0x21;
     }
 
-    ptr = *(u8**) ((u8*) selectedEventMatch->x14);
-    return *ptr;
+    return *(u8*) selectedEventMatch->x14;
 }
 
 UNK_T gm_801BEC54(void)

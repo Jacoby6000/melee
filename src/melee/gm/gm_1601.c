@@ -1124,7 +1124,7 @@ struct gm_stats {
     /* 0x40 */ u32 unk40;
 };
 
-void fn_80161C90(MatchEnd* arg0, int slot, u32* arg2)
+void fn_80161C90(MatchEnd* arg0, int slot, u16* arg2)
 {
     MatchPlayerData* p = &arg0->player_standings[slot];
     struct gm_stats* s = (struct gm_stats*) arg2;

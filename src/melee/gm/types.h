@@ -113,7 +113,8 @@ struct gmm_x1CB0 {
 struct FighterData {
     /* 0x00 */ u16 fighter_kos[25];
     /* 0x32 */ u8 padding_0x32[2];
-    /* 0x34 */ u32 sd_count;
+    /* 0x34 */ u16 sd_count;
+    /* 0x36 */ u8 padding_0x36[2];
     /* 0x38 */ u32 attacks_hit;
     /* 0x3C */ u32 attacks_total;
     /* 0x40 */ s32 damage_dealt;
@@ -168,7 +169,8 @@ struct FighterData {
 
 struct NameTagData {
     /* 0x000 */ u16 vs_kos[120];
-    /* 0x0F0 */ u32 sd_count;
+    /* 0x0F0 */ u16 sd_count;
+    /* 0x0F2 */ u8 padding_0xF2[2];
     /* 0x0F4 */ u32 attacks_hit;
     /* 0x0F8 */ u32 attacks_total;
     /* 0x0FC */ s32 damage_dealt;
@@ -296,7 +298,7 @@ struct gmm_x1868 {
     /* 0x01F8 */ s32 x1A60;
     /* 0x01FC */ s32 x1A64;
     /* 0x0200 */ s64 completed_event_matches_bitmask;
-    /* 0x0208 */ s32 event_match_records[NUM_EVENT_MATCHES - 1];
+    /* 0x0208 */ s32 event_match_records[NUM_EVENT_MATCHES];
     /* 0x02D4 */ u8 x1B3C;
     /* 0x02D5 */ char padding_2D5[3];
     /* 0x02D8 */ u32 x1B40[3];

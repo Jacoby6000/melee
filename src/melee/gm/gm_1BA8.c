@@ -313,6 +313,11 @@ struct gm_random_history {
     u8 stage_usage[0x1D];
 };
 
+#define GM_BAD70_CUR_PLAYER_CKIND (player_init_off + 0x60)
+#define GM_BAD70_CUR_PLAYER_COLOR (player_init_off + 0x63)
+#define GM_BAD70_CUR_PLAYER_TEAM (player_init_off + 0x69)
+#define GM_BAD70_CUR_PLAYER_XD (player_init_off + 0x6D)
+
 void gm_801BAD70(GameScene* arg0)
 {
     struct EventData* ev = &gmMainLib_804D3EE0->unk_530;
@@ -465,8 +470,8 @@ void gm_801BAD70(GameScene* arg0)
         } else {
             init = *(gm_801BAB40_src**) ((u8*) (*lvlpp) + spawn_off + 0x14);
             if (init->team == 0) {
-                r3b[player_init_off + 0x69] = md->players[0].team;
-                r3b[player_init_off + 0x6D] |= PLAYER_FLAGS_XC_UNK1;
+                r3b[GM_BAD70_CUR_PLAYER_TEAM] = md->players[0].team;
+                r3b[GM_BAD70_CUR_PLAYER_XD] |= PLAYER_FLAGS_XC_UNK1;
             }
             init = *(gm_801BAB40_src**) ((u8*) (*lvlpp) + spawn_off + 0x14);
             if ((s8) init->c_kind == CHKIND_NONE) {
@@ -474,41 +479,42 @@ void gm_801BAD70(GameScene* arg0)
                 s8 v = *t;
                 if (v == -1) {
                     u8 nv = gm_801BAC9C(arg0, player_idx);
-                    r3b[player_init_off + 0x60] = nv;
-                    *t = (s8) r3b[player_init_off + 0x60];
+                    r3b[GM_BAD70_CUR_PLAYER_CKIND] = nv;
+                    *t = (s8) r3b[GM_BAD70_CUR_PLAYER_CKIND];
                 } else {
-                    r3b[player_init_off + 0x60] = v;
+                    r3b[GM_BAD70_CUR_PLAYER_CKIND] = v;
                 }
             }
-            if ((s8) r3b[player_init_off + 0x60] == (s8) md->players[0].c_kind)
+            if ((s8) r3b[GM_BAD70_CUR_PLAYER_CKIND] ==
+                (s8) md->players[0].c_kind)
             {
-                u8 c = r3b[player_init_off + 0x63];
+                u8 c = r3b[GM_BAD70_CUR_PLAYER_COLOR];
                 if (c == md->players[0].color) {
                     if (c <= 2) {
                         c += 1;
                     } else {
                         c = 0;
                     }
-                    r3b[player_init_off + 0x63] = c;
+                    r3b[GM_BAD70_CUR_PLAYER_COLOR] = c;
                 }
             }
             if ((s8) md->players[0].c_kind == CKIND_SEAK &&
-                (s8) r3b[player_init_off + 0x60] == CKIND_ZELDA)
+                (s8) r3b[GM_BAD70_CUR_PLAYER_CKIND] == CKIND_ZELDA)
             {
-                u8 c = r3b[player_init_off + 0x63];
+                u8 c = r3b[GM_BAD70_CUR_PLAYER_COLOR];
                 if (c == md->players[0].color) {
                     if (c <= 2) {
                         c += 1;
                     } else {
                         c = 0;
                     }
-                    r3b[player_init_off + 0x63] = c;
+                    r3b[GM_BAD70_CUR_PLAYER_COLOR] = c;
                 }
             }
             if (player_idx < 4) {
                 ev->player_ckinds[player_idx] =
-                    (s8) r3b[player_init_off + 0x60];
-                ev->player_colors[player_idx] = r3b[player_init_off + 0x63];
+                    (s8) r3b[GM_BAD70_CUR_PLAYER_CKIND];
+                ev->player_colors[player_idx] = r3b[GM_BAD70_CUR_PLAYER_COLOR];
             }
         }
         player_idx += 1;

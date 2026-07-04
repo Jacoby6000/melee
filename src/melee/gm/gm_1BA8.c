@@ -341,7 +341,7 @@ void gm_801BAD70(GameScene* arg0)
     struct gm_804D6900_t** levels;
     struct gm_804D6900_t** lvlpp;
     s32 player_idx;
-    PAD_STACK(0x10);
+    PAD_STACK(0x8);
 
     lbArchive_LoadSymbols("GmEvent.dat", &gm_804D6900,
                           "sqEventInitDataLevelTbl", 0);

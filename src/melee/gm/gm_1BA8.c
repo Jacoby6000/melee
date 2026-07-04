@@ -419,15 +419,20 @@ void gm_801BAD70(GameScene* arg0)
     r3b[0x115] = 3;
 
     while (player_idx < (s32) ((level_info->flags >> 5) & 7)) {
-        gm_801BAB40_src* init = level_info->player_init[player_idx];
+        u8* init_walk;
+        gm_801BAB40_src* init;
+        init_walk = (u8*) level_info + spawn_off;
+        init = *(gm_801BAB40_src**) (init_walk + 0x14);
         while (init == NULL) {
             player_idx += 1;
             player_init_off += 0x24;
             spawn_off += 4;
-            init = level_info->player_init[player_idx];
+            init_walk += 4;
+            init = *(gm_801BAB40_src**) (init_walk + 0x14);
         }
-        gm_801BAB40((PlayerInitData*) (r3b + player_init_off + 0x60),
-                    (int) init);
+        gm_801BAB40(
+            (PlayerInitData*) (r3b + player_init_off + 0x60),
+            (int) *(gm_801BAB40_src**) ((u8*) level_info + spawn_off + 0x14));
         if (player_idx == 0) {
             gm_801B05F4((PlayerInitData*) (r3b + 0x60), ev->x6);
             ev->x7 = r3b[0x69];
@@ -450,10 +455,13 @@ void gm_801BAD70(GameScene* arg0)
                         ((gm_IsRumbleEnabled(ev->x6, r3b[0x6A]) << 7) &
                          PLAYER_FLAGS_XC_RUMBLE);
         } else {
+            init = *(gm_801BAB40_src**) ((u8*) (*lvlpp) + spawn_off + 0x14);
             if (init->team == 0) {
                 r3b[player_init_off + 0x69] = r3b[0x69];
-                ((PlayerInitData*) (r3b + player_init_off + 0x60))->xD_b1 = 1;
+                r3b[player_init_off + 0x6D] =
+                    (r3b[player_init_off + 0x6D] & ~0x40) | 0x40;
             }
+            init = *(gm_801BAB40_src**) ((u8*) (*lvlpp) + spawn_off + 0x14);
             if ((s8) init->c_kind == CHKIND_NONE) {
                 s8* t = &ev->x8 + player_idx - 1;
                 s8 v = *t;
@@ -504,10 +512,10 @@ void gm_801BAD70(GameScene* arg0)
         if (ev->x20 > 0) {
             r3b[0x62] = (s8) ev->player_stocks;
             *(s16*) (r3b + 0x70) = (s16) ev->x28;
-            ((PlayerInitData*) (r3b + 0x60))->xC_b1 = 0;
+            r3b[0x6C] = r3b[0x6C] & ~0x40;
             {
                 u8 c = ev->forced_player_ckind;
-                if (c != CHKIND_NONE) {
+                if ((s8) c != CHKIND_NONE) {
                     r3b[0x60] = c;
                     ev->player_ckind = c;
                     ev->player_ckinds[0] = (s8) c;
@@ -515,9 +523,11 @@ void gm_801BAD70(GameScene* arg0)
             }
         }
         {
-            struct gm_evspawn_table* spawn_table = level_info->x10;
-            gm_801BAB40((PlayerInitData*) (r3b + 0x84),
-                        (int) spawn_table->entries[ev->x20]);
+            gm_801BAB40_src* spawn_init;
+            spawn_init = *(
+                gm_801BAB40_src**) ((u8*) ((struct gm_evlevel*) *lvlpp)->x10 +
+                                    (ev->x20 << 2) + 0x10);
+            gm_801BAB40((PlayerInitData*) (r3b + 0x84), (int) spawn_init);
         }
         if ((s8) r3b[0x84] == (s8) r3b[0x60]) {
             u8 c = r3b[0x87];

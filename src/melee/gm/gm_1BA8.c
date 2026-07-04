@@ -317,8 +317,6 @@ struct gm_random_history {
 #define GM_BAD70_SPAWN_OFF (player_idx * 4)
 #define GM_BAD70_CUR_PLAYER_CKIND (GM_BAD70_PLAYER_INIT_OFF + 0x60)
 #define GM_BAD70_CUR_PLAYER_COLOR (GM_BAD70_PLAYER_INIT_OFF + 0x63)
-#define GM_BAD70_CUR_PLAYER_TEAM (GM_BAD70_PLAYER_INIT_OFF + 0x69)
-#define GM_BAD70_CUR_PLAYER_XD (GM_BAD70_PLAYER_INIT_OFF + 0x6D)
 #define GM_BAD70_CUR_SPAWN_INIT                                               \
     (*(gm_801BAB40_src**) ((u8*) (*lvlpp) + GM_BAD70_SPAWN_OFF + 0x14))
 
@@ -446,8 +444,8 @@ void gm_801BAD70(GameScene* arg0)
         init_walk = (u8*) ((struct gm_evlevel*) *lvlpp) + GM_BAD70_SPAWN_OFF;
         init = *(gm_801BAB40_src**) (init_walk + 0x14);
         while (*(u32*) (init_walk + 0x14) == 0) {
-            player_idx += 1;
             init_walk += 4;
+            player_idx += 1;
         }
         init = *(gm_801BAB40_src**) (init_walk + 0x14);
         gm_801BAB40(
@@ -472,15 +470,13 @@ void gm_801BAD70(GameScene* arg0)
                 ev->x1 = c;
                 ev->player_colors[0] = c;
             }
-            md->players[0].flags =
-                (md->players[0].flags & ~PLAYER_FLAGS_XC_RUMBLE) |
-                ((gm_IsRumbleEnabled(ev->x6, md->players[0].nametag_id) << 7) &
-                 PLAYER_FLAGS_XC_RUMBLE);
+            md->players[0].rumble_enabled =
+                gm_IsRumbleEnabled(ev->x6, md->players[0].nametag_id);
         } else {
             init = GM_BAD70_CUR_SPAWN_INIT;
             if (init->team == 0) {
-                r3b[GM_BAD70_CUR_PLAYER_TEAM] = md->players[0].team;
-                r3b[GM_BAD70_CUR_PLAYER_XD] |= PLAYER_FLAGS_XC_UNK1;
+                md->players[player_idx].team = md->players[0].team;
+                md->players[player_idx].xD_b6 = 1;
             }
             init = GM_BAD70_CUR_SPAWN_INIT;
             if ((s8) init->c_kind == CHKIND_NONE) {
@@ -532,9 +528,8 @@ void gm_801BAD70(GameScene* arg0)
     if (((struct gm_evlevel*) *lvlpp)->kind == 2) {
         if (ev->x20 > 0) {
             md->players[0].stocks = (s8) ev->player_stocks;
-            *(s16*) ((u8*) r3b + 0x70) = (s16) ev->x28;
-            md->players[0].flags =
-                (md->players[0].flags & ~PLAYER_FLAGS_XC_UNK1);
+            md->players[0].x10 = (u16) ev->x28;
+            md->players[0].xC_b6 = 0;
             {
                 u8 c = ev->forced_player_ckind;
                 if ((s8) c != CHKIND_NONE) {
@@ -608,7 +603,7 @@ void gm_801BAD70(GameScene* arg0)
         struct gm_evbonus* bonus;
         int var_r9;
         s8 k;
-        s32 sp8;
+        u8 sp8;
         ev->xB_3 = 1;
         bonus = ((struct gm_evlevel*) *lvlpp)->xC;
         if (bonus->x5 == 1) {

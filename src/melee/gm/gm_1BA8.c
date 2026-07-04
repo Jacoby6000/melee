@@ -440,18 +440,17 @@ void gm_801BAD70(GameScene* arg0)
     {
         u8* init_walk;
         gm_801BAB40_src* init;
+        struct gm_evlevel* lev;
 
-        init_walk = (u8*) ((struct gm_evlevel*) *lvlpp) + GM_BAD70_SPAWN_OFF;
-        init = *(gm_801BAB40_src**) (init_walk + 0x14);
+        lev = (struct gm_evlevel*) *lvlpp;
+        init_walk = (u8*) lev + GM_BAD70_SPAWN_OFF;
         while (*(u32*) (init_walk + 0x14) == 0) {
             init_walk += 4;
             player_idx += 1;
         }
         init = *(gm_801BAB40_src**) (init_walk + 0x14);
-        gm_801BAB40(
-            (PlayerInitData*) (r3b + GM_BAD70_PLAYER_INIT_OFF + 0x60),
-            (int) *(gm_801BAB40_src**) ((u8*) ((struct gm_evlevel*) *lvlpp) +
-                                        GM_BAD70_SPAWN_OFF + 0x14));
+        gm_801BAB40((PlayerInitData*) (r3b + GM_BAD70_PLAYER_INIT_OFF + 0x60),
+                    (int) lev->player_init[player_idx]);
         if (player_idx == 0) {
             gm_801B05F4(&md->players[0], ev->x6);
             ev->x7 = md->players[0].team;

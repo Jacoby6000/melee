@@ -395,9 +395,15 @@ void gm_801BAD70(GameScene* arg0)
     }
     if (((struct gm_evlevel*) *lvlpp)->kind == 2) {
         u16 stage;
+        struct gm_evlevel* li;
+        u32 idx;
+        u8* ptr;
         ev->xB_4 = 1;
-        stage = *(u16*) ((u8*) ((struct gm_evlevel*) *lvlpp)->x10 +
-                         (ev->x20 << 1) + 2);
+        li = (struct gm_evlevel*) *lvlpp;
+        idx = ev->x20;
+        ptr = (u8*) li->x10;
+        ptr = ptr + (idx << 1);
+        stage = *(u16*) (ptr + 2);
         md->rules.xE = stage;
         ev->x48 = (InternalStageId) stage;
         if (ev->x20 > 0) {
@@ -407,17 +413,19 @@ void gm_801BAD70(GameScene* arg0)
         }
         gm_8016A92C(&md->rules);
     }
-    r3b[0x61] = 3;
+    md->players[0].slot_type = 3;
     player_idx = 0;
     player_init_off = 0;
-    r3b[0x85] = 3;
+    md->players[1].slot_type = 3;
     spawn_off = 0;
-    r3b[0xA9] = 3;
-    r3b[0xCD] = 3;
-    r3b[0xF1] = 3;
-    r3b[0x115] = 3;
+    md->players[2].slot_type = 3;
+    md->players[3].slot_type = 3;
+    md->players[4].slot_type = 3;
+    md->players[5].slot_type = 3;
 
-    while (player_idx < (s32) ((level_info->flags >> 5) & 7)) {
+    while (player_idx <
+           (s32) ((((struct gm_evlevel*) *lvlpp)->flags >> 5) & 7))
+    {
         u8* init_walk;
         gm_801BAB40_src* init;
         init_walk = (u8*) level_info + spawn_off;
@@ -433,31 +441,32 @@ void gm_801BAD70(GameScene* arg0)
             (PlayerInitData*) (r3b + player_init_off + 0x60),
             (int) *(gm_801BAB40_src**) ((u8*) level_info + spawn_off + 0x14));
         if (player_idx == 0) {
-            gm_801B05F4((PlayerInitData*) (r3b + 0x60), ev->x6);
-            ev->x7 = r3b[0x69];
-            if ((s8) r3b[0x60] == FTKIND_NONE) {
-                r3b[0x60] = ev->x2;
-                r3b[0x63] = ev->x3;
-                r3b[0x6A] = ev->x4;
+            gm_801B05F4(&md->players[0], ev->x6);
+            ev->x7 = md->players[0].team;
+            if ((s8) md->players[0].c_kind == FTKIND_NONE) {
+                md->players[0].c_kind = ev->x2;
+                md->players[0].color = ev->x3;
+                md->players[0].nametag_id = ev->x4;
             }
             {
-                u8 c = r3b[0x60];
+                u8 c = md->players[0].c_kind;
                 ev->player_ckind = c;
                 ev->player_ckinds[0] = (s8) c;
             }
             {
-                u8 c = r3b[0x63];
+                u8 c = md->players[0].color;
                 ev->x1 = c;
                 ev->player_colors[0] = c;
             }
-            r3b[0x6C] = (r3b[0x6C] & ~PLAYER_FLAGS_XC_RUMBLE) |
-                        ((gm_IsRumbleEnabled(ev->x6, r3b[0x6A]) << 7) &
-                         PLAYER_FLAGS_XC_RUMBLE);
+            md->players[0].flags =
+                (md->players[0].flags & ~PLAYER_FLAGS_XC_RUMBLE) |
+                ((gm_IsRumbleEnabled(ev->x6, md->players[0].nametag_id) << 7) &
+                 PLAYER_FLAGS_XC_RUMBLE);
         } else {
             init = *(gm_801BAB40_src**) ((u8*) (*lvlpp) + spawn_off + 0x14);
             if (init->team == 0) {
-                r3b[player_init_off + 0x69] = r3b[0x69];
-                r3b[player_init_off + 0x6D] |= 0x40;
+                r3b[player_init_off + 0x69] = md->players[0].team;
+                r3b[player_init_off + 0x6D] |= PLAYER_FLAGS_XC_UNK1;
             }
             init = *(gm_801BAB40_src**) ((u8*) (*lvlpp) + spawn_off + 0x14);
             if ((s8) init->c_kind == CHKIND_NONE) {
@@ -471,9 +480,10 @@ void gm_801BAD70(GameScene* arg0)
                     r3b[player_init_off + 0x60] = v;
                 }
             }
-            if ((s8) r3b[player_init_off + 0x60] == (s8) r3b[0x60]) {
+            if ((s8) r3b[player_init_off + 0x60] == (s8) md->players[0].c_kind)
+            {
                 u8 c = r3b[player_init_off + 0x63];
-                if (c == r3b[0x63]) {
+                if (c == md->players[0].color) {
                     if (c <= 2) {
                         c += 1;
                     } else {
@@ -482,11 +492,11 @@ void gm_801BAD70(GameScene* arg0)
                     r3b[player_init_off + 0x63] = c;
                 }
             }
-            if ((s8) r3b[0x60] == CKIND_SEAK &&
+            if ((s8) md->players[0].c_kind == CKIND_SEAK &&
                 (s8) r3b[player_init_off + 0x60] == CKIND_ZELDA)
             {
                 u8 c = r3b[player_init_off + 0x63];
-                if (c == r3b[0x63]) {
+                if (c == md->players[0].color) {
                     if (c <= 2) {
                         c += 1;
                     } else {
@@ -506,51 +516,59 @@ void gm_801BAD70(GameScene* arg0)
         spawn_off += 4;
     }
 
-    if (level_info->kind == 2) {
+    if (((struct gm_evlevel*) *lvlpp)->kind == 2) {
         if (ev->x20 > 0) {
-            r3b[0x62] = (s8) ev->player_stocks;
-            *(s16*) (r3b + 0x70) = (s16) ev->x28;
-            r3b[0x6C] = r3b[0x6C] & ~0x40;
+            md->players[0].stocks = (s8) ev->player_stocks;
+            *(s16*) ((u8*) r3b + 0x70) = (s16) ev->x28;
+            md->players[0].flags =
+                (md->players[0].flags & ~PLAYER_FLAGS_XC_UNK1);
             {
                 u8 c = ev->forced_player_ckind;
                 if ((s8) c != CHKIND_NONE) {
-                    r3b[0x60] = c;
+                    md->players[0].c_kind = c;
                     ev->player_ckind = c;
                     ev->player_ckinds[0] = (s8) c;
                 }
             }
         }
         {
+            struct gm_evlevel* li;
+            u32 idx;
+            u8* base;
             gm_801BAB40_src* spawn_init;
-            spawn_init = *(
-                gm_801BAB40_src**) ((u8*) ((struct gm_evlevel*) *lvlpp)->x10 +
-                                    (ev->x20 << 2) + 0x10);
-            gm_801BAB40((PlayerInitData*) (r3b + 0x84), (int) spawn_init);
+            li = (struct gm_evlevel*) *lvlpp;
+            idx = ev->x20;
+            base = (u8*) li->x10;
+            base = base + (idx << 2);
+            spawn_init = *(gm_801BAB40_src**) (base + 0x10);
+            gm_801BAB40(&md->players[1], (int) spawn_init);
         }
-        if ((s8) r3b[0x84] == (s8) r3b[0x60]) {
-            u8 c = r3b[0x87];
-            if (c == r3b[0x63]) {
+        if ((s8) md->players[1].c_kind == (s8) md->players[0].c_kind) {
+            u8 c = md->players[1].color;
+            if (c == md->players[0].color) {
                 if (c <= 2) {
                     c += 1;
                 } else {
                     c = 0;
                 }
-                r3b[0x87] = c;
+                md->players[1].color = c;
             }
         }
-        if ((s8) r3b[0x60] == CKIND_SEAK && (s8) r3b[0x84] == CKIND_ZELDA) {
-            u8 c = r3b[0x87];
-            if (c == r3b[0x63]) {
+        if ((s8) md->players[0].c_kind == CKIND_SEAK &&
+            (s8) md->players[1].c_kind == CKIND_ZELDA)
+        {
+            u8 c = md->players[1].color;
+            if (c == md->players[0].color) {
                 if (c <= 2) {
                     c += 1;
                 } else {
                     c = 0;
                 }
-                r3b[0x87] = c;
+                md->players[1].color = c;
             }
         }
-        ev->player_ckinds[1] = (s8) r3b[0x84];
-        ev->player_colors[1] = r3b[0x87];
+        ev->player_ckinds[1] = (s8) md->players[1].c_kind;
+        ev->player_colors[1] = md->players[1].color;
     }
     if (event_match_number == 0x2B) {
         u8 c = ev->player_colors[2];

@@ -317,6 +317,8 @@ struct gm_random_history {
 #define GM_BAD70_CUR_PLAYER_COLOR (player_init_off + 0x63)
 #define GM_BAD70_CUR_PLAYER_TEAM (player_init_off + 0x69)
 #define GM_BAD70_CUR_PLAYER_XD (player_init_off + 0x6D)
+#define GM_BAD70_CUR_SPAWN_INIT                                               \
+    (*(gm_801BAB40_src**) ((u8*) (*lvlpp) + spawn_off + 0x14))
 
 void gm_801BAD70(GameScene* arg0)
 {
@@ -468,12 +470,12 @@ void gm_801BAD70(GameScene* arg0)
                 ((gm_IsRumbleEnabled(ev->x6, md->players[0].nametag_id) << 7) &
                  PLAYER_FLAGS_XC_RUMBLE);
         } else {
-            init = *(gm_801BAB40_src**) ((u8*) (*lvlpp) + spawn_off + 0x14);
+            init = GM_BAD70_CUR_SPAWN_INIT;
             if (init->team == 0) {
                 r3b[GM_BAD70_CUR_PLAYER_TEAM] = md->players[0].team;
                 r3b[GM_BAD70_CUR_PLAYER_XD] |= PLAYER_FLAGS_XC_UNK1;
             }
-            init = *(gm_801BAB40_src**) ((u8*) (*lvlpp) + spawn_off + 0x14);
+            init = GM_BAD70_CUR_SPAWN_INIT;
             if ((s8) init->c_kind == CHKIND_NONE) {
                 s8* t = &ev->x8 + player_idx - 1;
                 s8 v = *t;

@@ -393,12 +393,11 @@ void gm_801BAD70(GameScene* arg0)
     if (((struct gm_evinit*) (*lvlpp)->x8)->unk24 != 1.0f) {
         ev->x1C = ((struct gm_evinit*) (*lvlpp)->x8)->unk24;
     }
-    if (level_info->kind == 2) {
-        struct gm_evstage_list* stage_list;
+    if (((struct gm_evlevel*) *lvlpp)->kind == 2) {
         u16 stage;
         ev->xB_4 = 1;
-        stage_list = level_info->x10;
-        stage = stage_list->stage[ev->x20];
+        stage = *(u16*) ((u8*) ((struct gm_evlevel*) *lvlpp)->x10 +
+                         (ev->x20 << 1) + 2);
         md->rules.xE = stage;
         ev->x48 = (InternalStageId) stage;
         if (ev->x20 > 0) {
@@ -458,8 +457,7 @@ void gm_801BAD70(GameScene* arg0)
             init = *(gm_801BAB40_src**) ((u8*) (*lvlpp) + spawn_off + 0x14);
             if (init->team == 0) {
                 r3b[player_init_off + 0x69] = r3b[0x69];
-                r3b[player_init_off + 0x6D] =
-                    (r3b[player_init_off + 0x6D] & ~0x40) | 0x40;
+                r3b[player_init_off + 0x6D] |= 0x40;
             }
             init = *(gm_801BAB40_src**) ((u8*) (*lvlpp) + spawn_off + 0x14);
             if ((s8) init->c_kind == CHKIND_NONE) {
@@ -575,12 +573,13 @@ void gm_801BAD70(GameScene* arg0)
         md->players[1].xD_b2 = 1;
         md->players[2].xD_b2 = 1;
     }
-    if (level_info->kind == 1) {
-        struct gm_evbonus* bonus = level_info->xC;
+    if (((struct gm_evlevel*) *lvlpp)->kind == 1) {
+        struct gm_evbonus* bonus;
         int var_r9;
         s8 k;
         s32 sp8;
         ev->xB_3 = 1;
+        bonus = ((struct gm_evlevel*) *lvlpp)->xC;
         if (bonus->x5 == 1) {
             var_r9 = 1;
             if ((s8) ev->player_ckind == bonus->c_kind) {
@@ -597,19 +596,23 @@ void gm_801BAD70(GameScene* arg0)
         } else {
             var_r9 = 0;
         }
+        bonus = ((struct gm_evlevel*) *lvlpp)->xC;
         k = bonus->c_kind;
         sp8 = (k == 4) ? bonus->x17 : 0;
         gm_8016A22C(k, 0x21, 0x21, ev->player_colors[1], 0, 0, var_r9, 0, sp8,
                     ev->player_ckind, ev->x1, bonus->x1, bonus->x2, bonus->x3,
                     bonus->x4, 0, 1, bonus->x8, bonus->xC);
+        bonus = ((struct gm_evlevel*) *lvlpp)->xC;
         gm_8016A414(bonus->x10);
         gm_8016A21C(&md->rules);
+        bonus = ((struct gm_evlevel*) *lvlpp)->xC;
         if ((bonus->flags >> 7) & 1) {
             gm_8016A434();
         }
         if (event_info[event_match_number]->x4 != NULL) {
             gm_8016A404((s32) event_info[event_match_number]->x4);
         }
+        bonus = ((struct gm_evlevel*) *lvlpp)->xC;
         if (bonus->x15 != 0) {
             gm_8016A424((s8) bonus->x15);
         }

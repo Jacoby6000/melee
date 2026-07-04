@@ -313,12 +313,14 @@ struct gm_random_history {
     u8 stage_usage[0x1D];
 };
 
-#define GM_BAD70_CUR_PLAYER_CKIND (player_init_off + 0x60)
-#define GM_BAD70_CUR_PLAYER_COLOR (player_init_off + 0x63)
-#define GM_BAD70_CUR_PLAYER_TEAM (player_init_off + 0x69)
-#define GM_BAD70_CUR_PLAYER_XD (player_init_off + 0x6D)
+#define GM_BAD70_PLAYER_INIT_OFF (player_idx * 0x24)
+#define GM_BAD70_SPAWN_OFF (player_idx * 4)
+#define GM_BAD70_CUR_PLAYER_CKIND (GM_BAD70_PLAYER_INIT_OFF + 0x60)
+#define GM_BAD70_CUR_PLAYER_COLOR (GM_BAD70_PLAYER_INIT_OFF + 0x63)
+#define GM_BAD70_CUR_PLAYER_TEAM (GM_BAD70_PLAYER_INIT_OFF + 0x69)
+#define GM_BAD70_CUR_PLAYER_XD (GM_BAD70_PLAYER_INIT_OFF + 0x6D)
 #define GM_BAD70_CUR_SPAWN_INIT                                               \
-    (*(gm_801BAB40_src**) ((u8*) (*lvlpp) + spawn_off + 0x14))
+    (*(gm_801BAB40_src**) ((u8*) (*lvlpp) + GM_BAD70_SPAWN_OFF + 0x14))
 
 struct gm_804D6900_t** gm_BAD70_LvlppPtr(struct gm_804D6900_t** levels,
                                          u8 event_match_number)
@@ -341,8 +343,6 @@ void gm_801BAD70(GameScene* arg0)
     struct gm_804D6900_t** levels;
     struct gm_804D6900_t** lvlpp;
     s32 player_idx;
-    s32 player_init_off;
-    s32 spawn_off;
     PAD_STACK(0x10);
 
     lbArchive_LoadSymbols("GmEvent.dat", &gm_804D6900,
@@ -431,9 +431,7 @@ void gm_801BAD70(GameScene* arg0)
     }
     md->players[0].slot_type = 3;
     player_idx = 0;
-    player_init_off = 0;
     md->players[1].slot_type = 3;
-    spawn_off = 0;
     md->players[2].slot_type = 3;
     md->players[3].slot_type = 3;
     md->players[4].slot_type = 3;
@@ -444,19 +442,18 @@ void gm_801BAD70(GameScene* arg0)
     {
         u8* init_walk;
         gm_801BAB40_src* init;
-        init_walk = (u8*) ((struct gm_evlevel*) *lvlpp) + spawn_off;
+
+        init_walk = (u8*) ((struct gm_evlevel*) *lvlpp) + GM_BAD70_SPAWN_OFF;
         init = *(gm_801BAB40_src**) (init_walk + 0x14);
         while (*(u32*) (init_walk + 0x14) == 0) {
             player_idx += 1;
-            player_init_off += 0x24;
-            spawn_off += 4;
             init_walk += 4;
         }
         init = *(gm_801BAB40_src**) (init_walk + 0x14);
         gm_801BAB40(
-            (PlayerInitData*) (r3b + player_init_off + 0x60),
+            (PlayerInitData*) (r3b + GM_BAD70_PLAYER_INIT_OFF + 0x60),
             (int) *(gm_801BAB40_src**) ((u8*) ((struct gm_evlevel*) *lvlpp) +
-                                        spawn_off + 0x14));
+                                        GM_BAD70_SPAWN_OFF + 0x14));
         if (player_idx == 0) {
             gm_801B05F4(&md->players[0], ev->x6);
             ev->x7 = md->players[0].team;
@@ -530,8 +527,6 @@ void gm_801BAD70(GameScene* arg0)
             }
         }
         player_idx += 1;
-        player_init_off += 0x24;
-        spawn_off += 4;
     }
 
     if (((struct gm_evlevel*) *lvlpp)->kind == 2) {

@@ -326,9 +326,14 @@ struct gm_804D6900_t** gm_BAD70_LvlppPtr(struct gm_804D6900_t** levels,
     return &levels[event_match_number];
 }
 
+struct EventData* gm_BAD70_EvPtr(void)
+{
+    return &gmMainLib_804D3EE0->unk_530;
+}
+
 void gm_801BAD70(GameScene* arg0)
 {
-    struct EventData* ev = &gmMainLib_804D3EE0->unk_530;
+    struct EventData* ev = gm_BAD70_EvPtr();
     StartMeleeData* md = gm_801A427C(arg0);
     u8* r3b = (u8*) md;
     u8 event_match_number = ev->event_match_number;
@@ -338,7 +343,7 @@ void gm_801BAD70(GameScene* arg0)
     s32 player_idx;
     s32 player_init_off;
     s32 spawn_off;
-    PAD_STACK(0x20);
+    PAD_STACK(0x10);
 
     lbArchive_LoadSymbols("GmEvent.dat", &gm_804D6900,
                           "sqEventInitDataLevelTbl", 0);

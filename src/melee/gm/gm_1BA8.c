@@ -422,13 +422,13 @@ void gm_801BAD70(GameScene* arg0)
         gm_801BAB40_src* init;
         init_walk = (u8*) level_info + spawn_off;
         init = *(gm_801BAB40_src**) (init_walk + 0x14);
-        while (init == NULL) {
+        while (*(u32*) (init_walk + 0x14) == 0) {
             player_idx += 1;
             player_init_off += 0x24;
             spawn_off += 4;
             init_walk += 4;
-            init = *(gm_801BAB40_src**) (init_walk + 0x14);
         }
+        init = *(gm_801BAB40_src**) (init_walk + 0x14);
         gm_801BAB40(
             (PlayerInitData*) (r3b + player_init_off + 0x60),
             (int) *(gm_801BAB40_src**) ((u8*) level_info + spawn_off + 0x14));

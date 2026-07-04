@@ -624,7 +624,11 @@ void gm_801BAD70(GameScene* arg0)
         }
         bonus = ((struct gm_evlevel*) *lvlpp)->xC;
         k = bonus->c_kind;
-        sp8 = (k == 4) ? bonus->x17 : 0;
+        if ((s8) k == 4) {
+            sp8 = bonus->x17;
+        } else {
+            sp8 = 0;
+        }
         gm_8016A22C(k, 0x21, 0x21, ev->player_colors[1], 0, 0, var_r9, 0, sp8,
                     ev->player_ckind, ev->x1, bonus->x1, bonus->x2, bonus->x3,
                     bonus->x4, 0, 1, bonus->x8, bonus->xC);

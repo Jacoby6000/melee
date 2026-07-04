@@ -320,6 +320,12 @@ struct gm_random_history {
 #define GM_BAD70_CUR_SPAWN_INIT                                               \
     (*(gm_801BAB40_src**) ((u8*) (*lvlpp) + spawn_off + 0x14))
 
+struct gm_804D6900_t** gm_BAD70_LvlppPtr(struct gm_804D6900_t** levels,
+                                         u8 event_match_number)
+{
+    return &levels[event_match_number];
+}
+
 void gm_801BAD70(GameScene* arg0)
 {
     struct EventData* ev = &gmMainLib_804D3EE0->unk_530;
@@ -329,7 +335,6 @@ void gm_801BAD70(GameScene* arg0)
     gm_803DF94C_t** event_info = gm_803DF94C;
     struct gm_804D6900_t** levels;
     struct gm_804D6900_t** lvlpp;
-    struct gm_evlevel* level_info;
     s32 player_idx;
     s32 player_init_off;
     s32 spawn_off;
@@ -339,8 +344,7 @@ void gm_801BAD70(GameScene* arg0)
                           "sqEventInitDataLevelTbl", 0);
     levels = gm_804D6900[0];
     gm_80167A64(&md->rules);
-    lvlpp = &levels[event_match_number];
-    level_info = (struct gm_evlevel*) *lvlpp;
+    lvlpp = gm_BAD70_LvlppPtr(levels, event_match_number);
     md->rules.x0_0 = (*lvlpp)->x8->x0_0;
     md->rules.x0_3 = (*lvlpp)->x8->x0_3;
     md->rules.x0_6 = (*lvlpp)->x8->x0_6;
@@ -435,7 +439,7 @@ void gm_801BAD70(GameScene* arg0)
     {
         u8* init_walk;
         gm_801BAB40_src* init;
-        init_walk = (u8*) level_info + spawn_off;
+        init_walk = (u8*) ((struct gm_evlevel*) *lvlpp) + spawn_off;
         init = *(gm_801BAB40_src**) (init_walk + 0x14);
         while (*(u32*) (init_walk + 0x14) == 0) {
             player_idx += 1;
@@ -446,7 +450,8 @@ void gm_801BAD70(GameScene* arg0)
         init = *(gm_801BAB40_src**) (init_walk + 0x14);
         gm_801BAB40(
             (PlayerInitData*) (r3b + player_init_off + 0x60),
-            (int) *(gm_801BAB40_src**) ((u8*) level_info + spawn_off + 0x14));
+            (int) *(gm_801BAB40_src**) ((u8*) ((struct gm_evlevel*) *lvlpp) +
+                                        spawn_off + 0x14));
         if (player_idx == 0) {
             gm_801B05F4(&md->players[0], ev->x6);
             ev->x7 = md->players[0].team;

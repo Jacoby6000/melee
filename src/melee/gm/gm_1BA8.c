@@ -85,13 +85,15 @@ GameScene gm_803DF618_Scenes[] = {
     { 0xFF },
 };
 
+/* 3DF660 */ static char gm_803DF660[] = "GmEvent.dat";
+/* 3DF66C */ static char gm_803DF66C[] = "sqEventInitDataLevelTbl";
+
 extern u8 gm_804D68F8;
 extern u8 gm_804D68F9;
 
 void gm_801BA8FC(void)
 {
-    lbArchive_LoadSymbols("GmEvent.dat", &gm_804D6900,
-                          "sqEventInitDataLevelTbl", 0);
+    lbArchive_LoadSymbols(gm_803DF660, &gm_804D6900, gm_803DF66C, 0);
 }
 
 void gm_801BA938(struct EventData* arg0, int lo, int hi, bool arg3)
@@ -343,8 +345,7 @@ void gm_801BAD70(GameScene* arg0)
     s32 player_idx;
     PAD_STACK(0x8);
 
-    lbArchive_LoadSymbols("GmEvent.dat", &gm_804D6900,
-                          "sqEventInitDataLevelTbl", 0);
+    lbArchive_LoadSymbols(gm_803DF660, &gm_804D6900, gm_803DF66C, 0);
     levels = gm_804D6900[0];
     gm_80167A64(&md->rules);
     lvlpp = gm_BAD70_LvlppPtr(levels, event_match_number);
@@ -1054,8 +1055,7 @@ s32 gm_801BC00C(void)
     case 43:
     case 44:
     case 48:
-        lbArchive_LoadSymbols("GmEvent.dat", &gm_804D6900,
-                              "sqEventInitDataLevelTbl", 0);
+        lbArchive_LoadSymbols(gm_803DF660, &gm_804D6900, gm_803DF66C, 0);
         event_levels = gm_804D6900[0];
         break;
     }

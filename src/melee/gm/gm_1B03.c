@@ -481,7 +481,7 @@ void gm_801B087C(GameScene* arg0)
 
 void gm_801B089C(GameScene* scene)
 {
-    int* temp_r3 = gm_801A4284(scene);
+    int* temp_r3 = gm_GetGameSceneLeaveDataCallback(scene);
     if (DbLevel >= 3) {
         if (*temp_r3 & 0x100) {
             gm_SetPendingGameMode(GM_DEBUG_VS);
@@ -528,7 +528,7 @@ extern UNK_T un_803FC4CC[];
 
 void gm_801B09C0(GameScene* arg0)
 {
-    struct UnkUnloadData* temp_r3 = gm_801A427C(arg0);
+    struct UnkUnloadData* temp_r3 = gm_GetGameSceneLoadDataCallback(arg0);
     temp_r3->x0 = un_803FA4E0;
     temp_r3->x4 = fn_801B09F8;
 }
@@ -545,7 +545,7 @@ int fn_801B09F8(int arg0)
 
 void gm_801B0A34(GameScene* arg0)
 {
-    struct UnkUnloadData* temp_r3 = gm_801A427C(arg0);
+    struct UnkUnloadData* temp_r3 = gm_GetGameSceneLoadDataCallback(arg0);
     temp_r3->x0 = un_803FA790;
     temp_r3->x4 = fn_801B0A8C;
     lbAudioAx_80026F2C(0x12);
@@ -566,14 +566,14 @@ int fn_801B0A8C(int arg0)
 
 void gm_801B0AC8(GameScene* arg0)
 {
-    struct UnkUnloadData* temp_r3 = gm_801A427C(arg0);
+    struct UnkUnloadData* temp_r3 = gm_GetGameSceneLoadDataCallback(arg0);
     temp_r3->x0 = un_803FC4CC;
     temp_r3->x4 = fn_801B0A8C;
 }
 
 void gm_801B0B00(GameScene* arg0)
 {
-    un_802FFEE0(gm_801A427C(arg0));
+    un_802FFEE0(gm_GetGameSceneLoadDataCallback(arg0));
 }
 
 void gm_801B0B24(GameScene* arg0)
@@ -583,7 +583,7 @@ void gm_801B0B24(GameScene* arg0)
 
 void gm_801B0B48(GameScene* arg0)
 {
-    un_802FFF2C(gm_801A427C(arg0));
+    un_802FFF2C(gm_GetGameSceneLoadDataCallback(arg0));
     lbAudioAx_80026F2C(0x12);
     lbAudioAx_8002702C(2, 0x20);
     lbAudioAx_80027168();
@@ -592,27 +592,27 @@ void gm_801B0B48(GameScene* arg0)
 
 void gm_801B0B8C(GameScene* arg0)
 {
-    struct ResultsMatchInfo* temp_r3 = gm_801A427C(arg0);
+    struct ResultsMatchInfo* temp_r3 = gm_GetGameSceneLoadDataCallback(arg0);
     gm_80177724(temp_r3);
     temp_r3->match_end = gm_80480F20.match_end;
 }
 
 void gm_801B0BF0(GameScene* arg0)
 {
-    gm_801A4284(arg0);
+    gm_GetGameSceneLeaveDataCallback(arg0);
     gm_SetPendingSceneToSuccessorOf(0);
 }
 
 void gm_801B0C18(GameScene* arg0)
 {
-    UNK_T* temp_r31 = gm_801A427C(arg0);
+    UNK_T* temp_r31 = gm_GetGameSceneLoadDataCallback(arg0);
     gm_80168F88();
     un_80301BA8(temp_r31);
 }
 
 void gm_801B0C50(GameScene* arg0)
 {
-    un_80301C64(gm_801A427C(arg0));
+    un_80301C64(gm_GetGameSceneLoadDataCallback(arg0));
 }
 
 extern int un_803FA258[];
@@ -621,7 +621,7 @@ void gm_801B0C74(GameScene* arg0)
 {
     struct DebugGameOverData* data;
 
-    data = gm_801A427C(arg0);
+    data = gm_GetGameSceneLoadDataCallback(arg0);
     data->x0 = 0x1869F;
     data->x8 = 1;
     data->ckind = un_803FA258[0x4D];
@@ -633,7 +633,7 @@ void gm_801B0C74(GameScene* arg0)
 
 void gm_801B0CF0(GameScene* arg0)
 {
-    u8* temp_r3 = gm_801A427C(arg0);
+    u8* temp_r3 = gm_GetGameSceneLoadDataCallback(arg0);
     temp_r3[1] = 0;
 
     switch (un_803FA258[0x50]) {
@@ -681,7 +681,7 @@ void gm_801B0DD0(GameScene* arg0)
 {
     u64 sfx_result = 0;
     int i;
-    struct DebugResultsData* data = gm_801A427C(arg0);
+    struct DebugResultsData* data = gm_GetGameSceneLoadDataCallback(arg0);
     MatchEnd* match_end = &data->match_end;
 
     data->x0_0 = un_803FA258[0x5E];
@@ -727,13 +727,13 @@ void gm_801B0F60(GameScene* arg0)
 {
     struct DebugMemcardData* data;
 
-    data = gm_801A427C(arg0);
+    data = gm_GetGameSceneLoadDataCallback(arg0);
     data->x0 = 1;
     data->x4 = 0;
 }
 
 void gm_801B0F90(GameScene* arg0)
 {
-    gm_801A4284(arg0);
+    gm_GetGameSceneLeaveDataCallback(arg0);
     gm_SetPendingSceneToSuccessorOf(0);
 }

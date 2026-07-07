@@ -1562,7 +1562,7 @@ void fn_8016D8AC(int arg0, struct PlayerInitData* arg1)
         tmp->FighterMatchInfo[arg0].x4_b4 = true;
     }
 
-    tmp->FighterMatchInfo[arg0].spawn_point = arg1->x5;
+    tmp->FighterMatchInfo[arg0].spawn_point = arg1->sub_color;
 
     Player_SetHandicap(arg0, arg1->handicap);
     Player_SetTeam(arg0, arg1->team);
@@ -1631,7 +1631,7 @@ void fn_8016D8AC(int arg0, struct PlayerInitData* arg1)
     }
     tmp->FighterMatchInfo[arg0].x4_b3 = arg1->xD_b1;
     Player_SetMoreFlagsBit6(arg0, arg1->xB);
-    Player_SetFacingDirection(arg0, arg1->spawn_dir);
+    Player_SetFacingDirection(arg0, arg1->x6);
     tmp->FighterMatchInfo[arg0].x4_b5 = arg1->xD_b0;
 }
 

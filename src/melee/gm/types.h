@@ -338,7 +338,8 @@ struct gmm_x0 {
     } unk_51C, unk_522, unk_528;
     struct EventData {
         /* 0x0530 */ u8 player_ckind;
-        /* 0x0531 */ u8 x1;
+        /* 0x0531 */ u8 x1; ///> Something to do with event color/costume.
+                            /// Opponent costume?
         /* 0x0532 */ s8
             x2; ///< CharacterKind  (Forced character for this event?)
         /* 0x0533 */ u8
@@ -363,7 +364,8 @@ struct gmm_x0 {
         /* 0x0544 */ int x14;
         /* 0x0548 */ int x18;
         /* 0x054C */ float x1C;
-        /* 0x0550 */ int x20;
+        /* 0x0550 */ int x20; ///< Stage index corresponding to EventStageList
+                              ///< stage index + character init data
         /* 0x0554 */ int player_stocks;
         /* 0x0558 */ int x28;
         /* 0x055C */ int x2C; //< timer seconds
@@ -482,25 +484,25 @@ struct Placeholder_8016AE38_flags_2 {
     /* +2:7 */ u8 x2_b7 : 1;
 };
 
-typedef struct gm_801BAB40_src {
+typedef struct EventCharacterInitData {
     /* 0x00 */ u8 c_kind;
     /* 0x01 */ u8 slot_type;
     /* 0x02 */ u8 stocks;
     /* 0x03 */ u8 color;
-    /* 0x04 */ u8 x5;
+    /* 0x04 */ u8 x4;
     /* 0x05 */ u8 sub_color;
     /* 0x06 */ u8 team;
-    /* 0x07 */ u8 xB;
+    /* 0x07 */ u8 x7;
     /* 0x08 */ u8 flags; ///< See PLAYER_FLAGS_*
-    /* 0x09 */ u8 xE;
+    /* 0x09 */ u8 x9;
     /* 0x0A */ u8 cpu_level;
     /* 0x0B */ u8 pad;
-    /* 0x0C */ u16 x12;
+    /* 0x0C */ u16 xC;
     /* 0x0E */ u16 hp;
-    /* 0x10 */ f32 x18;
-    /* 0x14 */ f32 x1C;
-    /* 0x18 */ f32 x20;
-} gm_801BAB40_src;
+    /* 0x10 */ f32 x10;
+    /* 0x14 */ f32 x14;
+    /* 0x18 */ f32 x18;
+} EventCharacterInitData;
 
 struct lbl_8046B6A0_t {
     /* 0x0000 */ u8 unk_0; ///< 0 During a match
@@ -731,13 +733,13 @@ struct Unk1PData {
     /* 01 */ u8 color;
     /* 02 */ u8 cpu_level;
     /* 03 */ u8 slot;
-    /* 04 */ u8 x4; ///< EntryName Slot
+    /* 04 */ u8 nametag_id; ///< EntryName Slot
     /* 05 */ u8 stocks;
     /* 06 */ u8 x6;
     /* 07 */ u8 x7;
     /* 08 */ u8 x8;
     /* 09 */ u8 x9;
-    /* 0A */ u8 xA;
+    /* 0A */ s8 spawn_dir;
     /* 0B */ u8 xB;
     /* 0C */ struct Unk1PData_xC {
         /* 0C */ u8 xC;

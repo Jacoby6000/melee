@@ -8,8 +8,8 @@
 /* 1A3EF4 */ void gm_801A3EF4(void);
 /* 1A3F48 */ void gm_801A3F48(GameScene*);
 /* 1A4014 */ void gm_801A4014(GameMode*);
-/* 1A427C */ void* gm_801A427C(GameScene*);
-/* 1A4284 */ void* gm_801A4284(GameScene*);
+/* 1A427C */ void* gm_GetGameSceneLoadDataCallback(GameScene*);
+/* 1A4284 */ void* gm_GetGameSceneLeaveDataCallback(GameScene*);
 /* 1A428C */ void gm_SetScene(u8 arg0);
 /* 1A42A0 */ void gm_SetPendingSceneToSuccessorOf(u8 pending_scene);
 /* 1A42B4 */ u8 gm_GetPreviousScene(void); ///< get previous scene

@@ -244,7 +244,7 @@ void fn_8017C0C8(void)
     sp8.xD_b2 = true;
     sp8.xD_b0 = true;
     sp8.xD_b2 = true;
-    sp8.spawn_dir = 1;
+    sp8.x6 = 1;
     gm_8016EDDC(1, &sp8);
 }
 
@@ -524,7 +524,7 @@ void gm_8017C9A8(DebugGameOverData* arg0, Unk1PData* arg1, u8 arg2)
     arg0->x8 = arg2;
     arg0->ckind = arg1->ckind;
     arg0->slot = arg1->slot;
-    arg0->x15 = arg1->x4;
+    arg0->x15 = arg1->nametag_id;
     arg0->x18 = gm_801623D8();
     arg0->x16 = lbl_803B7C08[arg2][arg1->cpu_level];
 }
@@ -558,7 +558,7 @@ void gm_8017CA38(DebugGameOverData* arg0, Unk1PData* arg1, gmm_x0_528_t* arg2,
                 gm_RequestPendingGameMode(1);
             }
         } else {
-            gm_801736E8(arg1->ckind, arg1->color, arg1->slot, arg1->x4,
+            gm_801736E8(arg1->ckind, arg1->color, arg1->slot, arg1->nametag_id,
                         temp_r31, 1U);
             gm_RequestPendingGameMode(0x14);
         }
@@ -779,8 +779,8 @@ s32 gm_8017CE34(StartMeleeData* arg0, UnkAdventureData* arg1, s8* enemy_kinds,
 
     gm_801B0620(arg0->players, var_r4_2, arg1->x0.color, var_r6,
                 arg1->x0.slot);
-    arg0->players[0].nametag_id = arg1->x0.x4;
-    arg0->players[0].spawn_dir = (s8) arg1->x0.xA;
+    arg0->players[0].nametag_id = arg1->x0.nametag_id;
+    arg0->players[0].x6 = (s8) arg1->x0.spawn_dir;
 
     {
         u8 team_color;
@@ -956,11 +956,11 @@ s32 gm_8017CE34(StartMeleeData* arg0, UnkAdventureData* arg1, s8* enemy_kinds,
                     ((s8) player_kind == CKIND_CREZYH))
                 {
                     player_slot->player.xC_b7 = 1;
-                    player_slot->player.hp = 0x12C;
+                    player_slot->player.hp = 300;
                     player_slot->player.xD_b2 = 1;
                     player_slot->player.xD_b0 = 1;
                     player_slot->player.xD_b2 = 1;
-                    player_slot->player.spawn_dir = -1;
+                    player_slot->player.x6 = -1;
                     if ((s32) player_slot->player.c_kind == 0x1E) {
                         player_slot->player.slot_type = 3;
                     }
@@ -1447,7 +1447,7 @@ u8 gm_8017E430(void)
 u8 gm_8017E440(void)
 {
     UnkAdventureData* r31 = &lbl_80472C30;
-    if (gm_IsRumbleEnabled(r31->x0.slot, r31->x0.x4) == false) {
+    if (gm_IsRumbleEnabled(r31->x0.slot, r31->x0.nametag_id) == false) {
         return 4;
     }
     return r31->x0.slot;

@@ -158,12 +158,12 @@ void gm_801A4014(GameMode* mode)
     }
 }
 
-void* gm_801A427C(GameScene* scene)
+void* gm_GetGameSceneLoadDataCallback(GameScene* scene)
 {
     return scene->info.load_data;
 }
 
-void* gm_801A4284(GameScene* scene)
+void* gm_GetGameSceneLeaveDataCallback(GameScene* scene)
 {
     return scene->info.leave_data;
 }

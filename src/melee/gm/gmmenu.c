@@ -19,7 +19,7 @@ void gm_801A50B8_OnLoad(void)
     gm_801BEFA4(var_r0 & 0xFF);
     gm_801BEFC0(temp_r3->x0.color);
     gm_801BF000(temp_r3->x0.slot);
-    gm_801BEFE0(temp_r3->x0.x4);
+    gm_801BEFE0(temp_r3->x0.nametag_id);
     gm_801BF020(1);
 }
 
@@ -38,7 +38,7 @@ void gm_801A5130_OnLoad(void)
     gm_801BEFA4(var_r0 & 0xFF);
     gm_801BEFC0(temp_r3->x0.color);
     gm_801BF000(temp_r3->x0.slot);
-    gm_801BEFE0(temp_r3->x0.x4);
+    gm_801BEFE0(temp_r3->x0.nametag_id);
     gm_801BF020(0);
 }
 
@@ -55,7 +55,7 @@ void gm_801A51A8_OnLoad(void)
     gm_801BEFA4(var_r0 & 0xFF);
     gm_801BEFC0(tmp->x0.color);
     gm_801BF000(tmp->x0.slot);
-    gm_801BEFE0(tmp->x0.x4);
+    gm_801BEFE0(tmp->x0.nametag_id);
     gm_801BF020(2);
 }
 

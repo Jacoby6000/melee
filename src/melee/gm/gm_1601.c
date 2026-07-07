@@ -3671,7 +3671,7 @@ void gm_8016795C(struct PlayerInitData* arg0)
     arg0->color = 0;
     arg0->slot = 0;
     arg0->x5 = -1;
-    arg0->spawn_dir = 0;
+    arg0->x6 = 0;
     arg0->xB = 0;
     arg0->sub_color = 0;
     arg0->handicap = 9;

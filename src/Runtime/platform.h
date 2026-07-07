@@ -112,6 +112,52 @@ typedef void (*Event)(void);
 #define STATIC_ASSERT(cond) _Static_assert((cond), "(" #cond ") failed")
 #endif
 
+#define STATIC_ASSERT_CONCAT_(a, b) a##b
+#define STATIC_ASSERT_CONCAT(a, b) STATIC_ASSERT_CONCAT_(a, b)
+
+// STATIC_ASSERT_SIZE(type, size) fails to compile unless sizeof(type) == size,
+// and (unlike STATIC_ASSERT) reports both the actual and expected sizes.
+//
+// DESNOTE(jbarber, 2026-07-07): The two array typedefs share a name, so a size
+// mismatch surfaces as a redeclaration diagnostic that prints both the actual
+// (sizeof) and expected bounds: mwcc reports "was declared as 'char[96]'" /
+// "now declared as 'char[104]'", while clang/gcc report "'char[104]' vs
+// 'char[96]'". A plain STATIC_ASSERT collapses the comparison to a bool before
+// the compiler sees it, so both numbers are lost. The typedef name is keyed on
+// __LINE__ and the expected size so two correct asserts can never produce a
+// false conflict (matching sizes yield an identical, legal typedef
+// redefinition); `size` must therefore be an integer literal, and sizes are
+// printed in decimal.
+//
+// The matching case relies on identical typedef redefinition, which is a C11
+// feature, so clang warns -Wtypedef-redefinition on every correct assert when
+// tooling (clangd/CI) builds in a pre-C11 mode. We silence just that warning
+// on clang; the mismatch remains a separate, unconditional "different types"
+// error that still prints both sizes. gcc and mwcc accept the redefinition
+// without a warning under the flags we build with, so they need no pragma.
+#ifdef M2CTX
+#define STATIC_ASSERT_SIZE(type, size)
+#elif defined(__clang__)
+#define STATIC_ASSERT_SIZE(type, size)                                        \
+    _Pragma("clang diagnostic push") _Pragma(                                 \
+        "clang diagnostic ignored \"-Wtypedef-redefinition\"") typedef char   \
+        STATIC_ASSERT_CONCAT(                                                 \
+            STATIC_ASSERT_CONCAT(static_assert_size_at_line_, __LINE__),      \
+            STATIC_ASSERT_CONCAT(_expected_, size))[(int) (size)];            \
+    typedef char STATIC_ASSERT_CONCAT(                                        \
+        STATIC_ASSERT_CONCAT(static_assert_size_at_line_, __LINE__),          \
+        STATIC_ASSERT_CONCAT(_expected_, size))[(int) sizeof(type)];          \
+    _Pragma("clang diagnostic pop")
+#else
+#define STATIC_ASSERT_SIZE(type, size)                                        \
+    typedef char STATIC_ASSERT_CONCAT(                                        \
+        STATIC_ASSERT_CONCAT(static_assert_size_at_line_, __LINE__),          \
+        STATIC_ASSERT_CONCAT(_expected_, size))[(int) (size)];                \
+    typedef char STATIC_ASSERT_CONCAT(                                        \
+        STATIC_ASSERT_CONCAT(static_assert_size_at_line_, __LINE__),          \
+        STATIC_ASSERT_CONCAT(_expected_, size))[(int) sizeof(type)]
+#endif
+
 #define RETURN_IF(cond)                                                       \
     do {                                                                      \
         if ((cond)) {                                                         \

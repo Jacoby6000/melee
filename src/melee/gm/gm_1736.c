@@ -311,15 +311,18 @@ void gm_80173EEC(void)
     u8 ckind;
     u16* temp_r29;
 
-    for (i = 0; i < 0x19; i++) {
+    for (i = 0; i < CKIND_GANON; i++) {
         temp_r29 = &gmMainLib_8015EDBC()->x18[(u32) i];
         if (*temp_r29 >= 100) {
             ckind = gm_8016400C(i);
+
             fn_80172C78(gm_80173EEC_inline(ckind, GM_CLASSIC));
             if (ckind == CKIND_ZELDA) {
                 fn_80172C78(gm_80173EEC_inline(CKIND_SEAK, GM_CLASSIC));
             }
-            if (ckind == CKIND_SEAK) {
+            if (ckind ==
+                CKIND_SEAK) { ///< Should be unreachable. gm_8016400C is
+                              ///< incapable of returning CKIND_SEAK
                 fn_80172C78(gm_80173EEC_inline(CKIND_ZELDA, GM_CLASSIC));
             }
         }
@@ -329,7 +332,10 @@ void gm_80173EEC(void)
             if (ckind == CKIND_ZELDA) {
                 fn_80172C78(gm_80173EEC_inline(CKIND_SEAK, GM_ADVENTURE));
             }
-            if (ckind == CKIND_SEAK) {
+            if (ckind ==
+                CKIND_SEAK) { ///< Should be unreachable. gm_8016400C is
+                              ///< incapable of returning CKIND_SEAK
+
                 fn_80172C78(gm_80173EEC_inline(CKIND_ZELDA, GM_ADVENTURE));
             }
         }
@@ -339,7 +345,10 @@ void gm_80173EEC(void)
             if (ckind == CKIND_ZELDA) {
                 fn_80172C78(gm_80173EEC_inline(CKIND_SEAK, GM_ALLSTAR));
             }
-            if (ckind == CKIND_SEAK) {
+            if (ckind ==
+                CKIND_SEAK) { ///< Should be unreachable. gm_8016400C is
+                              ///< incapable of returning CKIND_SEAK
+
                 fn_80172C78(gm_80173EEC_inline(CKIND_ZELDA, GM_ALLSTAR));
             }
         }

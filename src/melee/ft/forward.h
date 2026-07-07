@@ -160,9 +160,10 @@ typedef enum CharacterKind {
     /* 1C */ CKIND_GIRL,                           // Female Wireframe (Girl)
     /* 1D */ CKIND_GKOOPS,                         // Giga Bowser (GKoops)
     /* 1E */ CKIND_CREZYH,                         // Crazy Hand (CrezyH)
-    /* 1F */ CHKIND_SANDBAG,                       // Sandbag
-    /* 20 */ CHKIND_POPO,                          // Popo
-    /* 21 */ CHKIND_NONE,                          // None
+    CKIND_MAX_VALID_OPPONENT = CKIND_CREZYH,
+    /* 1F */ CHKIND_SANDBAG, // Sandbag
+    /* 20 */ CHKIND_POPO,    // Popo
+    /* 21 */ CHKIND_NONE,    // None
     /* 22 */ CHKIND_MAX = CHKIND_NONE
 } CharacterKind;
 

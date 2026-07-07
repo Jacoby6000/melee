@@ -67,8 +67,8 @@ struct PlayerInitData {
     /*0x03*/ u8 color;      // color
     /*0x04*/ u8 slot;       // port
     /*0x05*/ s8 x5;         // spawnpos32
-    /*0x06*/ s8 spawn_dir;  // spawn direction
-    /*0x07*/ u8 sub_color;  // subcolor
+    /*0x06*/ s8 x6;         //
+    /*0x07*/ u8 sub_color;  //
     /*0x08*/ s8 handicap;   // handicap
     /*0x09*/ u8 team;       // team
     /*0x0A*/ u8 nametag_id; // nametag?
@@ -127,59 +127,67 @@ typedef struct lbl_8046B378_t {
 STATIC_ASSERT(sizeof(lbl_8046B378_t) == 0x110);
 
 struct StartMeleeRules {
-    u32 x0_0 : 3; // match mode? 1 = stock mode, 2 = coin mode?
-    u32 x0_3 : 3;
-    u32 x0_6 : 1;
-    u32 x0_7 : 1; ///< timer counts up
+    u8 x0_0 : 3; // match mode? 1 = stock mode, 2 = coin mode?
+    u8 x0_3 : 3;
+    u8 x0_6 : 1;
+    u8 x0_7 : 1; ///< timer counts up
 
-    u32 x1_0 : 1;
-    u32 x1_1 : 1;
-    u32 x1_2 : 1;
-    u32 x1_3 : 1;
-    u32 x1_4 : 1;
-    u32 x1_5 : 1;
-    u32 timer_shows_hours : 1; // false=65:00.00, true=1:05:00.00
+    u8 x1_0 : 1;
+    u8 x1_1 : 1;
+    u8 x1_2 : 1;
+    u8 x1_3 : 1;
+    u8 x1_4 : 1;
+    u8 x1_5 : 1;
+    u8 timer_shows_hours : 1; // false=65:00.00, true=1:05:00.00
+    u8 x1_7 : 1;              ///< friendly fire on
 
-    u32 x1_7 : 1; ///< friendly fire on
-
-    u32 x2_0 : 1;
-    u32 x2_1 : 1;
-    u32 x2_2 : 1;
-    u32 x2_3 : 1; ///< single-button mode enabled
-    u32 disable_pausing
+    u8 x2_0 : 1;
+    u8 x2_1 : 1;
+    u8 x2_2 : 1;
+    u8 x2_3 : 1; ///< single-button mode enabled
+    u8 disable_pausing
         : 1; ///< When set, pausing is disabled for both active gameplay and
              ///< pause menus. Sourced from the rules pause option and from
              ///< several game-mode setups.
-    u32 x2_5 : 1;
-    u32 x2_6 : 1;
-    u32 x2_7 : 1;
+    u8 x2_5 : 1;
+    u8 x2_6 : 1;
+    u8 x2_7 : 1;
+    union {
+        u8 x3_flags;
+        struct {
+            u8 x3_0 : 1;
+            u8 x3_1 : 1;
+            u8 x3_2 : 1;
+            u8 x3_3 : 1;
+            u8 x3_4 : 1;
+            u8 x3_5 : 1;
+            u8 x3_6 : 1;
+            u8 x3_7 : 1;
+        };
+    };
 
-    u32 x3_0 : 1;
-    u32 x3_1 : 1;
-    u32 x3_2 : 1;
-    u32 x3_3 : 1;
-    u32 x3_4 : 1;
-    u32 x3_5 : 1;
-    u32 x3_6 : 1;
-    u32 x3_7 : 1;
+    union {
+        u8 x4_flags;
+        struct {
+            u8 x4_0 : 1; ///< pause camera enabled?
+            u8 x4_1 : 1;
+            u8 x4_2 : 1;
+            u8 x4_3 : 1;
+            u8 x4_4 : 1;
+            u8 x4_5 : 1;
+            u8 x4_6 : 1;
+            u8 x4_7 : 1;
+        };
+    };
 
-    u32 x4_0 : 1; ///< pause camera enabled?
-    u32 x4_1 : 1;
-    u32 x4_2 : 1;
-    u32 x4_3 : 1;
-    u32 x4_4 : 1;
-    u32 x4_5 : 1;
-    u32 x4_6 : 1;
-    u32 x4_7 : 1;
-
-    u32 x5_0 : 1;
-    u32 x5_1 : 1;
-    u32 x5_2 : 1;
-    u32 x5_3 : 1;
-    u32 x5_4 : 1;
-    u32 x5_5 : 1;
-    u32 x5_6 : 1;
-    u32 x5_7 : 1;
+    u8 x5_0 : 1;
+    u8 x5_1 : 1;
+    u8 x5_2 : 1;
+    u8 x5_3 : 1;
+    u8 x5_4 : 1;
+    u8 x5_5 : 1;
+    u8 x5_6 : 1;
+    u8 x5_7 : 1;
 
     u8 x6;
     u8 x7; // end graphic / SFX type
@@ -228,6 +236,7 @@ struct StartMeleeRules {
     struct lbl_8046B668_t* x58;
     u8 pad_x5C[0x60 - 0x5C];
 };
+STATIC_ASSERT_SIZE(StartMeleeRules, 0x60);
 
 struct StartMeleeData {
     StartMeleeRules rules;

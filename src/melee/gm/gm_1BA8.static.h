@@ -1,3 +1,8 @@
+#include "gr/forward.h"
+#include "mn/forward.h"
+
+#include "mn/mnevent.h"
+
 #include <melee/gm/types.h>
 #include <melee/mn/types.h>
 
@@ -5,32 +10,92 @@ struct UnkSmallLoadData {
     u8 pad[8];
 };
 
-typedef struct gm_evspawn_table {
-    u8 count;
-    u8 pad[0xF];
-    gm_801BAB40_src* entries[5];
-} gm_evspawn_table;
+typedef struct EventStageList {
+    /* 0x00 */ u8 count;
+    /* 0x01 */ u8 x1;
+    /* 0x02 */ u16 stage[7];
+    /* 0x10 */ EventCharacterInitData* player_init[5];
+} EventStageList;
 
-struct gm_804D6900_t {
-    int x0;
-    struct gm_804D6900_x4_t {
+typedef struct BonusStyleEventInitCharacterData {
+    /* 0x00 */ s8 c_kind;
+    /* 0x01 */ u8 x1;
+    /* 0x02 */ u8 x2;
+    /* 0x03 */ u8 x3;
+    /* 0x04 */ u8 x4;
+    /* 0x05 */ u8 x5;
+    /* 0x06 */ u8 color;
+    /* 0x07 */ u8 pad7;
+    /* 0x08 */ f32 x8;
+    /* 0x0C */ f32 xC;
+    /* 0x10 */ f32 x10;
+    /* 0x14 */ u8 flags;
+    /* 0x15 */ u8 x15;
+    /* 0x16 */ u8 x16;
+    /* 0x17 */ u8 x17;
+} BonusStyleEventInitCharacterData;
+
+typedef struct StartEventRules { ///< Largely mirrors StartMeleeRules in the
+                                 ///< first couple of bytes, namely the bit
+                                 /// flags.  When an event match is set up, a
+                                 /// lot of this is copied in to
+                                 /// StartMeleeRules
+    u8 x0_0 : 1;
+    u8 x0_1 : 1;
+    u8 x0_2 : 1;
+    u8 x0_3 : 1;
+    u8 x0_4 : 1;
+    u8 x0_5 : 1;
+    u8 x0_6 : 1;
+    u8 x0_7 : 1;
+    u8 x1_0 : 1;
+    u8 x1_1 : 1;
+    u8 x1_2 : 1;
+    u8 x1_3 : 1;
+    u8 x1_4 : 1;
+    u8 x1_5 : 1;
+    u8 x1_6 : 1;
+    u8 x1_7 : 1;
+    u8 is_teams : 1;
+    u8 x2_1 : 1;
+    u8 x2_2 : 1;
+    u8 x2_3 : 1;
+    u8 x2_4 : 1;
+    u8 x2_5 : 1;
+    u8 x2_6 : 1;
+    u8 x2_7 : 1;
+    s8 x3; // iten frequency?
+    s8 x4; // SD Penalty?
+    u8 x5;
+    u16 x6; // InternalStageId?
+    u32 x8; // Time Limit?
+    u8 padC[4];
+    u64 x10; // Item Mask?
+    s32 x18;
+    f32 x1C;
+    f32 x20;
+    f32 x24;
+} StartEventRules;
+
+struct EventInitDataLevelTbl {
+    /* 0x00 */ u8 kind; ///< 0: Standard, 1: Bonus, 2: Multi
+    /* 0x01 */ u8 flags;
+    /* 0x02 */ u8 pad2[2];
+    /* 0x04 */ struct gm_804D6900_x4_t {
         int x0;
-        intptr_t x4;
+        EventCharacterInitData* x4;
     }* x4;
-    StartMeleeRules* x8;
-    struct {
-        u8 unk0[0x16];
-        u8 x16;
-    }* xC;
-    gm_evspawn_table* x10;
-    s8* x14;
-    s8* x18;
+    /* 0x08 */ StartEventRules* x8;
+    /* 0x0C */ struct BonusStyleEventInitCharacterData* xC;
+    /* 0x10 */ EventStageList* stage_list;
+    /* 0x14 */ EventCharacterInitData* player_init[5];
 };
 
-/* 4D6900 */ static struct gm_804D6900_t** gm_804D6900[2]; ///< Event matches?
+/* 4D6900 */ static struct EventInitDataLevelTbl** event_init_data_level_table;
+/* 4D6904 */ static u8 gm_804D6904_pad[4];
 /* 4D6908 */ static struct UnkSmallLoadData gm_804D6908;
 /* 4D6910 */ static struct UnkSmallLoadData gm_804D6910;
-/* 4D6910 */ static struct UnkSmallLoadData gm_804D6918;
+/* 4D6918 */ static struct UnkSmallLoadData gm_804D6918;
 /* 4D6920 */ static struct UnkSmallLoadData gm_804D6920;
 /* 4D6928 */ static UNK_T gm_804D6928;
 /* 4D692C */ static UNK_T gm_804D692C;

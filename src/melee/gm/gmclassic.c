@@ -651,7 +651,7 @@ void gmClassic_801B3500(GameScene* arg0)
     s8 ckind;
     PreloadCacheSceneEntry* ep;
 
-    sd = gm_801A427C(arg0);
+    sd = gm_GetGameSceneLoadDataCallback(arg0);
     entry = &gmClassic_803DDEC8.x00[(u8) gm_8017BE84(arg0->idx)];
     ad = gm_8017EB30();
     enemy_count = 0;
@@ -732,7 +732,7 @@ void gmClassic_801B3500(GameScene* arg0)
         }
     }
     sd->x0B = ally_count;
-    sd->x09 = ad->x0.x4;
+    sd->x09 = ad->x0.nametag_id;
 
     gc = &lbDvd_8001822C()->game_cache;
     lbDvd_80018C6C();
@@ -875,7 +875,7 @@ void gmClassic_801B3A34(GameScene* arg0)
 
     PAD_STACK(8);
 
-    temp_r30 = gm_801A427C(arg0);
+    temp_r30 = gm_GetGameSceneLoadDataCallback(arg0);
     temp_r31 = &gmClassic_803DDEC8.x00[(u8) gm_8017BE84(arg0->idx)];
     temp_r29 = gm_8017EB30();
     new_var = temp_r30;
@@ -916,7 +916,7 @@ void gmClassic_801B3B40(GameScene* arg0)
     s32 mask;
     PAD_STACK(4);
 
-    mei = (MatchExitInfo*) gm_801A4284(arg0);
+    mei = (MatchExitInfo*) gm_GetGameSceneLeaveDataCallback(arg0);
     asd = gm_8017EB30();
     entry = &gmClassic_803DDEC8.x00[(u8) gm_8017BE84(arg0->idx)];
     exit_result = mei->x8;
@@ -976,19 +976,20 @@ void gmClassic_801B3B40(GameScene* arg0)
 
 void gmClassic_801B3D44(GameScene* scene)
 {
-    struct DebugGameOverData* temp_r31 = gm_801A427C(scene);
+    struct DebugGameOverData* temp_r31 =
+        gm_GetGameSceneLoadDataCallback(scene);
     gm_8017C9A8(temp_r31, &gm_8017EB30()->x0, 1);
 }
 
 void gmClassic_801B3D84(GameScene* scene)
 {
-    DebugGameOverData* temp_r30 = gm_801A4284(scene);
+    DebugGameOverData* temp_r30 = gm_GetGameSceneLeaveDataCallback(scene);
     gm_8017CA38(temp_r30, &gm_8017EB30()->x0, gmMainLib_8015CDC8(), 1);
 }
 
 void gmClassic_801B3DD8(GameScene* scene)
 {
-    CSSData* css = gm_801A427C(scene);
+    CSSData* css = gm_GetGameSceneLoadDataCallback(scene);
     struct gmm_x0_528_t* temp_r31 = gmMainLib_8015CDC8();
     gm_801B06B0(css, 0xB, temp_r31->c_kind, temp_r31->stocks, temp_r31->color,
                 temp_r31->x4, temp_r31->cpu_level, gm_8017EB30()->x0.slot);
@@ -997,7 +998,7 @@ void gmClassic_801B3DD8(GameScene* scene)
 
 void gmClassic_801B3E44(GameScene* scene)
 {
-    CSSData* temp_r30 = gm_801A4284(scene);
+    CSSData* temp_r30 = gm_GetGameSceneLeaveDataCallback(scene);
     gmm_x0_528_t* temp_r29 = gmMainLib_8015CDC8();
     UnkAllstarData* temp_r31 = gm_8017EB30();
     gm_803DDEC8Struct* r4 = gmClassic_803DDEC8.x00;
@@ -1013,7 +1014,7 @@ void gmClassic_801B3E44(GameScene* scene)
     temp_r31->x0.color = temp_r29->color;
     temp_r31->x0.cpu_level = temp_r29->cpu_level;
     temp_r31->x0.stocks = temp_r29->stocks;
-    temp_r31->x0.x4 = temp_r29->x4;
+    temp_r31->x0.nametag_id = temp_r29->x4;
     gmClassic_801B2D54(r4);
     gm_SetPendingSceneToSuccessorOf(temp_r29->x5 << 3);
     gm_80168F88();

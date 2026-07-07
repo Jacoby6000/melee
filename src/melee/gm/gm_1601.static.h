@@ -88,6 +88,7 @@ static const u8 lbl_803B7844[] = {
     { 0x4D, 0x66, 0x4D, 0xFF },
 };
 /* 3B7888 */ static const u8 lbl_803B7888[0x1C] = {
+    ///< All selectable chars except shiek
     CKIND_CAPTAIN, CKIND_DONKEY,  CKIND_FOX,      CKIND_GAMEWATCH,
     CKIND_KIRBY,   CKIND_KOOPA,   CKIND_LINK,     CKIND_LUIGI,
     CKIND_MARIO,   CKIND_MARS,    CKIND_MEWTWO,   CKIND_NESS,

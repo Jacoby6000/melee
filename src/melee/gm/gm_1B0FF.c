@@ -221,7 +221,7 @@ void gm_801B138C(GameScene* arg0)
 
 void gm_801B13B8(GameScene* arg0)
 {
-    StartMeleeData* temp_r28 = gm_801A427C(arg0);
+    StartMeleeData* temp_r28 = gm_GetGameSceneLoadDataCallback(arg0);
     int i;
 
     gm_80167A64(&temp_r28->rules);

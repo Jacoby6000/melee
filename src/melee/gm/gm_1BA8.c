@@ -252,10 +252,10 @@ struct gm_random_history {
     u8 stage_usage[0x1D];
 };
 
-struct EventInitDataLevelTbl*
+struct EventInitDataLevelTbl**
 gm_BAD70_LvlppPtr(struct EventInitDataLevelTbl** levels, u8 event_match_number)
 {
-    return levels[event_match_number];
+    return &levels[event_match_number];
 }
 
 struct EventData* gm_BAD70_EvPtr(void)
@@ -270,7 +270,7 @@ void gm_801BAD70(GameScene* arg0)
     u8 event_match_number = ev->event_match_number;
     gm_803DF94C_t** event_info = gm_803DF94C;
     struct EventInitDataLevelTbl** levels;
-    struct EventInitDataLevelTbl* lvlpp;
+    struct EventInitDataLevelTbl** lvlpp;
     s32 player_idx;
     PAD_STACK(0x8);
 
@@ -279,20 +279,20 @@ void gm_801BAD70(GameScene* arg0)
     levels = event_init_data_level_table;
     gm_80167A64(&md->rules);
     lvlpp = gm_BAD70_LvlppPtr(levels, event_match_number);
-    md->rules.x0_0 = lvlpp->x8->x0_0;
-    md->rules.x0_3 = lvlpp->x8->x0_3;
-    md->rules.x0_6 = lvlpp->x8->x0_6;
-    md->rules.x0_7 = lvlpp->x8->x0_7;
+    md->rules.x0_0 = (*lvlpp)->x8->x0_0;
+    md->rules.x0_3 = (*lvlpp)->x8->x0_3;
+    md->rules.x0_6 = (*lvlpp)->x8->x0_6;
+    md->rules.x0_7 = (*lvlpp)->x8->x0_7;
     md->rules.x1_0 = 1;
     md->rules.x1_1 = 0;
     md->rules.x1_2 = 0;
     md->rules.x1_3 = 0;
     md->rules.timer_shows_hours = 0;
-    md->rules.x1_7 = lvlpp->x8->x1_1;
+    md->rules.x1_7 = (*lvlpp)->x8->x1_1;
     md->rules.x2_2 = 0;
     md->rules.x2_3 = 0;
     md->rules.disable_pausing = 0;
-    md->rules.x2_5 = lvlpp->x8->x1_2;
+    md->rules.x2_5 = (*lvlpp)->x8->x1_2;
     md->rules.x3_1 = 1;
     md->rules.x3_2 = 1;
     md->rules.x3_3 = 1;
@@ -306,37 +306,37 @@ void gm_801BAD70(GameScene* arg0)
     md->rules.x4_7 = 0;
     md->rules.x5_0 = 1;
     md->rules.x5_1 = 0;
-    md->rules.x5_2 = lvlpp->x8->x1_3;
-    md->rules.x5_3 = lvlpp->x8->x1_4;
+    md->rules.x5_2 = (*lvlpp)->x8->x1_3;
+    md->rules.x5_3 = (*lvlpp)->x8->x1_4;
     md->rules.x7 = 0;
-    md->rules.is_teams = lvlpp->x8->is_teams;
+    md->rules.is_teams = (*lvlpp)->x8->is_teams;
     md->rules.x9 = 0;
     md->rules.xA = 0;
-    md->rules.xB = lvlpp->x8->x3;
-    md->rules.xC = lvlpp->x8->x4;
+    md->rules.xB = (*lvlpp)->x8->x3;
+    md->rules.xC = (*lvlpp)->x8->x4;
     md->rules.xD = 0x6E;
-    md->rules.xE = lvlpp->x8->x6;
-    md->rules.x10 = lvlpp->x8->x8;
+    md->rules.xE = (*lvlpp)->x8->x6;
+    md->rules.x10 = (*lvlpp)->x8->x8;
     md->rules.x14 = 0;
     md->rules.x18 = 0;
-    md->rules.x20 = lvlpp->x8->x10;
-    md->rules.x28 = lvlpp->x8->x18;
-    md->rules.x30 = lvlpp->x8->x1C;
-    md->rules.x34 = lvlpp->x8->x20;
+    md->rules.x20 = (*lvlpp)->x8->x10;
+    md->rules.x28 = (*lvlpp)->x8->x18;
+    md->rules.x30 = (*lvlpp)->x8->x1C;
+    md->rules.x34 = (*lvlpp)->x8->x20;
     md->rules.x44 = fn_801BBFE8;
     if (md->rules.x0_0) {
         ev->xB_0 = 1;
     }
-    if (lvlpp->x8->x1_7) {
+    if ((*lvlpp)->x8->x1_7) {
         ev->xB_6 = 1;
     }
-    if (lvlpp->x8->x24 != 1.0f) {
-        ev->x1C = lvlpp->x8->x24;
+    if ((*lvlpp)->x8->x24 != 1.0f) {
+        ev->x1C = (*lvlpp)->x8->x24;
     }
-    if (lvlpp->kind == 2) {
+    if ((*lvlpp)->kind == 2) {
         u16 stage;
         ev->xB_4 = 1;
-        stage = lvlpp->stage_list->stage[ev->x20];
+        stage = (*lvlpp)->stage_list->stage[ev->x20];
         md->rules.xE = stage;
         ev->x48 = (InternalStageId) stage;
         if (ev->x20 > 0) {
@@ -354,18 +354,17 @@ void gm_801BAD70(GameScene* arg0)
     md->players[4].slot_type = 3;
     md->players[5].slot_type = 3;
 
-    while (player_idx <
-           (s32) ((((struct EventInitDataLevelTbl*) lvlpp)->flags >> 5) & 7))
-    {
+    while (player_idx < (s32) (((*lvlpp)->flags >> 5) & 7)) {
         EventCharacterInitData* init;
         struct EventInitDataLevelTbl* lev;
 
-        lev = (struct EventInitDataLevelTbl*) lvlpp;
+        lev = *lvlpp;
         while (lev->player_init[player_idx] == NULL) {
             player_idx += 1;
         }
         init = lev->player_init[player_idx];
-        gm_801BAB40(&md->players[player_idx], (int) init);
+        gm_801BAB40(&md->players[player_idx],
+                    (int) lev->player_init[player_idx]);
         if (player_idx == 0) {
             gm_801B05F4(&md->players[0], ev->x6);
             ev->x7 = md->players[0].team;
@@ -437,7 +436,7 @@ void gm_801BAD70(GameScene* arg0)
         player_idx += 1;
     }
 
-    if (((struct EventInitDataLevelTbl*) lvlpp)->kind == 2) {
+    if ((*lvlpp)->kind == 2) {
         if (ev->x20 > 0) {
             md->players[0].stocks = (s8) ev->player_stocks;
             md->players[0].x10 = (u16) ev->x28;
@@ -454,7 +453,7 @@ void gm_801BAD70(GameScene* arg0)
         {
             u32 idx = ev->x20;
             gm_801BAB40(&md->players[1],
-                        (int) lvlpp->stage_list->player_init[idx]);
+                        (int) (*lvlpp)->stage_list->player_init[idx]);
         }
         if ((s8) md->players[1].c_kind == (s8) md->players[0].c_kind) {
             u8 c = md->players[1].color;
@@ -504,13 +503,13 @@ void gm_801BAD70(GameScene* arg0)
         md->players[1].xD_b2 = 1;
         md->players[2].xD_b2 = 1;
     }
-    if (((struct EventInitDataLevelTbl*) lvlpp)->kind == 1) {
+    if ((*lvlpp)->kind == 1) {
         struct BonusStyleEventInitCharacterData* bonus;
         int var_r9;
         s8 k;
         u8 sp8;
         ev->xB_3 = 1;
-        bonus = ((struct EventInitDataLevelTbl*) lvlpp)->xC;
+        bonus = (*lvlpp)->xC;
         if (bonus->x5 == 1) {
             var_r9 = 1;
             if ((s8) ev->player_ckind == bonus->c_kind) {
@@ -527,7 +526,7 @@ void gm_801BAD70(GameScene* arg0)
         } else {
             var_r9 = 0;
         }
-        bonus = ((struct EventInitDataLevelTbl*) lvlpp)->xC;
+        bonus = (*lvlpp)->xC;
         k = bonus->c_kind;
         if ((s8) k == 4) {
             sp8 = bonus->x17;
@@ -537,17 +536,17 @@ void gm_801BAD70(GameScene* arg0)
         gm_8016A22C(k, 0x21, 0x21, ev->player_colors[1], 0, 0, var_r9, 0, sp8,
                     ev->player_ckind, ev->x1, bonus->x1, bonus->x2, bonus->x3,
                     bonus->x4, 0, 1, bonus->x8, bonus->xC);
-        bonus = ((struct EventInitDataLevelTbl*) lvlpp)->xC;
+        bonus = (*lvlpp)->xC;
         gm_8016A414(bonus->x10);
         gm_8016A21C(&md->rules);
-        bonus = ((struct EventInitDataLevelTbl*) lvlpp)->xC;
+        bonus = (*lvlpp)->xC;
         if ((bonus->flags >> 7) & 1) {
             gm_8016A434();
         }
         if (event_info[event_match_number]->x4 != NULL) {
             gm_8016A404((s32) event_info[event_match_number]->x4);
         }
-        bonus = lvlpp->xC;
+        bonus = (*lvlpp)->xC;
         if (bonus->x15 != 0) {
             gm_8016A424((s8) bonus->x15);
         }
@@ -745,45 +744,65 @@ void gm_801BBA60_OnInit(void)
 
 s32 gm_801BBB64(void)
 {
-    struct EventInitDataLevelTbl* event_init_data;
+    struct EventInitDataLevelTbl** tbl;
+    struct EventInitDataLevelTbl** pp;
     struct EventData* ev;
-    struct EventInitDataLevelTbl** all_event_init_data;
-    s32 event_idx;
-    EventCharacterInitData* current_player_init;
-    EventCharacterInitData* current_player_init_2;
+    s32 idx;
+    EventCharacterInitData* player_init;
+    EventCharacterInitData* event_entry;
     struct gm_804D6900_x4_t* x4;
     s32 result;
-    int i;
 
     ev = &gmMainLib_804D3EE0->unk_530;
-    all_event_init_data = event_init_data_level_table;
-    event_idx = gmMainLib_804D3EE0->unk_530.event_match_number;
-    if (event_init_data->player_init[0]->c_kind != CHKIND_NONE) {
+    tbl = event_init_data_level_table;
+    idx = gmMainLib_804D3EE0->unk_530.event_match_number;
+    if (*(s8*) tbl[idx]->player_init[0] != CHKIND_NONE) {
         ev->x44 = 0;
     } else {
         ev->x44 = 1;
     }
-    event_init_data = all_event_init_data[event_idx];
-    ev->x48 = (InternalStageId) all_event_init_data[event_idx]->x8->x6;
-
-    for (i = 0; i < 4; i++) {
-        current_player_init = event_init_data->player_init[i];
-        if (current_player_init != NULL) {
-            ev->player_ckinds[i] = current_player_init->c_kind;
-            ev->player_colors[i] = current_player_init->color;
-        } else {
-            ev->player_ckinds[i] = CHKIND_NONE;
-            ev->player_colors[i] = 0;
-        }
+    pp = &tbl[idx];
+    ev->x48 = (InternalStageId) (*pp)->x8->x6;
+    player_init = (*pp)->player_init[0];
+    if (player_init != NULL) {
+        ev->player_ckinds[0] = player_init->c_kind;
+        ev->player_colors[0] = (*pp)->player_init[0]->color;
+    } else {
+        ev->player_ckinds[0] = CHKIND_NONE;
+        ev->player_colors[0] = 0;
     }
-    if (event_init_data->kind == 1) {
-        ev->player_ckinds[1] = event_init_data->xC->c_kind;
-        if (event_init_data->xC->x5 == 1) {
-            ev->player_colors[1] = event_init_data->xC->color;
+    player_init = (*pp)->player_init[1];
+    if (player_init != NULL) {
+        ev->player_ckinds[1] = player_init->c_kind;
+        ev->player_colors[1] = (*pp)->player_init[1]->color;
+    } else {
+        ev->player_ckinds[1] = CHKIND_NONE;
+        ev->player_colors[1] = 0;
+    }
+    player_init = (*pp)->player_init[2];
+    if (player_init != NULL) {
+        ev->player_ckinds[2] = player_init->c_kind;
+        ev->player_colors[2] = (*pp)->player_init[2]->color;
+    } else {
+        ev->player_ckinds[2] = CHKIND_NONE;
+        ev->player_colors[2] = 0;
+    }
+    player_init = (*pp)->player_init[3];
+    if (player_init != NULL) {
+        ev->player_ckinds[3] = player_init->c_kind;
+        ev->player_colors[3] = (*pp)->player_init[3]->color;
+    } else {
+        ev->player_ckinds[3] = CHKIND_NONE;
+        ev->player_colors[3] = 0;
+    }
+    if ((*pp)->kind == 1) {
+        ev->player_ckinds[1] = (s8) (*pp)->xC->c_kind;
+        if ((*pp)->xC->x5 == 1) {
+            ev->player_colors[1] = (*pp)->xC->color;
         } else {
             ev->player_colors[1] = 0xFF;
         }
-        if (event_init_data->xC->x17 == 1) {
+        if ((*pp)->xC->x17 == 1) {
             ev->x45 = 1;
         } else {
             ev->x45 = 0;
@@ -792,8 +811,8 @@ s32 gm_801BBB64(void)
         ev->x45 = 0;
     }
 
-    result = event_idx;
-    switch (event_idx) {
+    result = idx;
+    switch (idx) {
     case 9:
     case 19:
     case 29:
@@ -804,56 +823,48 @@ s32 gm_801BBB64(void)
         } else {
             ev->x44 = 4;
         }
-        current_player_init_2 =
-            event_init_data->stage_list->player_init[ev->x20];
-        ev->player_ckinds[1] = current_player_init_2->c_kind;
-        ev->player_colors[1] = current_player_init_2->color;
-        return (s32) current_player_init_2;
+        event_entry = (*pp)->stage_list->player_init[ev->x20];
+        ev->player_ckinds[1] = event_entry->c_kind;
+        event_entry = (*pp)->stage_list->player_init[ev->x20];
+        ev->player_colors[1] = event_entry->color;
+        return (s32) event_entry;
     case 35:
         if (ev->x20 == 0) {
             ev->x44 = 2;
-
-            current_player_init_2 =
-                event_init_data->stage_list->player_init[0];
-            ev->player_ckinds[1] = current_player_init_2->c_kind;
-            ev->player_colors[1] = current_player_init_2->color;
-
-            current_player_init_2 =
-                event_init_data->stage_list->player_init[2];
-            ;
-            ev->player_ckinds[2] = current_player_init_2->c_kind;
-            ev->player_colors[2] = current_player_init_2->color;
-
-            current_player_init_2 =
-                event_init_data->stage_list->player_init[3];
-            ev->player_ckinds[3] = current_player_init_2->c_kind;
-            ev->player_colors[3] = current_player_init_2->color;
-
-            return (s32) current_player_init_2;
+            event_entry = (*pp)->stage_list->player_init[0];
+            ev->player_ckinds[1] = event_entry->c_kind;
+            event_entry = (*pp)->stage_list->player_init[0];
+            ev->player_colors[1] = event_entry->color;
+            event_entry = (*pp)->stage_list->player_init[2];
+            ev->player_ckinds[2] = event_entry->c_kind;
+            event_entry = (*pp)->stage_list->player_init[2];
+            ev->player_colors[2] = event_entry->color;
+            event_entry = (*pp)->stage_list->player_init[3];
+            ev->player_ckinds[3] = event_entry->c_kind;
+            event_entry = (*pp)->stage_list->player_init[3];
+            ev->player_colors[3] = event_entry->color;
+            return (s32) event_entry;
         }
         if (ev->x20 == 1) {
             ev->x44 = 4;
-            current_player_init_2 =
-                event_init_data->stage_list->player_init[1];
-            ev->player_ckinds[1] = current_player_init_2->c_kind;
-            ev->player_colors[1] = current_player_init_2->color;
-
-            current_player_init_2 =
-                event_init_data->stage_list->player_init[4];
-            ;
-            ev->player_ckinds[2] = current_player_init_2->c_kind;
-            ev->player_colors[2] = current_player_init_2->color;
-
-            return (s32) current_player_init_2;
+            event_entry = (*pp)->stage_list->player_init[1];
+            ev->player_ckinds[1] = event_entry->c_kind;
+            event_entry = (*pp)->stage_list->player_init[1];
+            ev->player_colors[1] = event_entry->color;
+            event_entry = (*pp)->stage_list->player_init[4];
+            ev->player_ckinds[2] = event_entry->c_kind;
+            event_entry = (*pp)->stage_list->player_init[4];
+            ev->player_colors[2] = event_entry->color;
+            return (s32) event_entry;
         }
         return result;
     case 43:
-        current_player_init_2 =
-            (EventCharacterInitData*) event_init_data->x4->x4;
-        ev->player_ckinds[2] = current_player_init_2->c_kind;
-        ev->player_colors[2] = current_player_init_2->color;
-
-        result = (s32) current_player_init_2;
+        x4 = (*pp)->x4;
+        event_entry = x4->x4;
+        ev->player_ckinds[2] = event_entry->c_kind;
+        event_entry = x4->x4;
+        ev->player_colors[2] = event_entry->color;
+        result = (s32) event_entry;
         /* fallthrough */
     default:
         return result;
@@ -863,15 +874,16 @@ s32 gm_801BBB64(void)
 void gm_801BBEA8_OnLoad(void)
 {
     struct EventData* temp_r30;
-    struct EventInitDataLevelTbl** all_event_matches;
-    u8 event_match_number;
+    struct EventInitDataLevelTbl** temp_r29;
+    u8 temp_r28;
+    u8 temp_r3;
     PAD_STACK(8);
 
     temp_r30 = &gmMainLib_804D3EE0->unk_530;
     gm_801BA8FC();
 
-    all_event_matches = event_init_data_level_table;
-    event_match_number = temp_r30->event_match_number;
+    temp_r29 = event_init_data_level_table;
+    temp_r28 = temp_r30->event_match_number;
     temp_r30->player_ckind = 0;
     temp_r30->x1 = 0;
     temp_r30->x6 = gm_801677F0();
@@ -898,9 +910,7 @@ void gm_801BBEA8_OnLoad(void)
     temp_r30->x3C = 0;
     temp_r30->x40 = 0;
     gm_801BBB64();
-    if (all_event_matches[event_match_number]->player_init[0]->c_kind !=
-        CHKIND_NONE)
-    {
+    if ((s8) temp_r29[temp_r28]->player_init[0]->c_kind != CHKIND_NONE) {
         gm_SetScene(1);
     }
 }
@@ -924,7 +934,6 @@ s32 gm_801BC00C(void)
     u8 costume;
     lbl_8046B6A0_t* mi;
     s32 i;
-    s32 entry_offset;
     s8 chr;
     PAD_STACK(0x40);
 
@@ -958,20 +967,20 @@ s32 gm_801BC00C(void)
     case 35:
         if (ev->x20 == 0) {
             player_init_data = event_levels[idx]->stage_list->player_init[2];
-            ftLib_80087508(Player_800325C8(player_init_data->c_kind, 0),
+            ftLib_80087508(Player_800325C8((s8) player_init_data->c_kind, 0),
                            player_init_data->color);
 
             player_init_data = event_levels[idx]->stage_list->player_init[3];
-            ftLib_80087508(Player_800325C8(player_init_data->c_kind, 0),
+            ftLib_80087508(Player_800325C8((s8) player_init_data->c_kind, 0),
                            player_init_data->color);
         } else {
             player_init_data = event_levels[idx]->stage_list->player_init[4];
-            ftLib_80087508(Player_800325C8(player_init_data->c_kind, 0),
+            ftLib_80087508(Player_800325C8((s8) player_init_data->c_kind, 0),
                            player_init_data->color);
         }
         break;
     case 43:
-        chr = Player_800325C8(event_levels[idx]->x4->x4->c_kind, 0);
+        chr = Player_800325C8((s8) event_levels[idx]->x4->x4->c_kind, 0);
         ftLib_80087508(chr, ev->player_colors[2]);
         if ((s8) ev->player_ckind == 4) {
             Player_80031DA8(chr, ev->x1);
@@ -1000,12 +1009,15 @@ s32 gm_801BC00C(void)
     case 29:
     case 39:
     case 48:
-        for (i = ev->x20, entry_offset = i * 4;
-             i < (s32) event_levels[idx]->stage_list->count;
-             i++, entry_offset += 4)
+        for (i = ev->x20; i < (s32) event_levels[idx]->stage_list->count; i++)
         {
             player_init_data = event_levels[idx]->stage_list->player_init[i];
             ckind = player_init_data->c_kind;
+            // DESNOTE(jbarber, 2026-07-07): This otherwise-useless discard
+            // pins ckind to the register MWCC needs for the gm_8016A9E8 call
+            // below, matching the DOL. Without it MWCC allocates ckind to a
+            // different register and emits a redundant move before the call.
+            (void) ckind;
             costume = player_init_data->color;
             {
                 struct EventData* ev2 = &gmMainLib_804D3EE0->unk_530;
@@ -1922,8 +1934,8 @@ void gm_801BCC9C(HSD_GObj* arg0)
     u8 idx = gmMainLib_804D3EE0->unk_530.event_match_number;
     struct gm_804D6900_x4_t* x4 = (*all_event_matches)->x4;
     struct EventData* ev2;
-    struct EventInitDataLevelTbl* entry;
-    struct EventCharacterInitData* cd;
+    struct EventInitDataLevelTbl** entry;
+    EventCharacterInitData* cd;
     u8 costume;
     lbl_8046B6A0_t* mi;
     s32 var_r0;
@@ -1938,19 +1950,21 @@ void gm_801BCC9C(HSD_GObj* arg0)
         return;
     }
     if (Player_GetStocks(1) <= 0) {
-        entry = all_event_matches[idx];
+        entry = &all_event_matches[idx];
         ev2 = &gmMainLib_804D3EE0->unk_530;
-        cd = entry->stage_list->player_init[ev->x20];
+        cd = (*entry)->stage_list->player_init[ev->x20];
         costume = cd->color;
-        if ((s8) ev2->player_ckind == cd->c_kind && (u8) ev2->x1 == costume) {
+        if ((s8) ev2->player_ckind == (s8) cd->c_kind &&
+            (u8) ev2->x1 == costume)
+        {
             if (costume <= 2) {
                 costume += 1;
             } else {
                 costume = 0;
             }
         }
-        gm_8016AC44(cd->c_kind, (s8) costume);
-        if (ev->x20 >= entry->stage_list->count - 1) {
+        gm_8016AC44((s8) cd->c_kind, (s8) costume);
+        if (ev->x20 >= (s32) ((*entry)->stage_list->count - 1)) {
             gm_801BC4F4(arg0);
             return;
         }
@@ -2575,19 +2589,19 @@ void gm_801BDE94(HSD_GObj* arg0)
     if (!ev->xB_5) {
         ev->xB_5 = 1;
         if (ev->x20 == 0) {
-            mask = lbAudioAx_80026E84(tbl[level]->player_init[0]->c_kind);
+            mask = lbAudioAx_80026E84((s8) tbl[level]->player_init[0]->c_kind);
             mask |= lbAudioAx_80026E84(
-                tbl[level]->stage_list->player_init[0]->c_kind);
+                (s8) tbl[level]->stage_list->player_init[0]->c_kind);
             mask |= lbAudioAx_80026E84(
-                tbl[level]->stage_list->player_init[2]->c_kind);
+                (s8) tbl[level]->stage_list->player_init[2]->c_kind);
             mask |= lbAudioAx_80026E84(
-                tbl[level]->stage_list->player_init[3]->c_kind);
+                (s8) tbl[level]->stage_list->player_init[3]->c_kind);
         } else {
-            mask = lbAudioAx_80026E84(tbl[level]->player_init[0]->c_kind);
+            mask = lbAudioAx_80026E84((s8) tbl[level]->player_init[0]->c_kind);
             mask |= lbAudioAx_80026E84(
-                tbl[level]->stage_list->player_init[1]->c_kind);
+                (s8) tbl[level]->stage_list->player_init[1]->c_kind);
             mask |= lbAudioAx_80026E84(
-                tbl[level]->stage_list->player_init[4]->c_kind);
+                (s8) tbl[level]->stage_list->player_init[4]->c_kind);
         }
         lbAudioAx_80026F2C(0x14);
         lbAudioAx_8002702C(4, mask);
@@ -2623,17 +2637,19 @@ void gm_801BDE94(HSD_GObj* arg0)
         case 2:
             if (Player_GetStocks(3) <= 0) {
                 struct EventData* ev2 = &gmMainLib_804D3EE0->unk_530;
-                struct EventCharacterInitData* sp =
+                EventCharacterInitData* sp =
                     tbl[level]->stage_list->player_init[3];
                 u8 color = sp->color;
-                if ((s8) ev2->player_ckind == sp->c_kind && ev2->x1 == color) {
+                if ((s8) ev2->player_ckind == (s8) sp->c_kind &&
+                    (u8) ev2->x1 == color)
+                {
                     if (color <= 2) {
                         color += 1;
                     } else {
                         color = 0;
                     }
                 }
-                gm_8016AC44(sp->c_kind, color);
+                gm_8016AC44((s8) sp->c_kind, color);
                 if (Player_GetP1Stock() <= 0) {
                     gmMainLib_804D3EE0->unk_530.xB_1 = false;
                     lbAudioAx_80028B90();
@@ -2663,17 +2679,19 @@ void gm_801BDE94(HSD_GObj* arg0)
         case 1:
             if (Player_GetStocks(2) <= 0) {
                 struct EventData* ev2 = &gmMainLib_804D3EE0->unk_530;
-                struct EventCharacterInitData* sp =
+                EventCharacterInitData* sp =
                     tbl[level]->stage_list->player_init[4];
                 u8 color = sp->color;
-                if ((s8) ev2->player_ckind == sp->c_kind && ev2->x1 == color) {
+                if ((s8) ev2->player_ckind == (s8) sp->c_kind &&
+                    (u8) ev2->x1 == color)
+                {
                     if (color <= 2) {
                         color += 1;
                     } else {
                         color = 0;
                     }
                 }
-                gm_8016AC44(sp->c_kind, color);
+                gm_8016AC44((s8) sp->c_kind, color);
                 gm_801BC4F4(arg0);
                 return;
             }
@@ -2744,9 +2762,11 @@ void gm_801BE39C(HSD_GObj* gobj)
     if (!temp_r31->xB_5) {
         temp_r31->xB_5 = true;
         temp_ret = lbAudioAx_80026E84(Player_GetPlayerCharacter(0));
-        temp_ret |= lbAudioAx_80026E84(
-            all_event_matches[event_match_number]->player_init[1]->c_kind);
-        temp_ret |= lbAudioAx_80026E84(temp_r30->x4->c_kind);
+        temp_ret |=
+            lbAudioAx_80026E84((s8) all_event_matches[event_match_number]
+                                   ->player_init[1]
+                                   ->c_kind);
+        temp_ret |= lbAudioAx_80026E84((s8) temp_r30->x4->c_kind);
         lbAudioAx_80026F2C(0x14);
         lbAudioAx_8002702C(4, temp_ret);
         lbAudioAx_80027168();

@@ -91,7 +91,7 @@ struct EventInitDataLevelTbl {
     /* 0x14 */ EventCharacterInitData* player_init[5];
 };
 
-// DESNOTE(jbarber, 2026-07-07): The DOL has a single 8-byte object at
+// The DOL has a single 8-byte object at
 // 0x4D6900 (two pointer slots). Only slot [0] is ever used (as the loaded
 // EventInitDataLevelTbl** base); slot [1] is reserved. Declaring it as a
 // 2-element array reproduces the single 8-byte symbol so .sbss matches,

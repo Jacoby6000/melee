@@ -51,24 +51,37 @@ def format_address(address: Optional[int]) -> str:
     return "0x%08X" % address
 
 
+@dataclass
+class Changes:
+    regressions: list[Change]
+    progressions: list[Change]
+    # Symbols renamed at a stable address with no change in match percent.
+    # Renames that also changed match land in regressions/progressions, where
+    # the old name is already carried in the row.
+    renames: list[Change]
+
+
 # DESNOTE(jbarber, 2026-07-07): objdiff's `report changes` keys functions by
 # name, so a rename shows up as two entries at the same virtual address: the old
 # name with only a `from`, and the new name with only a `to`. Correlating by
 # address lets us collapse those into a single row (and drop the bogus
 # 100% -> 0% "regressions" that renames would otherwise produce).
-def get_changes(changes_file: str) -> tuple[list[Change], list[Change]]:
+def get_changes(changes_file: str) -> Changes:
     changes_file = os.path.relpath(changes_file, root_dir)
     with open(changes_file, "r") as f:
         changes_json = json.load(f)
 
     regressions: list[Change] = []
     progressions: list[Change] = []
+    renames: list[Change] = []
 
     def record(change: Change) -> None:
         if change.from_value > change.to_value:
             regressions.append(change)
         elif change.to_value > change.from_value:
             progressions.append(change)
+        elif change.is_rename:
+            renames.append(change)
 
     def diff_aggregate(name: Optional[str], obj: dict) -> None:
         for key in UNIT_KEYS_TO_DIFF:
@@ -145,7 +158,9 @@ def get_changes(changes_file: str) -> tuple[list[Change], list[Change]]:
                 )
             )
 
-    return regressions, progressions
+    return Changes(
+        regressions=regressions, progressions=progressions, renames=renames
+    )
 
 
 def generate_changes_plaintext(changes: list[Change]) -> str:
@@ -256,20 +271,24 @@ def main():
     )
     args = parser.parse_args()
 
-    regressions, progressions = get_changes(args.report_changes_file)
+    changes = get_changes(args.report_changes_file)
 
     if args.output:
-        markdown_output = generate_changes_markdown(regressions, "regressions")
+        markdown_output = generate_changes_markdown(changes.regressions, "regressions")
         if args.all:
-            markdown_output += generate_changes_markdown(progressions, "progressions")
+            markdown_output += generate_changes_markdown(
+                changes.progressions, "progressions"
+            )
+        markdown_output += generate_changes_markdown(changes.renames, "renames")
         with open(args.output, "w", encoding="utf-8") as f:
             f.write(markdown_output)
     else:
         if args.all:
-            changes = progressions + regressions
+            rows = changes.progressions + changes.regressions
         else:
-            changes = regressions
-        text_output = generate_changes_plaintext(changes)
+            rows = changes.regressions
+        rows += changes.renames
+        text_output = generate_changes_plaintext(rows)
         print(text_output)
 
 

@@ -91,8 +91,13 @@ struct EventInitDataLevelTbl {
     /* 0x14 */ EventCharacterInitData* player_init[5];
 };
 
-/* 4D6900 */ static struct EventInitDataLevelTbl** event_init_data_level_table;
-/* 4D6904 */ static u8 gm_804D6904_pad[4];
+// DESNOTE(jbarber, 2026-07-07): The DOL has a single 8-byte object at
+// 0x4D6900 (two pointer slots). Only slot [0] is ever used (as the loaded
+// EventInitDataLevelTbl** base); slot [1] is reserved. Declaring it as a
+// 2-element array reproduces the single 8-byte symbol so .sbss matches,
+// instead of splitting it into a 4-byte pointer plus a 4-byte pad.
+/* 4D6900 */ static struct EventInitDataLevelTbl**
+    event_init_data_level_table[2];
 /* 4D6908 */ static struct UnkSmallLoadData gm_804D6908;
 /* 4D6910 */ static struct UnkSmallLoadData gm_804D6910;
 /* 4D6918 */ static struct UnkSmallLoadData gm_804D6918;

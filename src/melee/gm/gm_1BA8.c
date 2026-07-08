@@ -95,7 +95,7 @@ extern u8 gm_804D68F9;
 
 void gm_801BA8FC(void)
 {
-    lbArchive_LoadSymbols(gm_803DF660, &event_init_data_level_table,
+    lbArchive_LoadSymbols(gm_803DF660, &(*event_init_data_level_table),
                           gm_803DF66C, 0);
 }
 
@@ -213,10 +213,9 @@ s32 gm_801BAC9C(GameScene* arg0, s32 player_idx)
     s32 found;
     s32 k;
     s32 count = 0;
-    struct gm_event_char_list* src =
-        (struct gm_event_char_list*) (event_init_data_level_table)
-            [ev->event_match_number]
-                ->x4;
+    struct gm_event_char_list* src = (struct gm_event_char_list*) ((
+        *event_init_data_level_table))[ev->event_match_number]
+                                         ->x4;
     PAD_STACK(8);
 
     for (i = 0; i < CHKIND_MAX; i++) {
@@ -274,9 +273,9 @@ void gm_801BAD70(GameScene* arg0)
     s32 player_idx;
     PAD_STACK(0x8);
 
-    lbArchive_LoadSymbols(gm_803DF660, &event_init_data_level_table,
+    lbArchive_LoadSymbols(gm_803DF660, &(*event_init_data_level_table),
                           gm_803DF66C, 0);
-    levels = event_init_data_level_table;
+    levels = (*event_init_data_level_table);
     gm_80167A64(&md->rules);
     lvlpp = gm_BAD70_LvlppPtr(levels, event_match_number);
     md->rules.x0_0 = (*lvlpp)->x8->x0_0;
@@ -754,7 +753,7 @@ s32 gm_801BBB64(void)
     s32 result;
 
     ev = &gmMainLib_804D3EE0->unk_530;
-    tbl = event_init_data_level_table;
+    tbl = (*event_init_data_level_table);
     idx = gmMainLib_804D3EE0->unk_530.event_match_number;
     if (*(s8*) tbl[idx]->player_init[0] != CHKIND_NONE) {
         ev->x44 = 0;
@@ -882,7 +881,7 @@ void gm_801BBEA8_OnLoad(void)
     temp_r30 = &gmMainLib_804D3EE0->unk_530;
     gm_801BA8FC();
 
-    temp_r29 = event_init_data_level_table;
+    temp_r29 = (*event_init_data_level_table);
     temp_r28 = temp_r30->event_match_number;
     temp_r30->player_ckind = 0;
     temp_r30->x1 = 0;
@@ -957,9 +956,9 @@ s32 gm_801BC00C(void)
     case 43:
     case 44:
     case 48:
-        lbArchive_LoadSymbols(gm_803DF660, &event_init_data_level_table,
+        lbArchive_LoadSymbols(gm_803DF660, &(*event_init_data_level_table),
                               gm_803DF66C, 0);
-        event_levels = event_init_data_level_table;
+        event_levels = (*event_init_data_level_table);
         break;
     }
 
@@ -1130,7 +1129,7 @@ s32 gm_801BC00C(void)
                                     event_info[idx]->x0, 0x15);
 }
 
-static u8 gm_803DF918_event_match_number_to_event_match_id_mapping[] = {
+static u8 gm_803DF918_event_match_selection_to_event_match_index_mapping[] = {
     ///< Index represents the event
     ///< match in order from the top of the event
     ///< match list
@@ -1694,7 +1693,7 @@ void gm_801BC4F4(HSD_GObj* gobj)
 void gm_801BC670(HSD_GObj* arg0)
 {
     struct EventData* temp_r31 = &gmMainLib_804D3EE0->unk_530;
-    struct gm_804D6900_x4_t* thing = event_init_data_level_table[0]->x4;
+    struct gm_804D6900_x4_t* thing = (*event_init_data_level_table)[0]->x4;
     PAD_STACK(0x10);
 
     temp_r31->xB_2 = true;
@@ -1822,8 +1821,8 @@ void gm_801BC9E8(HSD_GObj* gobj)
     bool var_r0;
     struct EventData* temp_r30_2;
     struct gm_804D6900_x4_t* temp_r30 =
-        event_init_data_level_table[gmMainLib_804D3EE0->unk_530
-                                        .event_match_number]
+        (*event_init_data_level_table)[gmMainLib_804D3EE0->unk_530
+                                           .event_match_number]
             ->x4;
     u32 coins = Player_GetCoins(0);
     PAD_STACK(0x28);
@@ -1929,7 +1928,7 @@ void gm_801BCAF0(HSD_GObj* gobj)
 void gm_801BCC9C(HSD_GObj* arg0)
 {
     struct EventInitDataLevelTbl** all_event_matches =
-        event_init_data_level_table;
+        (*event_init_data_level_table);
     struct EventData* ev = &gmMainLib_804D3EE0->unk_530;
     u8 idx = gmMainLib_804D3EE0->unk_530.event_match_number;
     struct gm_804D6900_x4_t* x4 = (*all_event_matches)->x4;
@@ -2063,7 +2062,7 @@ void gm_801BD028(HSD_GObj* arg0)
     lbl_8046B6A0_t* rules;
     s32 cond;
     struct EventData* ev = &gmMainLib_804D3EE0->unk_530;
-    struct EventInitDataLevelTbl** levels = event_init_data_level_table;
+    struct EventInitDataLevelTbl** levels = (*event_init_data_level_table);
     u8 level = gmMainLib_804D3EE0->unk_530.event_match_number;
     PAD_STACK(0x1C);
 
@@ -2579,7 +2578,7 @@ void gm_801BDD44(HSD_GObj* arg0)
 void gm_801BDE94(HSD_GObj* arg0)
 {
     PlayerInitData sp50;
-    struct EventInitDataLevelTbl** tbl = event_init_data_level_table;
+    struct EventInitDataLevelTbl** tbl = (*event_init_data_level_table);
     struct EventData* ev = &gmMainLib_804D3EE0->unk_530;
     u8 level = ev->event_match_number;
     u64 mask;
@@ -2755,7 +2754,7 @@ void gm_801BE39C(HSD_GObj* gobj)
 
     PAD_STACK(0x34);
 
-    all_event_matches = event_init_data_level_table;
+    all_event_matches = (*event_init_data_level_table);
     event_match_number = gmMainLib_804D3EE0->unk_530.event_match_number;
     temp_r31 = &gmMainLib_804D3EE0->unk_530;
     temp_r30 = all_event_matches[event_match_number]->x4;
@@ -2975,8 +2974,8 @@ void gm_801BE638(HSD_GObj* gobj)
 void gm_801BEA10(int arg0)
 {
     Player_SetPlayerAndEntityCpuType(
-        arg0, event_init_data_level_table[gmMainLib_804D3EE0->unk_530
-                                              .event_match_number]
+        arg0, (*event_init_data_level_table)[gmMainLib_804D3EE0->unk_530
+                                                 .event_match_number]
                   ->xC->x16);
 }
 
@@ -3023,19 +3022,19 @@ u8 gm_801BEB80(void)
 
 bool gm_801BEB8C(u8 arg0)
 {
-    return event_init_data_level_table[arg0]->x8->x1_0;
+    return (*event_init_data_level_table)[arg0]->x8->x1_0;
 }
 
 u8 gm_EventNumberToEventId(u8 selectedEventMatchNumber)
 {
-    return gm_803DF918_event_match_number_to_event_match_id_mapping
+    return gm_803DF918_event_match_selection_to_event_match_index_mapping
         [selectedEventMatchNumber];
 }
 
 u8 gm_EventIdToEventNumber(u8 eventMatchId)
 {
     u8* eventMatchIds =
-        gm_803DF918_event_match_number_to_event_match_id_mapping;
+        gm_803DF918_event_match_selection_to_event_match_index_mapping;
     u8 eventNumber;
     for (eventNumber = 0; eventNumber < NUM_EVENT_MATCHES; eventNumber++) {
         if (eventMatchId == eventMatchIds[eventNumber]) {
@@ -3048,9 +3047,10 @@ u8 gm_EventIdToEventNumber(u8 eventMatchId)
 u8 gm_801BEBF8(
     u8 eventMatchId) ///< Get event match player kind.  Returns ckind
 {
-    u8* table = gm_803DF918_event_match_number_to_event_match_id_mapping;
+    u8* table = gm_803DF918_event_match_selection_to_event_match_index_mapping;
     u8 eventNumber;
-    struct EventInitDataLevelTbl** eventMatches = event_init_data_level_table;
+    struct EventInitDataLevelTbl** eventMatches =
+        (*event_init_data_level_table);
     struct EventInitDataLevelTbl* selectedEventMatch;
 
     for (eventNumber = 0; eventNumber < NUM_EVENT_MATCHES; eventNumber++) {
@@ -3070,8 +3070,8 @@ u8 gm_801BEBF8(
 UNK_T gm_801BEC54(void)
 {
     struct EventInitDataLevelTbl* temp_r3;
-    temp_r3 = event_init_data_level_table[gmMainLib_804D3EE0->unk_530
-                                              .event_match_number];
+    temp_r3 = (*event_init_data_level_table)[gmMainLib_804D3EE0->unk_530
+                                                 .event_match_number];
     if (temp_r3 == NULL) {
         return NULL;
     }

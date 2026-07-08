@@ -2909,16 +2909,6 @@ s32 fn_8016588C(lbl_8046B6A0_24C_t* arg0, s32 arg1)
             v = (u8) ((arg0->x58[arg1].x20 - (arg0->x58[arg1].x24 - a)) +
                       a * (s8) arg0->xC);
             break;
-            lim = (1 << 24) - 1;
-            if (lim < 0) {
-                lim = -lim;
-            }
-            if (v > lim) {
-                return lim;
-            }
-            if (v < -lim) {
-                return -lim;
-            }
         }
         }
     }
@@ -3320,9 +3310,13 @@ MatchEnd* gm_80166A98(MatchEnd* arg0, s32 arg1, s8 arg2, u8 arg3, s8 arg4,
     return gm_CalculateTeamSmallLoser(arg0);
 }
 
-u8 gm_IsSlotSmallLoser(MatchEnd* matchEnd, ssize_t slot)
+s32 gm_IsSlotSmallLoser(MatchEnd* matchEnd, ssize_t slot)
 {
-    return matchEnd->player_standings[slot].is_small_loser;
+    u8* entry;
+
+    entry = (u8*) matchEnd;
+    entry = entry + slot * 0xA8;
+    return entry[0x5E];
 }
 
 void gm_80166CCC(MatchEnd* arg0, MatchEnd* arg1)

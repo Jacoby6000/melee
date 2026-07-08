@@ -1562,7 +1562,7 @@ void fn_8016D8AC(int arg0, struct PlayerInitData* arg1)
         tmp->FighterMatchInfo[arg0].x4_b4 = true;
     }
 
-    tmp->FighterMatchInfo[arg0].spawn_point = arg1->sub_color;
+    tmp->FighterMatchInfo[arg0].spawn_point = arg1->x5;
 
     Player_SetHandicap(arg0, arg1->handicap);
     Player_SetTeam(arg0, arg1->team);

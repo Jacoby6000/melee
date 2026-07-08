@@ -149,7 +149,6 @@
 /* 166378 */ void gm_80166378(struct lbl_8046B6A0_24C_t*);
 /* 166A98 */ MatchEnd* gm_80166A98(MatchEnd*, s32, s8, u8, s8, u8, s8, u8, u8,
                                    u8);
-/* 166CBC */ s32 gmCamera_801A2640(void);
 /* 166CBC */ u8 gm_IsSlotSmallLoser(MatchEnd*, ssize_t index);
 /* 166CCC */ void gm_80166CCC(MatchEnd*, MatchEnd*);
 /* 167140 */ bool gm_MatchHasWinner(MatchEnd*);

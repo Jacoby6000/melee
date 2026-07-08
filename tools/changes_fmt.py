@@ -3,8 +3,9 @@
 from argparse import ArgumentParser
 import os
 import json
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Optional
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = os.path.abspath(os.path.join(script_dir, ".."))
@@ -18,11 +19,24 @@ UNIT_KEYS_TO_DIFF = [
     "complete_data_percent",
 ]
 
-FUNCTION_KEYS_TO_DIFF = [
-    "fuzzy_match_percent",
-]
+FUNCTION_KEY = "fuzzy_match_percent"
 
-Change = Tuple[str, str, float, float]
+
+@dataclass
+class Change:
+    # None for aggregate (Total / unit) rows, hex string for functions.
+    address: Optional[int]
+    # Previous name when the symbol was renamed at this address, else None.
+    old_name: Optional[str]
+    # "Total" for the whole-report row, unit path, or function name.
+    name: Optional[str]
+    key: str
+    from_value: float
+    to_value: float
+
+    @property
+    def is_rename(self) -> bool:
+        return self.old_name is not None and self.old_name != self.name
 
 
 def format_float(value: float) -> str:
@@ -31,36 +45,105 @@ def format_float(value: float) -> str:
     return "%6.2f" % value
 
 
-def get_changes(changes_file: str) -> Tuple[list[Change], list[Change]]:
+def format_address(address: Optional[int]) -> str:
+    if address is None:
+        return ""
+    return "0x%08X" % address
+
+
+# DESNOTE(jbarber, 2026-07-07): objdiff's `report changes` keys functions by
+# name, so a rename shows up as two entries at the same virtual address: the old
+# name with only a `from`, and the new name with only a `to`. Correlating by
+# address lets us collapse those into a single row (and drop the bogus
+# 100% -> 0% "regressions" that renames would otherwise produce).
+def get_changes(changes_file: str) -> tuple[list[Change], list[Change]]:
     changes_file = os.path.relpath(changes_file, root_dir)
     with open(changes_file, "r") as f:
         changes_json = json.load(f)
 
-    regressions = []
-    progressions = []
+    regressions: list[Change] = []
+    progressions: list[Change] = []
 
-    def diff_key(object_name: Optional[str], object: dict, key: str):
-        from_value = object.get("from", {}).get(key, 0.0)
-        to_value = object.get("to", {}).get(key, 0.0)
-        key = key.removesuffix("_percent")
-        change = (object_name, key, from_value, to_value)
-        if from_value > to_value:
+    def record(change: Change) -> None:
+        if change.from_value > change.to_value:
             regressions.append(change)
-        elif to_value > from_value:
+        elif change.to_value > change.from_value:
             progressions.append(change)
 
-    for key in UNIT_KEYS_TO_DIFF:
-        diff_key(None, changes_json, key)
+    def diff_aggregate(name: Optional[str], obj: dict) -> None:
+        for key in UNIT_KEYS_TO_DIFF:
+            from_value = obj.get("from", {}).get(key, 0.0)
+            to_value = obj.get("to", {}).get(key, 0.0)
+            record(
+                Change(
+                    address=None,
+                    old_name=None,
+                    name=name,
+                    key=key.removesuffix("_percent"),
+                    from_value=from_value,
+                    to_value=to_value,
+                )
+            )
+
+    diff_aggregate(None, changes_json)
 
     for unit in changes_json.get("units", []):
         unit_name = unit["name"]
-        for key in UNIT_KEYS_TO_DIFF:
-            diff_key(unit_name, unit, key)
-        # Ignore sections
+        diff_aggregate(unit_name, unit)
+
+        # Group this unit's functions by address so renames collapse to one row.
+        by_address: dict[int, dict[str, object]] = {}
+        order: list[int] = []
         for func in unit.get("functions", []):
-            func_name = func["name"]
-            for key in FUNCTION_KEYS_TO_DIFF:
-                diff_key(func_name, func, key)
+            metadata = func.get("metadata") or {}
+            raw_address = metadata.get("virtual_address")
+            if raw_address is None:
+                continue
+            address = int(raw_address)
+            entry = by_address.get(address)
+            if entry is None:
+                entry = {}
+                by_address[address] = entry
+                order.append(address)
+            if "from" in func:
+                entry["from_name"] = func["name"]
+                entry["from_exists"] = True
+                entry["from_value"] = func["from"].get(FUNCTION_KEY)
+            if "to" in func:
+                entry["to_name"] = func["name"]
+                entry["to_exists"] = True
+                entry["to_value"] = func["to"].get(FUNCTION_KEY)
+
+        for address in order:
+            entry = by_address[address]
+            from_name = entry.get("from_name")
+            to_name = entry.get("to_name")
+            name = to_name or from_name
+            old_name = from_name if from_name is not None else None
+
+            from_value = entry.get("from_value")
+            to_value = entry.get("to_value")
+            # DESNOTE(jbarber, 2026-07-07): objdiff sometimes emits a side with a
+            # size but no fuzzy_match_percent. When the symbol still exists on
+            # that side (e.g. a rename), inherit the other side's value so we
+            # report "unchanged" rather than a fabricated drop to 0%. Only treat
+            # a value as 0% when the symbol is genuinely absent on that side
+            # (a real add or removal).
+            if from_value is None and entry.get("from_exists") and to_value is not None:
+                from_value = to_value
+            if to_value is None and entry.get("to_exists") and from_value is not None:
+                to_value = from_value
+
+            record(
+                Change(
+                    address=address,
+                    old_name=old_name,
+                    name=name,
+                    key="fuzzy_match",
+                    from_value=from_value if from_value is not None else 0.0,
+                    to_value=to_value if to_value is not None else 0.0,
+                )
+            )
 
     return regressions, progressions
 
@@ -69,22 +152,38 @@ def generate_changes_plaintext(changes: list[Change]) -> str:
     if len(changes) == 0:
         return ""
 
-    table_total_width = 136
-    percents_max_len = 7 + 4 + 7
-    key_max_len = max(len(key) for _, key, _, _ in changes)
-    name_max_len = max(len(name or "Total") for name, _, _, _ in changes)
-    max_width_for_name_col = table_total_width - 3 - key_max_len - 3 - percents_max_len
-    name_max_len = min(max_width_for_name_col, name_max_len)
+    show_rename = any(c.is_rename for c in changes)
+    name_cap = 48
+
+    def cap(text: str) -> str:
+        if len(text) > name_cap:
+            return text[: name_cap - len("[...]")] + "[...]"
+        return text
+
+    rows: list[tuple[str, str, str, str, str]] = []
+    for change in changes:
+        address = format_address(change.address)
+        name = cap(change.name if change.name is not None else "Total")
+        old_name = cap(change.old_name) if change.is_rename else ""
+        percents = (
+            f"{format_float(change.from_value)}% -> {format_float(change.to_value)}%"
+        )
+        rows.append((address, old_name, name, change.key, percents))
+
+    addr_w = max(len(r[0]) for r in rows)
+    old_w = max(len(r[1]) for r in rows)
+    name_w = max(len(r[2]) for r in rows)
+    key_w = max(len(r[3]) for r in rows)
 
     out_lines = []
-    for name, key, from_value, to_value in changes:
-        if name is None:
-            name = "Total"
-        if len(name) > name_max_len:
-            name = name[: name_max_len - len("[...]")] + "[...]"
-        out_lines.append(
-            f"{name:>{name_max_len}} | {key:<{key_max_len}} | {format_float(from_value)}% -> {format_float(to_value)}%"
-        )
+    for address, old_name, name, key, percents in rows:
+        parts = [f"{address:>{addr_w}}"]
+        if show_rename:
+            parts.append(f"{old_name:>{old_w}}")
+        parts.append(f"{name:>{name_w}}")
+        parts.append(f"{key:<{key_w}}")
+        parts.append(percents)
+        out_lines.append(" | ".join(parts))
 
     return "\n".join(out_lines)
 
@@ -93,28 +192,44 @@ def generate_changes_markdown(changes: list[Change], description: str) -> str:
     if len(changes) == 0:
         return ""
 
-    out_lines = []
+    show_rename = any(c.is_rename for c in changes)
     name_max_len = 100
 
+    out_lines = []
     out_lines.append("<details>")
     out_lines.append(
         f"<summary>Detected {len(changes)} {description} compared to the base:</summary>"
     )
     out_lines.append("")  # Must include a blank line before a table
-    out_lines.append("| Name | Type | Before | After |")
-    out_lines.append("| ---- | ---- | ------ | ----- |")
 
-    for name, key, from_value, to_value in changes:
-        if name is None:
-            name = "Total"
-        else:
+    header = ["Address"]
+    if show_rename:
+        header.append("Renamed from")
+    header += ["Name", "Type", "Before", "After"]
+    out_lines.append("| " + " | ".join(header) + " |")
+    out_lines.append("| " + " | ".join(["----"] * len(header)) + " |")
+
+    for change in changes:
+        name = change.name if change.name is not None else "Total"
+        if change.name is not None:
             if len(name) > name_max_len:
                 name = name[: name_max_len - len("...")] + "..."
-            name = f"`{name}`"  # Surround with backticks
-        key = key.replace("_", " ").capitalize()
-        out_lines.append(
-            f"| {name} | {key} | {format_float(from_value)}% | {format_float(to_value)}% |"
-        )
+            name = f"`{name}`"
+        old_name = ""
+        if change.is_rename:
+            old_name = f"`{change.old_name}`"
+        key = change.key.replace("_", " ").capitalize()
+
+        cells = [format_address(change.address)]
+        if show_rename:
+            cells.append(old_name)
+        cells += [
+            name,
+            key,
+            f"{format_float(change.from_value)}%",
+            f"{format_float(change.to_value)}%",
+        ]
+        out_lines.append("| " + " | ".join(cells) + " |")
 
     out_lines.append("</details>")
 

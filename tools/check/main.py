@@ -34,6 +34,19 @@ from dataclasses import dataclass
 from itertools import groupby
 from pathlib import Path
 
+# Entry-point bootstrap: allow this package to be run as
+# ``python tools/check/main.py`` by putting ``tools/`` (the parent of the
+# ``check`` package) on the path before any package-relative import.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from check.finding import Finding
+from check.nested_structs import (
+    CHECK_HELP,
+    CHECK_NAME,
+    nested_structs_fix,
+    nested_structs_scan,
+)
+
 SOURCE_GLOB = "*.[ch]"
 
 # Exit codes mirror the `exitcode` crate used by melee-issues.
@@ -43,15 +56,6 @@ EXIT_ERROR = 74  # EX_IOERR
 
 # All findings are warnings; melee-issues groups by severity first.
 SEVERITY = "Warning"
-
-
-@dataclass(frozen=True)
-class Finding:
-    path: str
-    line: int
-    column: int
-    message: str
-    snippet: str
 
 
 # A check reads one file's (path, text) and yields any findings in it.
@@ -296,6 +300,12 @@ CHECKS: list[Check] = [
         "assert-macros",
         "direct __assert calls that could use the HSD assert macros",
         scan_assert_macros,
+    ),
+    Check(
+        CHECK_NAME,
+        CHECK_HELP,
+        nested_structs_scan,
+        nested_structs_fix,
     ),
 ]
 

@@ -5,6 +5,7 @@ repos:
   - id: clang-format
     types_or: [file]
     files: \.(c|h|dox)$
+    exclude: ^tools/check/tests/resources/
 - repo: local
   hooks:
     - id: style-check
@@ -13,3 +14,4 @@ repos:
       language: system
       pass_filenames: true
       types_or: [c]
+      exclude: ^tools/check/tests/resources/

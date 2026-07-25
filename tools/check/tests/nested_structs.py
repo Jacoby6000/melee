@@ -8,228 +8,154 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from check.nested_structs import nested_structs_fix, nested_structs_scan  # noqa: E402
 
+RESOURCE_ROOT = Path(__file__).resolve().parent / "resources" / "nested_structs"
+SCAN_DIR = RESOURCE_ROOT / "scan"
+FIX_DIR = RESOURCE_ROOT / "fix"
+
+
+# ---------------------------------------------------------------------------
+# Scan tests (detection)
+# ---------------------------------------------------------------------------
+
 
 class NestedStructsScanTest(unittest.TestCase):
-    def lines(self, source: str) -> list[int]:
-        return [f.line for f in nested_structs_scan(Path("test.c"), source)]
+    """Detection cases loaded from ``resources/nested_structs/scan/``.
 
-    def test_flags_anonymous_nested_struct(self) -> None:
-        source = (
-            "struct Outer {\n"
-            "    struct {\n"  # 2
-            "        int x;\n"
-            "    } inner;\n"
-            "};\n"
-        )
-        self.assertEqual(self.lines(source), [2])
+    Each fixture provides a source and ``// violations:`` metadata listing the
+    1-based line numbers expected to be flagged (empty for no findings).
+    """
 
-    def test_flags_tagged_nested_struct(self) -> None:
-        source = (
-            "struct Outer {\n"
-            "    struct Foo {\n"  # 2
-            "        int x;\n"
-            "    } inner;\n"
-            "};\n"
-        )
-        self.assertEqual(self.lines(source), [2])
-
-    def test_flags_nested_union(self) -> None:
-        source = (
-            "struct Outer {\n"
-            "    union Bar {\n"  # 2
-            "        int x;\n"
-            "        float y;\n"
-            "    } u;\n"
-            "};\n"
-        )
-        self.assertEqual(self.lines(source), [2])
-
-    def test_flags_multiple_siblings(self) -> None:
-        source = (
-            "union V {\n"
-            "    struct { int x; } common;\n"  # 2
-            "    struct { int y; } walk;\n"  # 3
-            "};\n"
-        )
-        self.assertEqual(self.lines(source), [2, 3])
-
-    def test_flags_deeply_nested(self) -> None:
-        source = (
-            "struct A {\n"
-            "    struct B {\n"  # 2
-            "        struct C {\n"  # 3
-            "            int z;\n"
-            "        } deep;\n"
-            "    } inner;\n"
-            "};\n"
-        )
-        # libclang walks in source order (outermost first).
-        self.assertEqual(self.lines(source), [2, 3])
-
-    def test_ignores_top_level_struct(self) -> None:
-        source = (
-            "struct Foo {\n"
-            "    int x;\n"
-            "};\n"
-            "struct Bar {\n"
-            "    int y;\n"
-            "};\n"
-        )
-        self.assertEqual(self.lines(source), [])
-
-    def test_ignores_typedef_anon_struct(self) -> None:
-        source = (
-            "typedef struct {\n"
-            "    int x;\n"
-            "} Foo;\n"
-        )
-        self.assertEqual(self.lines(source), [])
-
-    def test_ignores_struct_in_function_body(self) -> None:
-        source = (
-            "void f(void) {\n"
-            "    struct Local {\n"  # not nested in a struct body
-            "        int x;\n"
-            "    } l;\n"
-            "}\n"
-        )
-        self.assertEqual(self.lines(source), [])
+    def run_case(self, name: str) -> None:
+        source, expected_violations = _load_scan_case(name)
+        actual = [f.line for f in nested_structs_scan(Path("test.c"), source)]
+        self.assertEqual(actual, expected_violations, f"{name}: violation lines mismatch")
 
 
-class NestedStructsFixTest(unittest.TestCase):
-    def fix(self, source: str) -> tuple[str, int]:
-        return nested_structs_fix(Path("test.c"), source)
+def _make_scan_test(name: str) -> object:
+    def test(self: "NestedStructsScanTest") -> None:
+        self.run_case(name)
+    test.__name__ = f"test_{name}"
+    return test
 
-    def assertNoNested(self, source: str) -> None:
+def _load_scan_case(name: str) -> tuple[str, list[int]]:
+    """Read a scan fixture from ``resources/nested_structs/scan/<name>.c``.
+
+    File format::
+
+        // violations: 2, 3
+        <source>
+
+    ``violations`` is a comma-separated list of 1-based line numbers expected
+    to be flagged (empty meaning no findings).
+    """
+    raw = (SCAN_DIR / f"{name}.c").read_text()
+    lines = raw.split("\n")
+    meta, body = _strip_meta(lines)
+    violations_str = meta.get("violations", "")
+    violations = [int(x) for x in violations_str.split(",") if x.strip()]
+    source = "\n".join(body) + "\n"
+    return source, violations
+
+
+
+for _path in sorted(SCAN_DIR.glob("*.c")):
+    setattr(
+        NestedStructsScanTest,
+        f"test_{_path.stem}",
+        _make_scan_test(_path.stem),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Fix tests (reformatting)
+# ---------------------------------------------------------------------------
+
+
+class NestedStructsRewriteTest(unittest.TestCase):
+    """Reformatting regression cases loaded from ``resources/nested_structs/fix/``.
+
+    Each fixture provides input and expected output separated by ``// ---``.
+    Every assertion checks the extraction count, the full rewritten source,
+    that the result has no remaining violations (unless
+    ``// remaining-violations:`` is given), and that a second pass leaves the
+    output untouched.
+    """
+
+    def run_case(self, name: str) -> None:
+        source, expected, count, remaining = _load_fix_case(name)
+        fixed, n = nested_structs_fix(Path("test.c"), source)
+        self.assertEqual(n, count, f"{name}: extraction count mismatch")
+        self.assertEqual(fixed, expected, f"{name}: rewritten source mismatch")
         self.assertEqual(
-            [f.line for f in nested_structs_scan(Path("test.c"), source)], []
+            [f.line for f in nested_structs_scan(Path("test.c"), fixed)],
+            remaining,
+            f"{name}: remaining violations mismatch",
         )
+        refixed, rn = nested_structs_fix(Path("test.c"), fixed)
+        self.assertEqual((refixed, rn), (fixed, 0), f"{name}: second pass not a no-op")
 
-    def test_tagged_uses_tag_name(self) -> None:
-        source = (
-            "struct Outer {\n"
-            "    struct Foo {\n"
-            "        int x;\n"
-            "    } inner;\n"
-            "};\n"
-        )
-        fixed, n = self.fix(source)
-        self.assertEqual(n, 1)
-        self.assertIn("struct Foo {\n        int x;\n    };", fixed)
-        self.assertIn("struct Foo inner;", fixed)
-        self.assertNoNested(fixed)
 
-    def test_anonymous_uses_pascal_field_name(self) -> None:
-        source = (
-            "struct Outer {\n"
-            "    struct {\n"
-            "        int x;\n"
-            "    } bar_field;\n"
-            "};\n"
-        )
-        fixed, n = self.fix(source)
-        self.assertEqual(n, 1)
-        self.assertIn("struct BarField {", fixed)
-        self.assertIn("struct BarField bar_field;", fixed)
-        self.assertNoNested(fixed)
+def _make_fix_test(name: str) -> object:
+    def test(self: "NestedStructsRewriteTest") -> None:
+        self.run_case(name)
+    test.__name__ = f"test_{name}"
+    return test
 
-    def test_anonymous_multi_word_field(self) -> None:
-        source = (
-            "union V {\n"
-            "    struct { int x; } some_name;\n"
-            "};\n"
-        )
-        fixed, n = self.fix(source)
-        self.assertEqual(n, 1)
-        self.assertIn("struct SomeName {", fixed)
-        self.assertIn("struct SomeName some_name;", fixed)
-        self.assertNoNested(fixed)
+def _load_fix_case(name: str) -> tuple[str, str, int, list[int]]:
+    """Read a fix fixture from ``resources/nested_structs/fix/<name>.c``.
 
-    def test_multiple_siblings(self) -> None:
-        source = (
-            "union V {\n"
-            "    struct { int x; } common;\n"
-            "    struct { int y; } walk;\n"
-            "};\n"
-        )
-        fixed, n = self.fix(source)
-        self.assertEqual(n, 2)
-        self.assertIn("struct Common { int x; };", fixed)
-        self.assertIn("struct Walk { int y; };", fixed)
-        self.assertIn("struct Common common;", fixed)
-        self.assertIn("struct Walk walk;", fixed)
-        self.assertNoNested(fixed)
+    File format::
 
-    def test_deeply_nested_extracts_all(self) -> None:
-        source = (
-            "struct A {\n"
-            "    struct B {\n"
-            "        struct C {\n"
-            "            int z;\n"
-            "        } deep;\n"
-            "    } inner;\n"
-            "};\n"
-        )
-        fixed, n = self.fix(source)
-        self.assertEqual(n, 2)
-        self.assertIn("struct C {", fixed)
-        self.assertIn("struct B {", fixed)
-        self.assertIn("struct C deep;", fixed)
-        self.assertIn("struct B inner;", fixed)
-        self.assertNoNested(fixed)
+        // count: <N>
+        // remaining-violations: a, b  (optional; lines still flagged after fix)
+        <input source>
+        // ---
+        <expected output>
 
-    def test_multi_declarator(self) -> None:
-        source = (
-            "struct Outer {\n"
-            "    struct { int x; } a, b;\n"
-            "};\n"
-        )
-        fixed, n = self.fix(source)
-        self.assertEqual(n, 1)
-        self.assertIn("struct A { int x; };", fixed)
-        self.assertIn("struct A a, b;", fixed)
-        self.assertNoNested(fixed)
+    Returns ``(source, expected, count, remaining_violations)``.
+    """
+    raw = (FIX_DIR / f"{name}.c").read_text()
+    sep = "\n// ---\n"
+    idx = raw.find(sep)
+    if idx == -1:
+        raise AssertionError(f"missing '// ---' separator in {name}.c")
+    head = raw[:idx]
+    expected = raw[idx + len(sep):]
+    lines = head.split("\n")
+    meta, body = _strip_meta(lines)
+    if "count" not in meta:
+        raise AssertionError(f"missing '// count:' metadata in {name}.c")
+    count = int(meta["count"])
+    remaining_str = meta.get("remaining-violations", "")
+    remaining = [int(x) for x in remaining_str.split(",") if x.strip()]
+    source = "\n".join(body) + "\n"
+    return source, expected, count, remaining
 
-    def test_preserves_offset_comment(self) -> None:
-        source = (
-            "struct Outer {\n"
-            "    /* +0 */ struct { int x; } inner;\n"
-            "};\n"
-        )
-        fixed, n = self.fix(source)
-        self.assertEqual(n, 1)
-        self.assertIn("/* +0 */ struct Inner inner;", fixed)
-        self.assertNoNested(fixed)
 
-    def test_idempotent(self) -> None:
-        source = (
-            "struct Outer {\n"
-            "    struct { int x; } inner;\n"
-            "};\n"
-        )
-        once, _ = self.fix(source)
-        twice, n = self.fix(once)
-        self.assertEqual((twice, n), (once, 0))
 
-    def test_flat_source_unchanged(self) -> None:
-        source = (
-            "struct Foo { int x; };\n"
-            "struct Bar { int y; };\n"
-        )
-        fixed, n = self.fix(source)
-        self.assertEqual((fixed, n), (source, 0))
 
-    def test_skips_unnameable_anonymous(self) -> None:
-        source = (
-            "struct Outer {\n"
-            "    union {\n"
-            "        int x;\n"
-            "        struct { int y; };\n"  # no field name -> cannot rename
-            "    };\n"  # union has no field name either
-            "};\n"
-        )
-        fixed, n = self.fix(source)
-        self.assertEqual(n, 0)
+for _path in sorted(FIX_DIR.glob("*.c")):
+    setattr(
+        NestedStructsRewriteTest,
+        f"test_{_path.stem}",
+        _make_fix_test(_path.stem),
+    )
+
+
+def _strip_meta(lines: list[str]) -> tuple[dict[str, str], list[str]]:
+    """Pull leading ``// key: value`` comments off ``lines``.
+
+    Returns ``(metadata, remaining_lines)``.
+    """
+    meta: dict[str, str] = {}
+    i = 0
+    while i < len(lines) and lines[i].lstrip().startswith("//"):
+        stripped = lines[i].strip()
+        if ":" in stripped:
+            key, _, value = stripped.removeprefix("//").partition(":")
+            meta[key.strip()] = value.strip()
+        i += 1
+    return meta, lines[i:]
 
 
 if __name__ == "__main__":

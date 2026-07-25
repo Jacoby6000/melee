@@ -6,6 +6,11 @@ should not return (for example a raw ``0x10`` where ``JOBJ_HIDDEN`` is
 meant). Checks are enabled by default and can be disabled individually
 with ``--no-<check>``, mirroring clang's ``-Wno-`` flags.
 
+Inline suppressions are also supported via ``// checks:disable <name>``
+and ``// checks:enable`` comments, which suspend a check (currently
+``nested-structs``) over a region of a file. A bare ``// checks:disable``
+suppresses every check; an ``enable`` without a name re-enables all.
+
 Output and exit codes mirror ``melee-issues`` (``tools/issues``):
 ``--msg-style std`` prints a ``severity > category > [option] > file``
 hierarchy and a final ``Issues: OK`` / ``Issues: N`` summary; the process
@@ -46,6 +51,7 @@ from check.nested_structs import (
     nested_structs_fix,
     nested_structs_scan,
 )
+from check.suppressions import suppressed_ranges
 
 SOURCE_GLOB = "*.[ch]"
 
@@ -325,12 +331,24 @@ def _iter_files(roots: list[str]) -> Iterator[Path]:
         yield from sorted(root_path.rglob(SOURCE_GLOB))
 
 
+def _scan_filtered(check: Check, path: Path, text: str) -> Iterator[Finding]:
+    """Run ``check.scan`` and drop findings in ``// checks:disable`` regions.
+
+    Suppression is applied centrally here so individual checks don't need to
+    know about the directive syntax.
+    """
+    ranges = suppressed_ranges(text, check.name)
+    for finding in check.scan(path, text):
+        if not any(s <= finding.line <= e for s, e in ranges):
+            yield finding
+
+
 def collect(checks: list[Check], roots: list[str]) -> list[tuple[Check, Finding]]:
     found: list[tuple[Check, Finding]] = []
     for path in _iter_files(roots):
         text = path.read_text(errors="replace")
         for check in checks:
-            for finding in check.scan(path, text):
+            for finding in _scan_filtered(check, path, text):
                 found.append((check, finding))
     return found
 
@@ -411,7 +429,7 @@ def run_fix(checks: list[Check], roots: list[str], dry_run: bool, quiet: bool) -
                 path.write_text(text)
         # Count findings that remain after fixing (not auto-fixable).
         for check in checks:
-            remaining += sum(1 for _ in check.scan(path, text))
+            remaining += sum(1 for _ in _scan_filtered(check, path, text))
 
     if files_changed > 1 or not quiet:
         verb = "Would fix" if dry_run else "Fixed"

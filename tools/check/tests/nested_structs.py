@@ -7,6 +7,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from check.nested_structs import nested_structs_fix, nested_structs_scan  # noqa: E402
+from check.nested_structs import CHECK_NAME  # noqa: E402
+from check.suppressions import is_suppressed  # noqa: E402
 
 RESOURCE_ROOT = Path(__file__).resolve().parent / "resources" / "nested_structs"
 SCAN_DIR = RESOURCE_ROOT / "scan"
@@ -27,7 +29,11 @@ class NestedStructsScanTest(unittest.TestCase):
 
     def run_case(self, name: str) -> None:
         source, expected_violations = _load_scan_case(name)
-        actual = [f.line for f in nested_structs_scan(Path("test.c"), source)]
+        actual = [
+            f.line
+            for f in nested_structs_scan(Path("test.c"), source)
+            if not is_suppressed(CHECK_NAME, f.line, source)
+        ]
         self.assertEqual(actual, expected_violations, f"{name}: violation lines mismatch")
 
 
@@ -151,6 +157,10 @@ def _strip_meta(lines: list[str]) -> tuple[dict[str, str], list[str]]:
     i = 0
     while i < len(lines) and lines[i].lstrip().startswith("//"):
         stripped = lines[i].strip()
+        # A ``// checks:disable``/``// checks:enable`` directive is part of
+        # the source body, not fixture metadata, so stop stripping here.
+        if stripped.removeprefix("//").lstrip().startswith("checks:"):
+            break
         if ":" in stripped:
             key, _, value = stripped.removeprefix("//").partition(":")
             meta[key.strip()] = value.strip()
